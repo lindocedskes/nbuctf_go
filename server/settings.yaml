@@ -1,0 +1,18 @@
+system:
+  host: "127.0.0.1"
+  port: 8080
+
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  dbname: "nbuctf" #先创建好数据库
+  username: "root"
+  password: "nbuctf#2022#dev"
+  charset: "utf8mb4"
+  max-idle-conns: 10 #空闲连接的最大数量
+  max-open-conns: 100 #连接的最大数量
+
+redis:
+  addr: "127.0.0.1:6379"
+  password: ""
+  db: 0
