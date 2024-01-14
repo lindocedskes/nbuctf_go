@@ -1,0 +1,6 @@
+[nbuctf]2024/01/13 - 20:07:01.750	[34minfo[0m	/Users/luo/Desktop/github-repo/nbuctf_go/server/initialize/router.go:33	register swagger handler
+[nbuctf]2024/01/13 - 20:07:01.751	[34minfo[0m	/Users/luo/Desktop/github-repo/nbuctf_go/server/initialize/router.go:37	use middleware cors
+[nbuctf]2024/01/13 - 20:07:01.751	[34minfo[0m	/Users/luo/Desktop/github-repo/nbuctf_go/server/core/server.go:23	server run success on 	{"port": ":8080"}
+[nbuctf]2024/01/13 - 23:50:10.692	[34minfo[0m	/Users/luo/Desktop/github-repo/nbuctf_go/server/initialize/router.go:37	register swagger handler
+[nbuctf]2024/01/13 - 23:50:10.693	[34minfo[0m	/Users/luo/Desktop/github-repo/nbuctf_go/server/initialize/router.go:41	use middleware cors
+[nbuctf]2024/01/13 - 23:50:10.693	[34minfo[0m	/Users/luo/Desktop/github-repo/nbuctf_go/server/core/server.go:23	server run success on 	{"port": ":8080"}

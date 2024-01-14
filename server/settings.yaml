@@ -1,6 +1,8 @@
 system:
+  Env: "dev" # dev or public ，puclic 关闭路由日志输出
   host: "127.0.0.1"
   port: 8080
+  router-prefix: "" #  路由全局前缀
 
 mysql:
   host: "127.0.0.1"
@@ -16,3 +18,34 @@ redis:
   addr: "127.0.0.1:6379"
   password: ""
   db: 0
+
+# jwt configuration
+jwt:
+  signing-key: nbuctf
+  expires-time: 7d #格式 1d 1h、1h、d为天、h为小时
+  buffer-time: 1d
+  issuer: nbuctf
+
+# zap 日志配置
+zap:
+  level: info # debug, info, warn, error, dpanic, panic, fatal
+  format: console # json, console
+  prefix: "[nbuctf]" # 日志前缀
+  director: log # 放日志文件的目录
+  show-line: true # 显示行号
+  encode-level: LowercaseColorLevelEncoder # LowercaseLevelEncoder、LowercaseColorLevelEncoder、CapitalLevelEncoder、CapitalColorLevelEncoder
+  stacktrace-key: stacktrace # 追踪栈的key名
+  log-in-console: true # 是否将日志输出到控制台
+
+# 文件存储oss local configuration
+local:
+  path: uploads/file #访问路径
+  store-path: uploads/file #存储路径
+
+# 验证码 captcha configuration
+captcha:
+  key-long: 6
+  img-width: 240
+  img-height: 80
+  open-captcha: 0 # 0代表一直开启，大于0代表限制次数
+  open-captcha-timeout: 3600 # open-captcha大于0时才生效

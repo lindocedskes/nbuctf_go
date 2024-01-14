@@ -1,14 +1,14 @@
 package initialize
 
 import (
-	"github.com/lindocedskes/common"
+	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/initialize/internal"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 func GormMysql() *gorm.DB {
-	m := common.NBUCTF_CONFIG.Mysql
+	m := global.NBUCTF_CONFIG.Mysql
 	if m.Dbname == "" {
 		return nil
 	}

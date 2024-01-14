@@ -3,17 +3,17 @@ package initialize
 import (
 	"context"
 	"fmt"
-	"github.com/lindocedskes/common"
+	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/source"
 )
 
 // 表数据初始化 Casbin、Role 和 User
 func InitSource() {
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, "db", common.NBUCTF_DB)
+	ctx = context.WithValue(ctx, "db", global.NBUCTF_DB)
 
 	if registerCasbin(ctx) {
-		common.NBUCTF_CASBIN = source.GetCasbin()
+		global.NBUCTF_CASBIN = source.GetCasbin()
 	}
 	if registerRole(ctx) {
 		fmt.Println("role table data init success")

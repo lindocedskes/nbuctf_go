@@ -1,12 +1,12 @@
-package initialize
+package core
 
 import (
 	"flag" //flag：这是一个用于处理配置文件的库，它提供了读取、解析和监听配置文件变化的功能。
 	"fmt"
 	"github.com/fsnotify/fsnotify"
 	"github.com/gin-gonic/gin"
-	"github.com/lindocedskes/common"
-	"github.com/lindocedskes/initialize/internal"
+	"github.com/lindocedskes/core/internal"
+	"github.com/lindocedskes/global"
 	"github.com/spf13/viper"
 	"os"
 )
@@ -53,13 +53,13 @@ func Viper() *viper.Viper {
 	v.WatchConfig()                           //监视，如果配置文件被修改，Viper 会自动重新读取
 	v.OnConfigChange(func(e fsnotify.Event) { //回调函数,配置文件被修改，对应执行
 		fmt.Println("config file changed:", e.Name)
-		//Unmarshal():将从配置文件读取的数据解析并填充到 common.NBUCTF_CONFIG 结构体
-		if err = v.Unmarshal(&common.NBUCTF_CONFIG); err != nil {
+		//Unmarshal():将从配置文件读取的数据解析并填充到 global.NBUCTF_CONFIG 结构体
+		if err = v.Unmarshal(&global.NBUCTF_CONFIG); err != nil {
 			fmt.Println(err)
 		}
 	})
 
-	if err = v.Unmarshal(&common.NBUCTF_CONFIG); err != nil {
+	if err = v.Unmarshal(&global.NBUCTF_CONFIG); err != nil {
 		fmt.Println(err)
 	}
 

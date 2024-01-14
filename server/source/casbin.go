@@ -7,7 +7,7 @@ import (
 	"github.com/casbin/casbin/v2"
 	"github.com/casbin/casbin/v2/model"
 	gormadapter "github.com/casbin/gorm-adapter/v3"
-	"github.com/lindocedskes/common"
+	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/service/system"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
@@ -24,7 +24,7 @@ type InitCasbin struct {
 
 func GetCasbin() *casbin.CachedEnforcer {
 	once.Do(func() { //确保函数只执行一次
-		a, _ := gormadapter.NewAdapterByDB(common.NBUCTF_DB)
+		a, _ := gormadapter.NewAdapterByDB(global.NBUCTF_DB)
 		//模型字符串
 		text := `
 		[request_definition]

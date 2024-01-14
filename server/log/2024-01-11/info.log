@@ -1,0 +1,5 @@
+[nbuctf]2024/01/11 - 00:34:01.745	[34minfo[0m	/Users/luo/Desktop/github-repo/nbuctf_go/server/core/server.go:24	server run success on 	{"address": ":8080"}
+[nbuctf]2024/01/11 - 00:38:27.019	[34minfo[0m	/Users/luo/Desktop/github-repo/nbuctf_go/server/initialize/router.go:22	1
+[nbuctf]2024/01/11 - 00:38:27.019	[34minfo[0m	/Users/luo/Desktop/github-repo/nbuctf_go/server/core/server.go:24	server run success on 	{"address": ":8080"}
+[nbuctf]2024/01/11 - 00:40:59.504	[34minfo[0m	/Users/luo/Desktop/github-repo/nbuctf_go/server/initialize/router.go:22	test info log
+[nbuctf]2024/01/11 - 00:40:59.504	[34minfo[0m	/Users/luo/Desktop/github-repo/nbuctf_go/server/core/server.go:24	server run success on 	{"port": ":8080"}

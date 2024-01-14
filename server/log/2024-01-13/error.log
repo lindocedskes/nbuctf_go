@@ -1,0 +1,1 @@
+[nbuctf]2024/01/13 - 20:07:14.419	[31merror[0m	/Users/luo/Desktop/github-repo/nbuctf_go/server/core/server.go:26	accept tcp [::]:8080: use of closed network connection
