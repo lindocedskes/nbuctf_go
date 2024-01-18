@@ -9,7 +9,7 @@ mysql:
   port: 3306
   dbname: "nbuctf" #先创建好数据库
   username: "root"
-  password: "nbuctf#2022#dev"
+  password: "nbuctf#2023#dev"
   charset: "utf8mb4"
   max-idle-conns: 10 #空闲连接的最大数量
   max-open-conns: 100 #连接的最大数量
