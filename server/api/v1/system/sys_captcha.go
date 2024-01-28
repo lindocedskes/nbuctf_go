@@ -29,13 +29,13 @@ func (b *BaseApi) Captcha(c *gin.Context) {
 	openCaptcha := global.NBUCTF_CONFIG.Captcha.OpenCaptcha               // 是否开启防爆次数
 	openCaptchaTimeOut := global.NBUCTF_CONFIG.Captcha.OpenCaptchaTimeOut // 缓存超时时间
 	key := c.ClientIP()
-	v, ok := global.BlackCache.Get(key) // 获取缓存
+	v, ok := global.BlackCache.Get(key) // 获取缓存中ip的请求次数
 	if !ok {
 		global.BlackCache.Set(key, 1, time.Second*time.Duration(openCaptchaTimeOut))
 	}
 
 	var oc bool
-	if openCaptcha == 0 || openCaptcha < interfaceToInt(v) {
+	if openCaptcha == 0 || openCaptcha < interfaceToInt(v) { // 判断是否开启验证码，0 or 数字<ip请求次数
 		oc = true
 	}
 	// 字符,公式,验证码配置

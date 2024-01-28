@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/initialize"
+	"github.com/lindocedskes/service/system"
 	"go.uber.org/zap"
 	"time"
 )
@@ -13,7 +14,14 @@ type server interface { // 定义服务接口
 }
 
 func RunServer() {
-	// todo JWT,redis
+	if global.NBUCTF_CONFIG.System.UseRedis {
+		// 初始化redis服务
+		initialize.Redis()
+	}
+	// 从db加载jwt数据到BlackCache
+	if global.NBUCTF_DB != nil {
+		system.LoadAll()
+	}
 
 	Router := initialize.Routers() // todo 初始化路由,调用api，resonses
 

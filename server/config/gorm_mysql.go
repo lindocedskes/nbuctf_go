@@ -1,17 +1,10 @@
 package config
 
-type Mysql struct {
-	Host         string `mapstructure:"host" json:"host" yaml:"host"`
-	Port         string `mapstructure:"port" json:"port" yaml:"port"`
-	Dbname       string `mapstructure:"dbname" json:"dbname" yaml:"dbname"`
-	Username     string `mapstructure:"username" json:"username" yaml:"username"`
-	Password     string `mapstructure:"password" json:"password" yaml:"password"`
-	Charset      string `mapstructure:"charset" json:"charset" yaml:"charset"`
-	MaxIdleConns int    `mapstructure:"max-idle-conns" json:"max-idle-conns" yaml:"max-idle-conns"`
-	MaxOpenConns int    `mapstructure:"max-open-conns" json:"max-open-conns" yaml:"max-open-conns"`
+type Mysql struct { //嵌套结构体, ,inline ,squash将嵌套结构体的字段视为顶层结构体的字段，
+	GeneralDB `yaml:",inline" mapstructure:",squash"` // 内联（inline），相当于把 GeneralDB 的字段都“压平”到这里
 }
 
 // 连接数据库所需要的所有信息，如用户名、密码、主机名、端口号、数据库名等
 func (m *Mysql) Dsn() string {
-	return m.Username + ":" + m.Password + "@tcp(" + m.Host + ":" + m.Port + ")/" + m.Dbname + "?charset=" + m.Charset + "&parseTime=true&loc=Local"
+	return m.Username + ":" + m.Password + "@tcp(" + m.Path + ":" + m.Port + ")/" + m.Dbname + "?" + m.Config
 }

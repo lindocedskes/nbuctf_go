@@ -25,10 +25,33 @@ func Result(code int, data interface{}, msg string, c *gin.Context) {
 	})
 }
 
+func Ok(c *gin.Context) {
+	Result(SUCCESS, map[string]interface{}{}, "操作成功", c)
+}
+
+// 返回 SUCCESS 0 + string
+func OkWithMessage(message string, c *gin.Context) {
+	Result(SUCCESS, map[string]interface{}{}, message, c)
+}
+
+// 返回 SUCCESS 0 + data
+func OkWithData(data interface{}, c *gin.Context) {
+	Result(SUCCESS, data, "查询成功", c)
+}
+
+// 返回 SUCCESS 0 + data + string
 func OkWithDetailed(data interface{}, message string, c *gin.Context) {
 	Result(SUCCESS, data, message, c)
 }
 
+func Fail(c *gin.Context) {
+	Result(ERROR, map[string]interface{}{}, "操作失败", c)
+}
+
 func FailWithMessage(message string, c *gin.Context) {
 	Result(ERROR, map[string]interface{}{}, message, c)
+}
+
+func FailWithDetailed(data interface{}, message string, c *gin.Context) {
+	Result(ERROR, data, message, c)
 }

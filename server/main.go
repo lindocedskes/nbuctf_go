@@ -20,13 +20,12 @@ func main() {
 	global.GVA_LOG = core.Zap()        // 初始化zap日志库
 	zap.ReplaceGlobals(global.GVA_LOG) // 替换zap库为全局变量
 
-	global.NBUCTF_DB = initialize.Gorm()     //连接数据库
-	global.NBUCTF_REDIS = initialize.Redis() //连接redis
+	global.NBUCTF_DB = initialize.Gorm() //连接数据库
 	fmt.Println("服务端口:", global.NBUCTF_CONFIG.System.Port)
 
 	if global.NBUCTF_DB != nil { //NBUCTF_DB 存配置文件DB数据
-		initialize.RegisterTables(global.NBUCTF_DB) //创建或更新数据库表
-		initialize.InitSource()                     //表数据初始化 Casbin、Role 和 User
+		initialize.RegisterTables(global.NBUCTF_DB) //创建或更新数据库表（不加数据）
+		//initialize.InitSource()                     //表数据初始化 Casbin、Role 和 User （废弃），改用路由执行初始化器
 		db, _ := global.NBUCTF_DB.DB()
 		defer func(db *sql.DB) { //匿名函数
 			err := db.Close()
@@ -35,8 +34,6 @@ func main() {
 			}
 		}(db) // db 变量作为参数传入
 	}
-
-	//initialize.StartRouter(address) //初始化路由
 
 	core.RunServer() //启动核心服务
 }

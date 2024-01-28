@@ -48,31 +48,31 @@ func Routers() *gin.Engine {
 		})
 	}
 	{
+		systemRouter.InitDbRouter(PublicGroup)   // 初始化数据库数据
 		systemRouter.InitBaseRouter(PublicGroup) // 注册基础功能路由 不做鉴权
-		//todo systemRouter.InitInitRouter(PublicGroup) // 自动初始化相关
 	}
 	//todo JWT
 	//PrivateGroup := Router.Group(global.NBUCTF_CONFIG.System.RouterPrefix) // 需要鉴权的路由组
 	//PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.CasbinHandler())
 	//{
-	//todo toadd router
-	//systemRouter.InitApiRouter(PrivateGroup, PublicGroup)       // 注册功能api路由
-	//systemRouter.InitJwtRouter(PrivateGroup)                    // jwt相关路由
-	//systemRouter.InitUserRouter(PrivateGroup)                   // 注册用户路由
-	//systemRouter.InitMenuRouter(PrivateGroup)                   // 注册menu路由
-	//systemRouter.InitSystemRouter(PrivateGroup)                 // system相关路由
-	//systemRouter.InitCasbinRouter(PrivateGroup)                 // 权限相关路由
-	//systemRouter.InitAutoCodeRouter(PrivateGroup)               // 创建自动化代码
-	//systemRouter.InitAuthorityRouter(PrivateGroup)              // 注册角色路由
-	//systemRouter.InitSysDictionaryRouter(PrivateGroup)          // 字典管理
-	//systemRouter.InitAutoCodeHistoryRouter(PrivateGroup)        // 自动化代码历史
-	//systemRouter.InitSysOperationRecordRouter(PrivateGroup)     // 操作记录
-	//systemRouter.InitSysDictionaryDetailRouter(PrivateGroup)    // 字典详情管理
-	//systemRouter.InitAuthorityBtnRouterRouter(PrivateGroup)     // 字典详情管理
-	//systemRouter.InitSysExportTemplateRouter(PrivateGroup)      // 导出模板
-	//exampleRouter.InitCustomerRouter(PrivateGroup)              // 客户路由
-	//exampleRouter.InitFileUploadAndDownloadRouter(PrivateGroup) // 文件上传下载功能路由
-
+	//	//todo toadd router
+	//	//systemRouter.InitApiRouter(PrivateGroup, PublicGroup)       // 注册功能api路由
+	//	//systemRouter.InitJwtRouter(PrivateGroup)                    // jwt相关路由
+	//	//systemRouter.InitUserRouter(PrivateGroup)                   // 注册用户路由
+	//	//systemRouter.InitMenuRouter(PrivateGroup)                   // 注册menu路由
+	//	//systemRouter.InitSystemRouter(PrivateGroup)                 // system相关路由
+	//	//systemRouter.InitCasbinRouter(PrivateGroup)                 // 权限相关路由
+	//	//systemRouter.InitAutoCodeRouter(PrivateGroup)               // 创建自动化代码
+	//	//systemRouter.InitAuthorityRouter(PrivateGroup)              // 注册角色路由
+	//	//systemRouter.InitSysDictionaryRouter(PrivateGroup)          // 字典管理
+	//	//systemRouter.InitAutoCodeHistoryRouter(PrivateGroup)        // 自动化代码历史
+	//	//systemRouter.InitSysOperationRecordRouter(PrivateGroup)     // 操作记录
+	//	//systemRouter.InitSysDictionaryDetailRouter(PrivateGroup)    // 字典详情管理
+	//	//systemRouter.InitAuthorityBtnRouterRouter(PrivateGroup)     // 字典详情管理
+	//	//systemRouter.InitSysExportTemplateRouter(PrivateGroup)      // 导出模板
+	//	//exampleRouter.InitCustomerRouter(PrivateGroup)              // 客户路由
+	//	//exampleRouter.InitFileUploadAndDownloadRouter(PrivateGroup) // 文件上传下载功能路由
+	//
 	//}
 
 	return Router

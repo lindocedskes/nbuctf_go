@@ -15,9 +15,15 @@ func Gorm() *gorm.DB {
 // 创建（或更新）数据库表的结构
 func RegisterTables(db *gorm.DB) {
 	err := db.AutoMigrate( //自动迁移（创建或更新）数据库表
-		sysModel.SysRole{},
-		sysModel.SysUser{},
-		gormadapter.CasbinRule{},
+		//sysModel.SysRole{},
+		sysModel.SysApi{},        //存储api信息表
+		sysModel.SysUser{},       // 用户表
+		gormadapter.CasbinRule{}, // 权限表
+		sysModel.SysAuthority{},  // 角色权限表
+		sysModel.JwtBlacklist{},  // jwt黑名单
+		//sysModel.SysBaseMenu{},    // 菜单表
+		//sysModel.SysBaseMenuBtn{}, // 角色菜单按钮关联表
+
 	)
 
 	if err != nil {

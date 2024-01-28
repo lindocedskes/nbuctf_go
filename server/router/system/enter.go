@@ -3,10 +3,10 @@ package system
 type RouterGroup struct {
 	//todo toadd router
 	BaseRouter
+	InitRouter
 	//ApiRouter
 	//JwtRouter
 	//SysRouter
-	//InitRouter
 	//MenuRouter
 	//UserRouter
 	//CasbinRouter

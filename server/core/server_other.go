@@ -18,7 +18,7 @@ import (
 
 // 实现 server 接口的，功能：初始化了一个服务器
 func initServer(address string, router *gin.Engine) server {
-	s := endless.NewServer(address, router)
+	s := endless.NewServer(address, router) // endless.NewServer() 返回一个 *Server 实例，实现了 server 接口
 	s.ReadHeaderTimeout = 20 * time.Second
 	s.WriteTimeout = 20 * time.Second
 	s.MaxHeaderBytes = 1 << 20

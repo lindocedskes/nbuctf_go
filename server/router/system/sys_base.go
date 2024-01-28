@@ -11,8 +11,8 @@ func (s *BaseRouter) InitBaseRouter(Router *gin.RouterGroup) (R gin.IRouter) {
 	baseRouter := Router.Group("base") // "/base" 开头的路由组
 	baseApi := v1.ApiGroupApp.SystemApiGroup.BaseApi
 	{
-		//baseRouter.POST("login", baseApi.Login)
-		baseRouter.POST("captcha", baseApi.Captcha)
+		baseRouter.POST("login", baseApi.Login)     // todo
+		baseRouter.POST("captcha", baseApi.Captcha) // 验证码
 	}
 	return baseRouter
 }
