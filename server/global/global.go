@@ -5,6 +5,7 @@ import (
 	"github.com/lindocedskes/config"
 	"github.com/redis/go-redis/v9"
 	"github.com/songzhibin97/gkit/cache/local_cache"
+	"github.com/songzhibin97/gkit/cache/singleflight"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -21,7 +22,7 @@ var (
 	// GVA_LOG    *oplogging.Logger
 	GVA_LOG *zap.Logger
 	//GVA_Timer               timer.Timer = timer.NewTimerTask()
-	//GVA_Concurrency_Control             = &singleflight.Group{}
+	GVA_Concurrency_Control = &singleflight.Group{} // 并发控制
 
 	BlackCache local_cache.Cache
 )

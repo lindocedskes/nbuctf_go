@@ -50,3 +50,9 @@ func (jwtService *JwtService) JsonInBlacklist(jwtList system.JwtBlacklist) (err 
 	global.BlackCache.SetDefault(jwtList.Jwt, struct{}{}) //加入jwt作为键，值为空结构体
 	return
 }
+
+// @description: 判断JWT是否在黑名单内部
+func (jwtService *JwtService) IsBlacklist(jwt string) bool {
+	_, ok := global.BlackCache.Get(jwt) // 从BlackCache中获取jwt，返回值为jwt和是否存在
+	return ok
+}

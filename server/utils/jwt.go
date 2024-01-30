@@ -1,10 +1,18 @@
 package utils
 
 import (
+	"errors"
 	jwt "github.com/golang-jwt/jwt/v4"
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/model/system/request"
 	"time"
+)
+
+var (
+	TokenExpired     = errors.New("Token is expired")
+	TokenNotValidYet = errors.New("Token not active yet")
+	TokenMalformed   = errors.New("That's not even a token")
+	TokenInvalid     = errors.New("Couldn't handle this token:")
 )
 
 type JWT struct {
@@ -39,4 +47,44 @@ func (j *JWT) CreateClaims(baseClaims request.BaseClaims) request.CustomClaims {
 func (j *JWT) CreateToken(claims request.CustomClaims) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims) //根据hash算法、配置声明进行hash签名
 	return token.SignedString(j.SigningKey)                    //根据密钥，返回jwt字符串和err
+}
+
+// CreateTokenByOldToken 创建新token 。用旧token标识 互斥锁避免并发问题。
+func (j *JWT) CreateTokenByOldToken(oldToken string, claims request.CustomClaims) (string, error) {
+	//Do 方法首先获取 Group 的互斥锁,再执行，给定键一次只执行一次
+	v, err, _ := global.GVA_Concurrency_Control.Do("JWT:"+oldToken, func() (interface{}, error) {
+		return j.CreateToken(claims)
+	})
+	return v.(string), err
+}
+
+// 解析 token
+func (j *JWT) ParseToken(tokenString string) (*request.CustomClaims, error) {
+	//令牌的字符串、空的 CustomClaims 结构体（用于存储解析出的声明）、函数（用于获取签名密钥）
+	token, err := jwt.ParseWithClaims(tokenString, &request.CustomClaims{}, func(token *jwt.Token) (i interface{}, e error) {
+		return j.SigningKey, nil
+	})
+	if err != nil {
+		if ve, ok := err.(*jwt.ValidationError); ok {
+			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
+				return nil, TokenMalformed
+			} else if ve.Errors&jwt.ValidationErrorExpired != 0 {
+				// Token is expired
+				return nil, TokenExpired
+			} else if ve.Errors&jwt.ValidationErrorNotValidYet != 0 {
+				return nil, TokenNotValidYet
+			} else {
+				return nil, TokenInvalid
+			}
+		}
+	}
+	if token != nil { //解析出的token不为空
+		if claims, ok := token.Claims.(*request.CustomClaims); ok && token.Valid { //解析出的声明是CustomClaims类型，并且token有效
+			return claims, nil //返回声明和err
+		}
+		return nil, TokenInvalid
+
+	} else {
+		return nil, TokenInvalid
+	}
 }

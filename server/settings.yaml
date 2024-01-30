@@ -1,11 +1,13 @@
-captcha:
-    key-long: 6
-    img-width: 240
-    img-height: 80
-    open-captcha: 3 #3次登录失败后需要验证码，0则每次都需要
-    open-captcha-timeout: 3600
+system:
+    env: develop # public or develop
+    host: 127.0.0.1
+    port: 8889
+    router-prefix: ""
+    db-type: mysql
+    use-redis: false
+    use-multipoint: false
 jwt:
-    signing-key: 2a975bfe-51fe-45cf-8274-7d8fda889a94
+    signing-key: 4a482bfe-51fe-45cf-8274-7d8fba889a94 # 32位随机字符串，签名密钥
     expires-time: 7d
     buffer-time: 1d
     issuer: nbuctf
@@ -30,14 +32,6 @@ redis:
     db: 0
     addr: 127.0.0.1:6379
     password: ""
-system:
-    env: dev
-    host: 127.0.0.1
-    port: 8889
-    router-prefix: ""
-    db-type: mysql
-    use-redis: false
-    use-multipoint: false
 zap:
     level: info
     prefix: '[nbuctf]'
@@ -48,3 +42,10 @@ zap:
     max-age: 0
     show-line: true
     log-in-console: true
+
+captcha:
+    key-long: 6
+    img-width: 240
+    img-height: 80
+    open-captcha: 3 #3次登录失败后需要验证码，0则每次都需要
+    open-captcha-timeout: 3600
