@@ -4,8 +4,7 @@ type RouterGroup struct {
 	//todo toadd router
 	BaseRouter
 	InitRouter
-	//ApiRouter
-	//JwtRouter
+	JwtRouter
 	//SysRouter
 	//MenuRouter
 	//UserRouter

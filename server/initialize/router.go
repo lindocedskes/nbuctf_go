@@ -53,10 +53,10 @@ func Routers() *gin.Engine {
 	}
 	PrivateGroup := Router.Group(global.NBUCTF_CONFIG.System.RouterPrefix) // 只在PrivateGroup路由组 下使用JWTAuth中间件和CasbinHandler中间件（每次【请求 之前 c.next() 之后】 执行中间件函数）
 	//中间件链，中间件按照它们被添加的顺序依次执行，每个中间件都可以决定是否继续执行后续的中间件和处理函数
-	PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.CasbinHandler())
+	PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.CasbinHandler()) //每次请求执行都会执行中间件函数
 	{
 		//	//todo toadd router
-		//	//systemRouter.InitJwtRouter(PrivateGroup)                    // jwt相关路由
+		systemRouter.InitJwtRouter(PrivateGroup) // jwt相关路由
 		//	//systemRouter.InitCasbinRouter(PrivateGroup)                 // 权限相关路由
 		//	//systemRouter.InitUserRouter(PrivateGroup)                   // 注册用户路由
 		//	//systemRouter.InitSystemRouter(PrivateGroup)                 // system相关路由

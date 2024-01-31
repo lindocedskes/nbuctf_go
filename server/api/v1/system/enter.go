@@ -6,7 +6,7 @@ import "github.com/lindocedskes/service"
 type ApiGroup struct {
 	BaseApi
 	DBApi
-	//JwtApi
+	JwtApi
 }
 
 var ( // 为了在 service/system 包中方便地使用这些服务，简写服务路径
