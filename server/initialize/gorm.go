@@ -21,6 +21,8 @@ func RegisterTables(db *gorm.DB) {
 		gormadapter.CasbinRule{}, // 权限表
 		sysModel.SysAuthority{},  // 角色权限表
 		sysModel.JwtBlacklist{},  // jwt黑名单
+		sysModel.SysHttpRecord{}, // http请求记录表
+
 		//sysModel.SysBaseMenu{},    // 菜单表
 		//sysModel.SysBaseMenuBtn{}, // 角色菜单按钮关联表
 

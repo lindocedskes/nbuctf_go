@@ -15,7 +15,7 @@ func NotEmpty() string {
 	return "notEmpty"
 }
 
-// 验证器，传入结构体和规则集合
+// 验证器，传入结构体和规则集合，支持规则：非空、正则、比较
 func Verify(st interface{}, roleMap Rules) (err error) {
 	compareMap := map[string]bool{
 		"lt": true,

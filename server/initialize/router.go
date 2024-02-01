@@ -56,8 +56,8 @@ func Routers() *gin.Engine {
 	PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.CasbinHandler()) //每次请求执行都会执行中间件函数
 	{
 		//	//todo toadd router
-		systemRouter.InitJwtRouter(PrivateGroup) // jwt相关路由
-		//	//systemRouter.InitCasbinRouter(PrivateGroup)                 // 权限相关路由
+		systemRouter.InitJwtRouter(PrivateGroup)    // jwt相关路由
+		systemRouter.InitCasbinRouter(PrivateGroup) // casbin_rule 的更新和查询
 		//	//systemRouter.InitUserRouter(PrivateGroup)                   // 注册用户路由
 		//	//systemRouter.InitSystemRouter(PrivateGroup)                 // system相关路由
 		//	//systemRouter.InitAuthorityRouter(PrivateGroup)              // 注册角色路由
