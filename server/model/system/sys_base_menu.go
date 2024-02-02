@@ -15,7 +15,7 @@ type SysBaseMenu struct {
 	Component     string                                     `json:"component" gorm:"comment:对应前端文件路径"` // 对应前端文件路径
 	Sort          int                                        `json:"sort" gorm:"comment:排序标记"`          // 排序标记
 	Meta          `json:"meta" gorm:"embedded;comment:附加属性"` // 附加属性
-	SysAuthoritys []SysAuthority                             `json:"authoritys" gorm:"many2many:sys_authority_menus;"` // 角色菜单关联
+	SysAuthoritys []SysAuthority                             `json:"authoritys" gorm:"many2many:sys_authority_menus;"` // 角色-菜单 连接表
 	Children      []SysBaseMenu                              `json:"children" gorm:"-"`                                // 子菜单
 	Parameters    []SysBaseMenuParameter                     `json:"parameters"`                                       // 路由参数
 	MenuBtn       []SysBaseMenuBtn                           `json:"menuBtn"`                                          // 基础菜单按钮
