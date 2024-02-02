@@ -3,6 +3,7 @@ package system
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/lindocedskes/global"
+	"github.com/lindocedskes/model"
 	"github.com/lindocedskes/model/common/response"
 	"github.com/lindocedskes/model/system"
 	systemReq "github.com/lindocedskes/model/system/request"
@@ -163,4 +164,28 @@ func (b *BaseApi) Register(c *gin.Context) {
 		return
 	}
 	response.OkWithDetailed(systemRes.SysUserResponse{User: userReturn}, "注册成功", c)
+}
+
+// /@Summary   修改用户密码
+func (b *BaseApi) ChangePassword(c *gin.Context) {
+	var req systemReq.ChangePasswordReq
+	err := c.ShouldBindJSON(&req)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(req, utils.ChangePasswordVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	uid := utils.GetUserID(c) //从Gin的Context中获取从jwt解析出来的用户ID，避免越权
+	u := &system.SysUser{BaseModel: model.BaseModel{ID: uid}, Password: req.Password}
+	_, err = userService.ChangePassword(u, req.NewPassword)
+	if err != nil {
+		global.GVA_LOG.Error("修改失败!", zap.Error(err))
+		response.FailWithMessage("修改失败，原密码与当前账户不符", c)
+		return
+	}
+	response.OkWithMessage("修改成功", c)
 }
