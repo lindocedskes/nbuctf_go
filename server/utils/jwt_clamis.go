@@ -60,3 +60,17 @@ func GetUserID(c *gin.Context) uint {
 		return waitUse.BaseClaims.ID
 	}
 }
+
+// GetUserInfo 从请求的上下文获取 已经jwt字符串解析还原的Claims
+func GetUserInfo(c *gin.Context) *systemReq.CustomClaims {
+	if claims, exists := c.Get("claims"); !exists {
+		if cl, err := GetClaims(c); err != nil {
+			return nil
+		} else {
+			return cl
+		}
+	} else {
+		waitUse := claims.(*systemReq.CustomClaims)
+		return waitUse
+	}
+}

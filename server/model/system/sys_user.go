@@ -22,6 +22,7 @@ type SysUser struct {
 	Authority SysAuthority `json:"authority" gorm:"foreignKey:AuthorityId;references:AuthorityId;comment:用户角色"` //主要角色，根据 AuthorityId 相关联对应角色名，外键，关联角色表
 	//多对多关系，外键关系是通过连接表维护，sys_user_authority是连接表，包含2个外键 用户 ID 和角色 ID，分别指向 SysUser 表和 SysAuthority 表
 	//当你、向 SysUser.Authorities 切片添加一个 SysAuthority 对象时，sys_user_authority 表中添加一行，表示该用户拥有该角色
+	//所以角色组，必须包含主角色，不能为空
 	Authorities []SysAuthority `json:"authorities" gorm:"many2many:sys_user_authority;"` //角色组，一个用户的所有角色
 	Phone       string         `json:"phone"  gorm:"comment:用户手机号"`                      // 用户手机号
 	Email       string         `json:"email"  gorm:"comment:用户邮箱"`                       // 用户邮箱
