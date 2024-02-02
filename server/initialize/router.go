@@ -49,18 +49,21 @@ func Routers() *gin.Engine {
 	}
 	{
 		systemRouter.InitDbRouter(PublicGroup)   // 初始化数据库数据
-		systemRouter.InitBaseRouter(PublicGroup) // 注册基础功能路由 不做鉴权
+		systemRouter.InitBaseRouter(PublicGroup) // 基础登录功能路由 不做鉴权 todo 普通用户9528注册功能
 	}
 	PrivateGroup := Router.Group(global.NBUCTF_CONFIG.System.RouterPrefix) // 只在PrivateGroup路由组 下使用JWTAuth中间件和CasbinHandler中间件（每次【请求 之前 c.next() 之后】 执行中间件函数）
 	//中间件链，中间件按照它们被添加的顺序依次执行，每个中间件都可以决定是否继续执行后续的中间件和处理函数
-	PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.CasbinHandler()) //每次请求执行都会执行中间件函数
+	PrivateGroup.Use(middleware.JWTAuth()).Use(middleware.CasbinHandler()) //每次请求执行，先jwt有效性验证并获取claims，再casbin权限验证
 	{
 		//	//todo toadd router
+		//systemRouter.InitApiRouter(PrivateGroup, PublicGroup)       // 存储API信息，更容易地实现权限管理
 		systemRouter.InitJwtRouter(PrivateGroup)    // jwt相关路由
 		systemRouter.InitCasbinRouter(PrivateGroup) // casbin_rule 的更新和查询
-		//	//systemRouter.InitUserRouter(PrivateGroup)                   // 注册用户路由
-		//	//systemRouter.InitSystemRouter(PrivateGroup)                 // system相关路由
+		systemRouter.InitUserRouter(PrivateGroup)   // 管理员注册用户路由
 		//	//systemRouter.InitAuthorityRouter(PrivateGroup)              // 注册角色路由
+		//systemRouter.InitMenuRouter(PrivateGroup) // 注册menu路由，数据库存储菜单信息可以：以根据用户的权限、角色或其他条件来定制菜单；为每个菜单项分配一个或多个角色，然后只允许具有这些角色的用户看到或访问这个菜单项
+
+		//	//systemRouter.InitSystemRouter(PrivateGroup)                 // system配置相关路由：查改重载系统
 		//	//systemRouter.InitSysOperationRecordRouter(PrivateGroup)     // 操作记录
 		//	//exampleRouter.InitCustomerRouter(PrivateGroup)              // 客户路由
 		//	//exampleRouter.InitFileUploadAndDownloadRouter(PrivateGroup) // 文件上传下载功能路由

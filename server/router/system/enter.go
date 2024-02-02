@@ -6,8 +6,8 @@ type RouterGroup struct {
 	InitRouter
 	JwtRouter
 	CasbinRouter
+	UserRouter
 	//SysRouter
-	//UserRouter
 	//AutoCodeRouter
 	//AuthorityRouter
 	//DictionaryRouter

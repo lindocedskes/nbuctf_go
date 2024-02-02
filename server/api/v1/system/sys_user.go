@@ -134,3 +134,33 @@ func (b *BaseApi) TokenNext(c *gin.Context, user system.SysUser) {
 		}, "登录成功", c)
 	}
 }
+
+// @Summary  管理员注册用户账号，需要管理员权限，普通用户注册不是这个
+func (b *BaseApi) Register(c *gin.Context) {
+	var r systemReq.Register
+	err := c.ShouldBindJSON(&r)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(r, utils.RegisterVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	var authorities []system.SysAuthority //角色组
+	for _, v := range r.AuthorityIds {    //遍历一个用户的所有角色id
+		//一个用户的每有一个角色，都转化为 system.SysAuthority 实例记录AuthorityId，然后添加到 authorities 切片中
+		authorities = append(authorities, system.SysAuthority{
+			AuthorityId: v,
+		})
+	}
+	user := &system.SysUser{Username: r.Username, NickName: r.NickName, Password: r.Password, HeaderImg: r.HeaderImg, AuthorityId: r.AuthorityId, Authorities: authorities, Enable: r.Enable, Phone: r.Phone, Email: r.Email}
+	userReturn, err := userService.Register(*user) //注册，增
+	if err != nil {
+		global.GVA_LOG.Error("注册失败!", zap.Error(err))
+		response.FailWithDetailed(systemRes.SysUserResponse{User: userReturn}, "注册失败", c)
+		return
+	}
+	response.OkWithDetailed(systemRes.SysUserResponse{User: userReturn}, "注册成功", c)
+}
