@@ -1,5 +1,5 @@
 system:
-    env: develop # public or develop
+    env: develop # public or develop or develop-casbin（开发模式不启用casbin鉴权）
     host: 127.0.0.1
     port: 8889
     router-prefix: ""

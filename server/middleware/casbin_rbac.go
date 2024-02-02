@@ -16,7 +16,7 @@ var casbinService = service.ServiceGroupApp.SystemServiceGroup.CasbinService
 // CasbinHandler 拦截器
 func CasbinHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if global.NBUCTF_CONFIG.System.Env != "develop" { //develop模式不启用权限验证
+		if global.NBUCTF_CONFIG.System.Env != "develop-casbin" { //develop-casbin模式不启用权限验证
 			waitUse, _ := utils.GetClaims(c) //从请求中的token解析为claims
 			//获取请求的PATH
 			path := c.Request.URL.Path
