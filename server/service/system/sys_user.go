@@ -57,3 +57,15 @@ func (userService *UserService) ChangePassword(u *system.SysUser, newPassword st
 	err = global.NBUCTF_DB.Save(&user).Error // 更新密码
 	return &user, err
 }
+
+// @description: 修改一个用户的权限，更新用户的主角色ID
+func (userService *UserService) SetUserAuthority(id uint, authorityId uint) (err error) {
+	//查询连接表 SysUserAuthority，用户id具有角色id
+	assignErr := global.NBUCTF_DB.Where("sys_user_id = ? AND sys_authority_authority_id = ?", id, authorityId).First(&system.SysUserAuthority{}).Error
+	if errors.Is(assignErr, gorm.ErrRecordNotFound) {
+		return errors.New("该用户无此角色")
+	}
+	//更新用户的主角色ID
+	err = global.NBUCTF_DB.Where("id = ?", id).First(&system.SysUser{}).Update("authority_id", authorityId).Error
+	return err
+}

@@ -1,6 +1,7 @@
 package system
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/model"
@@ -11,6 +12,7 @@ import (
 	"github.com/lindocedskes/utils"
 	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
+	"strconv"
 	"time"
 )
 
@@ -188,4 +190,40 @@ func (b *BaseApi) ChangePassword(c *gin.Context) {
 		return
 	}
 	response.OkWithMessage("修改成功", c)
+}
+
+// @Summary   更改用户权限，修改主角色ID + 重设token
+func (b *BaseApi) SetUserAuthority(c *gin.Context) {
+	var sua systemReq.SetUserAuth
+	err := c.ShouldBindJSON(&sua)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if UserVerifyErr := utils.Verify(sua, utils.SetUserAuthorityVerify); UserVerifyErr != nil {
+		response.FailWithMessage(UserVerifyErr.Error(), c)
+		return
+	}
+	userID := utils.GetUserID(c)                                //从Gin的Context中获取从jwt解析出来的用户ID，避免越权
+	err = userService.SetUserAuthority(userID, sua.AuthorityId) //更新用户的主角色ID
+	if err != nil {
+		global.GVA_LOG.Error("修改失败!", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	//重新生成token，并将其设置为响应的头部和设置到cookie中
+	claims := utils.GetUserInfo(c)                                           //从请求的上下文获取 已经jwt字符串解析还原的Claims
+	j := &utils.JWT{SigningKey: []byte(global.NBUCTF_CONFIG.JWT.SigningKey)} // 唯一签名
+	claims.AuthorityId = sua.AuthorityId                                     //修改后的角色ID
+	token, err := j.CreateToken(*claims)                                     //重新生成token
+	if err != nil {
+		global.GVA_LOG.Error("修改失败!", zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+	} else {
+		c.Header("new-token", token) //设置响应头部
+		c.Header("new-expires-at", strconv.FormatInt(claims.ExpiresAt.Unix(), 10))
+		utils.SetToken(c, token, int((claims.ExpiresAt.Unix()-time.Now().Unix())/60)) //设置到cookie中
+		fmt.Println(c.Request.Header.Get("new-token"))                                //打印token
+		response.OkWithMessage("修改成功", c)
+	}
 }
