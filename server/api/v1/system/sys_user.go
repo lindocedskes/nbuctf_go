@@ -1,7 +1,6 @@
 package system
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/model"
@@ -223,7 +222,14 @@ func (b *BaseApi) SetUserAuthority(c *gin.Context) {
 		c.Header("new-token", token) //设置响应头部
 		c.Header("new-expires-at", strconv.FormatInt(claims.ExpiresAt.Unix(), 10))
 		utils.SetToken(c, token, int((claims.ExpiresAt.Unix()-time.Now().Unix())/60)) //设置到cookie中
-		fmt.Println(c.Request.Header.Get("new-token"))                                //打印token
-		response.OkWithMessage("修改成功", c)
+		response.OkWithDetailed(struct {                                              //匿名结构体
+			AuthorityId uint   `json:"authorityId"`
+			Token       string `json:"token"`
+			ExpiresAt   int64  `json:"expiresAt"`
+		}{
+			AuthorityId: sua.AuthorityId,
+			Token:       token,
+			ExpiresAt:   (claims.ExpiresAt.Unix() - time.Now().Unix()) / 60,
+		}, "修改成功", c)
 	}
 }
