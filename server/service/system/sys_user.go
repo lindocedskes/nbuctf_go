@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/gofrs/uuid/v5"
 	"github.com/lindocedskes/global"
+	"github.com/lindocedskes/model/common/request"
 	"github.com/lindocedskes/model/system"
 	"github.com/lindocedskes/utils"
 	"gorm.io/gorm"
@@ -139,4 +140,19 @@ func (userService *UserService) SetSelfInfo(req system.SysUser) error {
 func (userService *UserService) ResetPassword(ID uint) (err error) {
 	err = global.NBUCTF_DB.Model(&system.SysUser{}).Where("id = ?", ID).Update("password", utils.BcryptHash("123456")).Error
 	return err
+}
+
+// @description: 分页获取用户列表
+func (userService *UserService) GetUserInfoList(info request.PageInfo) (list interface{}, total int64, err error) {
+	limit := info.PageSize                    //长度
+	offset := info.PageSize * (info.Page - 1) //起点
+	db := global.NBUCTF_DB.Model(&system.SysUser{})
+	var userList []system.SysUser
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+	//预加载，权限（Authority）和角色（Authorities）表（User表中定义结构体字段），存储在 userList
+	err = db.Limit(limit).Offset(offset).Preload("Authorities").Preload("Authority").Find(&userList).Error
+	return userList, total, err
 }

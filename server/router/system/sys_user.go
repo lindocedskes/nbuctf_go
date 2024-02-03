@@ -21,9 +21,9 @@ func (s *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 		userRouter.PUT("setUserInfo", baseApi.SetUserInfo)                // 设置用户信息byid
 		userRouter.PUT("setSelfInfo", baseApi.SetSelfInfo)                // 设置自身信息
 		userRouter.POST("resetPassword", baseApi.ResetPassword)           //直接重置用户（byid）密码为默认值123456
+		userRouter.POST("getUserList", baseApi.GetUserList)               // 分页获取用户列表
 	}
 	{
-		//userRouterWithoutRecord.POST("getUserList", baseApi.GetUserList) // 分页获取用户列表
 		//userRouterWithoutRecord.GET("getUserInfo", baseApi.GetUserInfo)  // 获取自身信息
 	}
 }

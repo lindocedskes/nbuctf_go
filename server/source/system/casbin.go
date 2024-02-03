@@ -74,12 +74,13 @@ func getDefaultCasbinRule() []adapter.CasbinRule {
 	return []adapter.CasbinRule{
 		{Ptype: "p", V0: "888", V1: "/jwt/jsonInBlacklist", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/init/checkdb", V2: "POST"},
-		{Ptype: "p", V0: "888", V1: "/userbyadmin/admin_register", V2: "POST"},
+		{Ptype: "p", V0: "888", V1: "/userbyadmin/register", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/changePassword", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/setUserAuthority", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/setUserAuthorities", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/deleteUser", V2: "DELETE"},
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/setUserInfo", V2: "PUT"},
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/resetPassword", V2: "PUT"},
+		{Ptype: "p", V0: "888", V1: "/userbyadmin/getUserList", V2: "POST"},
 	}
 }
