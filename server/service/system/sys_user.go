@@ -9,6 +9,7 @@ import (
 	"github.com/lindocedskes/model/system"
 	"github.com/lindocedskes/utils"
 	"gorm.io/gorm"
+	"time"
 )
 
 type UserService struct{}
@@ -109,4 +110,20 @@ func (userService *UserService) DeleteUser(id int) (err error) {
 		}
 		return nil
 	})
+}
+
+// @description: 更新用户信息
+func (userService *UserService) SetUserInfo(req system.SysUser) error {
+	return global.NBUCTF_DB.Model(&system.SysUser{}).
+		Select("updated_at", "nick_name", "header_img", "phone", "email", "sideMode", "enable").
+		Where("id=?", req.ID).
+		Updates(map[string]interface{}{
+			"updated_at": time.Now(),
+			"nick_name":  req.NickName,
+			"header_img": req.HeaderImg,
+			"phone":      req.Phone,
+			"email":      req.Email,
+			"side_mode":  req.SideMode,
+			"enable":     req.Enable,
+		}).Error
 }

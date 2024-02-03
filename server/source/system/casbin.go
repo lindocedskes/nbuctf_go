@@ -79,5 +79,6 @@ func getDefaultCasbinRule() []adapter.CasbinRule {
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/setUserAuthority", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/setUserAuthorities", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/deleteUser", V2: "DELETE"},
+		{Ptype: "p", V0: "888", V1: "/userbyadmin/setUserInfo", V2: "PUT"},
 	}
 }

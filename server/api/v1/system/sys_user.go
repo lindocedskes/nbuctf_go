@@ -279,3 +279,44 @@ func (b *BaseApi) DeleteUser(c *gin.Context) {
 	}
 	response.OkWithMessage("删除成功", c)
 }
+
+// @Summary   设置用户信息，指定用户id
+func (b *BaseApi) SetUserInfo(c *gin.Context) {
+	var user systemReq.ChangeUserInfo
+	err := c.ShouldBindJSON(&user)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(user, utils.IdVerify) //验证id
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	if len(user.AuthorityIds) != 0 { //如果角色组id不为空
+		err = userService.SetUserAuthorities(user.ID, user.AuthorityIds) //修改用户角色组，并更新第一个角色为主角
+		if err != nil {
+			global.GVA_LOG.Error("设置失败!", zap.Error(err))
+			response.FailWithMessage("设置失败", c)
+			return
+		}
+	}
+	err = userService.SetUserInfo(system.SysUser{
+		BaseModel: model.BaseModel{
+			ID: user.ID,
+		},
+		NickName:  user.NickName,
+		HeaderImg: user.HeaderImg,
+		Phone:     user.Phone,
+		Email:     user.Email,
+		SideMode:  user.SideMode,
+		Enable:    user.Enable,
+	})
+	if err != nil {
+		global.GVA_LOG.Error("设置失败!", zap.Error(err))
+		response.FailWithMessage("设置失败", c)
+		return
+	}
+	response.OkWithMessage("设置成功", c)
+}
