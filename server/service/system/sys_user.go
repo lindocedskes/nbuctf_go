@@ -134,3 +134,9 @@ func (userService *UserService) SetSelfInfo(req system.SysUser) error {
 		Where("id=?", req.ID).
 		Updates(req).Error
 }
+
+// @description: 重置用户（byid）密码为默认值
+func (userService *UserService) ResetPassword(ID uint) (err error) {
+	err = global.NBUCTF_DB.Model(&system.SysUser{}).Where("id = ?", ID).Update("password", utils.BcryptHash("123456")).Error
+	return err
+}

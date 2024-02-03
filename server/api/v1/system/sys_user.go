@@ -348,3 +348,21 @@ func (b *BaseApi) SetSelfInfo(c *gin.Context) {
 	}
 	response.OkWithMessage("设置成功", c)
 }
+
+// @Param     json {"id":?}
+// @Summary   直接重置用户（byid）密码为默认值123456
+func (b *BaseApi) ResetPassword(c *gin.Context) {
+	var user system.SysUser
+	err := c.ShouldBindJSON(&user)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = userService.ResetPassword(user.ID)
+	if err != nil {
+		global.GVA_LOG.Error("重置失败!", zap.Error(err))
+		response.FailWithMessage("重置失败"+err.Error(), c)
+		return
+	}
+	response.OkWithMessage("重置成功", c)
+}

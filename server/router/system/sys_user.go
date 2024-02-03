@@ -20,7 +20,7 @@ func (s *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 		userRouter.DELETE("deleteUser", baseApi.DeleteUser)               // 删除用户byid
 		userRouter.PUT("setUserInfo", baseApi.SetUserInfo)                // 设置用户信息byid
 		userRouter.PUT("setSelfInfo", baseApi.SetSelfInfo)                // 设置自身信息
-		//userRouter.POST("resetPassword", baseApi.ResetPassword)           //
+		userRouter.POST("resetPassword", baseApi.ResetPassword)           //直接重置用户（byid）密码为默认值123456
 	}
 	{
 		//userRouterWithoutRecord.POST("getUserList", baseApi.GetUserList) // 分页获取用户列表
