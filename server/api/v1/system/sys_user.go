@@ -320,3 +320,31 @@ func (b *BaseApi) SetUserInfo(c *gin.Context) {
 	}
 	response.OkWithMessage("设置成功", c)
 }
+
+// @Summary   设置自己的用户信息，从jwt解析出来的自身的用户ID
+func (b *BaseApi) SetSelfInfo(c *gin.Context) {
+	var user systemReq.ChangeUserInfo
+	err := c.ShouldBindJSON(&user)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	user.ID = utils.GetUserID(c)
+	err = userService.SetSelfInfo(system.SysUser{
+		BaseModel: model.BaseModel{
+			ID: user.ID,
+		},
+		NickName:  user.NickName,
+		HeaderImg: user.HeaderImg,
+		Phone:     user.Phone,
+		Email:     user.Email,
+		SideMode:  user.SideMode,
+		Enable:    user.Enable,
+	})
+	if err != nil {
+		global.GVA_LOG.Error("设置失败!", zap.Error(err))
+		response.FailWithMessage("设置失败", c)
+		return
+	}
+	response.OkWithMessage("设置成功", c)
+}

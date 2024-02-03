@@ -127,3 +127,10 @@ func (userService *UserService) SetUserInfo(req system.SysUser) error {
 			"enable":     req.Enable,
 		}).Error
 }
+
+// @description: 设置自己的用户信息
+func (userService *UserService) SetSelfInfo(req system.SysUser) error {
+	return global.NBUCTF_DB.Model(&system.SysUser{}).
+		Where("id=?", req.ID).
+		Updates(req).Error
+}
