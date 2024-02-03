@@ -17,7 +17,7 @@ func (s *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 		userRouter.POST("changePassword", baseApi.ChangePassword)         // 用户修改密码
 		userRouter.POST("setUserAuthority", baseApi.SetUserAuthority)     // 设置用户权限，通过修改主角色id todo ？？只能改当前用户的角色id
 		userRouter.POST("setUserAuthorities", baseApi.SetUserAuthorities) // 重置用户权限组，并第一个设为主角色
-		//userRouter.DELETE("deleteUser", baseApi.DeleteUser)               // 删除用户
+		userRouter.DELETE("deleteUser", baseApi.DeleteUser)               // 删除用户byid
 		//userRouter.PUT("setUserInfo", baseApi.SetUserInfo)                // 设置用户信息
 		//userRouter.PUT("setSelfInfo", baseApi.SetSelfInfo)                // 设置自身信息
 		//userRouter.POST("resetPassword", baseApi.ResetPassword)           //

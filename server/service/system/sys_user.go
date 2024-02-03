@@ -97,3 +97,16 @@ func (userService *UserService) SetUserAuthorities(id uint, authorityIds []uint)
 		return nil
 	})
 }
+
+// @description: 删除用户，按id 删除对应用户
+func (userService *UserService) DeleteUser(id int) (err error) {
+	return global.NBUCTF_DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("id = ?", id).Delete(&system.SysUser{}).Error; err != nil {
+			return err
+		}
+		if err := tx.Delete(&[]system.SysUserAuthority{}, "sys_user_id = ?", id).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+}

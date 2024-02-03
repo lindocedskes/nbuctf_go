@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/model"
+	"github.com/lindocedskes/model/common/request"
 	"github.com/lindocedskes/model/common/response"
 	"github.com/lindocedskes/model/system"
 	systemReq "github.com/lindocedskes/model/system/request"
@@ -249,4 +250,32 @@ func (b *BaseApi) SetUserAuthorities(c *gin.Context) {
 		return
 	}
 	response.OkWithMessage("修改成功", c)
+}
+
+// @Summary   删除用户，按id 删除对应用户，不能删除自身
+func (b *BaseApi) DeleteUser(c *gin.Context) {
+	var reqId request.GetById
+	err := c.ShouldBindJSON(&reqId)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(reqId, utils.IdVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	jwtId := utils.GetUserID(c)
+	if jwtId == uint(reqId.ID) {
+		response.FailWithMessage("删除失败, 不能删除自身", c)
+		return
+	}
+	err = userService.DeleteUser(reqId.ID)
+	if err != nil {
+		global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		response.FailWithMessage("删除失败", c)
+		return
+	}
+	response.OkWithMessage("删除成功", c)
 }
