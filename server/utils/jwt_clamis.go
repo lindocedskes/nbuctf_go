@@ -2,6 +2,7 @@ package utils
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gofrs/uuid/v5"
 	"github.com/lindocedskes/global"
 	systemReq "github.com/lindocedskes/model/system/request"
 	"net"
@@ -72,5 +73,19 @@ func GetUserInfo(c *gin.Context) *systemReq.CustomClaims {
 	} else {
 		waitUse := claims.(*systemReq.CustomClaims)
 		return waitUse
+	}
+}
+
+// GetUserUuid 从Gin的Context中获取从jwt解析出来的用户UUID
+func GetUserUuid(c *gin.Context) uuid.UUID {
+	if claims, exists := c.Get("claims"); !exists {
+		if cl, err := GetClaims(c); err != nil {
+			return uuid.UUID{}
+		} else {
+			return cl.UUID
+		}
+	} else {
+		waitUse := claims.(*systemReq.CustomClaims)
+		return waitUse.UUID
 	}
 }

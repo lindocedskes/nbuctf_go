@@ -10,7 +10,7 @@ type UserRouter struct{}
 
 func (s *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 	userRouter := Router.Group("userbyadmin").Use(middleware.OperationRecord()) //管理员权限下
-	//userRouterWithoutRecord := Router.Group("user")
+	userRouterWithoutRecord := Router.Group("user")
 	baseApi := v1.ApiGroupApp.SystemApiGroup.BaseApi
 	{
 		userRouter.POST("register", baseApi.Register)                     // 管理员注册用户账号
@@ -24,6 +24,6 @@ func (s *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 		userRouter.POST("getUserList", baseApi.GetUserList)               // 分页获取用户列表
 	}
 	{
-		//userRouterWithoutRecord.GET("getUserInfo", baseApi.GetUserInfo)  // 获取自身信息
+		userRouterWithoutRecord.GET("getUserInfo", baseApi.GetUserInfo) // 获取自身信息 byUUid
 	}
 }

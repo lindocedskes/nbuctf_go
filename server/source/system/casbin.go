@@ -72,6 +72,7 @@ func (i *initCasbin) DataInserted(ctx context.Context) bool {
 // Ptype: "p" 表示权限，Ptype: "g" 表示用户组，V0: "888" 表示角色ID，V1: "/user/getUserInfo" 表示接口路径，V2: "GET" 表示请求方法
 func getDefaultCasbinRule() []adapter.CasbinRule {
 	return []adapter.CasbinRule{
+		//管理员的权限
 		{Ptype: "p", V0: "888", V1: "/jwt/jsonInBlacklist", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/init/checkdb", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/register", V2: "POST"},
@@ -82,5 +83,9 @@ func getDefaultCasbinRule() []adapter.CasbinRule {
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/setUserInfo", V2: "PUT"},
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/resetPassword", V2: "PUT"},
 		{Ptype: "p", V0: "888", V1: "/userbyadmin/getUserList", V2: "POST"},
+		{Ptype: "p", V0: "888", V1: "/user/getUserInfo", V2: "GET"},
+
+		//普通用户的权限
+		{Ptype: "p", V0: "9528", V1: "/user/getUserInfo", V2: "GET"},
 	}
 }
