@@ -69,3 +69,31 @@ func (userService *UserService) SetUserAuthority(id uint, authorityId uint) (err
 	err = global.NBUCTF_DB.Where("id = ?", id).First(&system.SysUser{}).Update("authority_id", authorityId).Error
 	return err
 }
+
+// @description: 设置一个用户组的权限，指定用户 :对Sys_User_Authority 表先删除用户id的所有角色，再创建用户id的所有角色记录。并更新第一个角色为主角色
+func (userService *UserService) SetUserAuthorities(id uint, authorityIds []uint) (err error) {
+	//Transaction 方法传入一个回调函数，所有的数据库操作都在同一个事务中执行
+	return global.NBUCTF_DB.Transaction(func(tx *gorm.DB) error {
+		TxErr := tx.Delete(&[]system.SysUserAuthority{}, "sys_user_id = ?", id).Error //删除用户id的所有角色
+		if TxErr != nil {
+			return TxErr
+		}
+		var useAuthority []system.SysUserAuthority
+		for _, v := range authorityIds { //遍历角色id，加入SysUserAuthority类型 切片中
+			useAuthority = append(useAuthority, system.SysUserAuthority{
+				SysUserId: id, SysAuthorityAuthorityId: v,
+			})
+		}
+		TxErr = tx.Create(&useAuthority).Error //创建用户id的所有角色（UserId，AuthorityId）
+		if TxErr != nil {
+			return TxErr
+		}
+		//并使用 Update 方法更新用户的 authority_id 字段为 authorityIds 切片的第一个元素
+		TxErr = tx.Where("id = ?", id).First(&system.SysUser{}).Update("authority_id", authorityIds[0]).Error
+		if TxErr != nil {
+			return TxErr
+		}
+		// 返回 nil 提交事务
+		return nil
+	})
+}

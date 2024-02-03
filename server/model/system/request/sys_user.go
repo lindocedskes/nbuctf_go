@@ -28,7 +28,13 @@ type ChangePasswordReq struct {
 	NewPassword string `json:"newPassword"` // 新密码
 }
 
-// 修改用户权限，修改角色ID
+// 修改用户权限，修改角色ID，用户id用自己的
 type SetUserAuth struct {
 	AuthorityId uint `json:"authorityId"` // 角色ID
+}
+
+// 修改用户权限，修改角色组ID
+type SetUserAuthorities struct {
+	ID           uint
+	AuthorityIds []uint `json:"authorityIds"` // 角色ID
 }

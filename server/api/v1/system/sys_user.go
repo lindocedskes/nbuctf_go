@@ -233,3 +233,20 @@ func (b *BaseApi) SetUserAuthority(c *gin.Context) {
 		}, "修改成功", c)
 	}
 }
+
+// @Summary   设置用户权限-修改用户组角色id，并将角色组第一个设为主角色（AuthorityId）
+func (b *BaseApi) SetUserAuthorities(c *gin.Context) {
+	var sua systemReq.SetUserAuthorities
+	err := c.ShouldBindJSON(&sua)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = userService.SetUserAuthorities(sua.ID, sua.AuthorityIds)
+	if err != nil {
+		global.GVA_LOG.Error("修改失败!", zap.Error(err))
+		response.FailWithMessage("修改失败", c)
+		return
+	}
+	response.OkWithMessage("修改成功", c)
+}
