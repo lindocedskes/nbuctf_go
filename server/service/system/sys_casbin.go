@@ -8,6 +8,7 @@ import (
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/model/system/request"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 	"strconv"
 	"sync"
 )
@@ -104,4 +105,23 @@ func (casbinService *CasbinService) GetPolicyPathByAuthorityId(AuthorityID uint)
 		})
 	}
 	return pathMaps
+}
+
+func (casbinService *CasbinService) AddPolicies(db *gorm.DB, rules [][]string) error {
+	var casbinRules []gormadapter.CasbinRule
+	for i := range rules {
+		casbinRules = append(casbinRules, gormadapter.CasbinRule{
+			Ptype: "p",
+			V0:    rules[i][0],
+			V1:    rules[i][1],
+			V2:    rules[i][2],
+		})
+	}
+	return db.Create(&casbinRules).Error
+}
+
+func (CasbinService *CasbinService) FreshCasbin() (err error) {
+	e := CasbinService.Casbin()
+	err = e.LoadPolicy() //数据库中加载策略，同步
+	return err
 }

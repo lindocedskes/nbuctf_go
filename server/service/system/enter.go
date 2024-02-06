@@ -6,4 +6,5 @@ type ServiceGroup struct {
 	JwtService
 	CasbinService
 	OperationRecordService
+	AuthorityService
 }

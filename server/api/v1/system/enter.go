@@ -8,11 +8,13 @@ type ApiGroup struct {
 	DBApi
 	JwtApi
 	CasbinApi
+	AuthorityApi
 }
 
 var ( // 为了在 service/system 包中方便地使用这些服务，简写服务路径
-	initDBService = service.ServiceGroupApp.SystemServiceGroup.InitDBService
-	userService   = service.ServiceGroupApp.SystemServiceGroup.UserService
-	jwtService    = service.ServiceGroupApp.SystemServiceGroup.JwtService
-	casbinService = service.ServiceGroupApp.SystemServiceGroup.CasbinService
+	userService      = service.ServiceGroupApp.SystemServiceGroup.UserService
+	initDBService    = service.ServiceGroupApp.SystemServiceGroup.InitDBService
+	jwtService       = service.ServiceGroupApp.SystemServiceGroup.JwtService
+	casbinService    = service.ServiceGroupApp.SystemServiceGroup.CasbinService
+	authorityService = service.ServiceGroupApp.SystemServiceGroup.AuthorityService
 )

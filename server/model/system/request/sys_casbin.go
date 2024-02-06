@@ -11,3 +11,10 @@ type CasbinRequestReceive struct {
 	AuthorityId uint         `json:"authorityId"` // 权限id
 	CasbinInfos []CasbinInfo `json:"casbinInfos"` //存储多个Casbin策略信息。
 }
+
+// createAuthority时 默认的casbin路由权限
+func DefaultCasbin() []CasbinInfo {
+	return []CasbinInfo{
+		{Path: "/base/login", Method: "POST"},
+	}
+}

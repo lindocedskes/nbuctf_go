@@ -7,9 +7,9 @@ type RouterGroup struct {
 	JwtRouter
 	CasbinRouter
 	UserRouter
+	AuthorityRouter
 	//SysRouter
 	//AutoCodeRouter
-	//AuthorityRouter
 	//DictionaryRouter
 	//OperationRecordRouter
 	//DictionaryDetailRouter

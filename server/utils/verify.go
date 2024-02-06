@@ -9,4 +9,5 @@ var (
 	SetUserAuthorityVerify = Rules{"AuthorityId": {NotEmpty()}}
 	IdVerify               = Rules{"ID": []string{NotEmpty()}}
 	PageInfoVerify         = Rules{"Page": {NotEmpty()}, "PageSize": {NotEmpty()}}
+	AuthorityVerify        = Rules{"AuthorityId": {NotEmpty()}, "AuthorityName": {NotEmpty()}}
 )
