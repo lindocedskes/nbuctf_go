@@ -41,3 +41,55 @@ func (authorityService *AuthorityService) CreateAuthority(auth system.SysAuthori
 
 	return auth, e
 }
+
+// @description: 删除角色
+func (authorityService *AuthorityService) DeleteAuthority(auth *system.SysAuthority) error {
+	if errors.Is(global.NBUCTF_DB.Debug().Preload("Users").First(&auth).Error, gorm.ErrRecordNotFound) {
+		return errors.New("该角色不存在")
+	}
+	if len(auth.Users) != 0 {
+		return errors.New("此角色有用户正在使用禁止删除")
+	}
+	if !errors.Is(global.NBUCTF_DB.Where("authority_id = ?", auth.AuthorityId).First(&system.SysUser{}).Error, gorm.ErrRecordNotFound) {
+		return errors.New("此角色有用户正在使用禁止删除")
+	}
+	if !errors.Is(global.NBUCTF_DB.Where("parent_id = ?", auth.AuthorityId).First(&system.SysAuthority{}).Error, gorm.ErrRecordNotFound) {
+		return errors.New("此角色存在子角色不允许删除")
+	}
+
+	return global.NBUCTF_DB.Transaction(func(tx *gorm.DB) error {
+		var err error
+		//对sys_authority 角色表按角色id删除，Unscoped，被标记为软删除，角色ID-数据权限ID，角色ID-菜单
+		if err = tx.Preload("SysBaseMenus").Preload("DataAuthorityId").Where("authority_id = ?", auth.AuthorityId).First(auth).Unscoped().Delete(auth).Error; err != nil {
+			return err
+		}
+
+		if len(auth.SysBaseMenus) > 0 { //删除sys_authority 角色表关联的菜单数据
+			if err = tx.Model(auth).Association("SysBaseMenus").Delete(auth.SysBaseMenus); err != nil {
+				return err
+			}
+			// err = db.Association("SysBaseMenus").Delete(&auth)
+		}
+		if len(auth.DataAuthorityId) > 0 { //删除连接表中，与数据权限ID
+			if err = tx.Model(auth).Association("DataAuthorityId").Delete(auth.DataAuthorityId); err != nil {
+				return err
+			}
+		}
+		//删除用户-角色 SysUserAuthority连接表，按角色id删除对应的用户id
+		if err = tx.Delete(&system.SysUserAuthority{}, "sys_authority_authority_id = ?", auth.AuthorityId).Error; err != nil {
+			return err
+		}
+		//删除SysAuthorityBtn表与该权限id关联的按钮数据
+		if err = tx.Where("authority_id = ?", auth.AuthorityId).Delete(&[]system.SysAuthorityBtn{}).Error; err != nil {
+			return err
+		}
+
+		authorityId := strconv.Itoa(int(auth.AuthorityId))
+		//删除与该权限关联的 Casbin 策略
+		if err = CasbinServiceApp.RemoveFilteredPolicy(tx, authorityId); err != nil {
+			return err
+		}
+
+		return nil
+	})
+}

@@ -23,8 +23,9 @@ func RegisterTables(db *gorm.DB) {
 		sysModel.JwtBlacklist{},  // jwt黑名单
 		sysModel.SysHttpRecord{}, // http请求记录表
 
-		//sysModel.SysBaseMenu{},    // 菜单表
-		//sysModel.SysBaseMenuBtn{}, // 角色菜单按钮关联表
+		sysModel.SysBaseMenu{},     // 菜单表
+		sysModel.SysBaseMenuBtn{},  // 角色菜单按钮关联表
+		sysModel.SysAuthorityBtn{}, // 角色-按钮关联表,表示每个角色对每个菜单的哪些按钮有操作权限，实现更细粒度的权限控制
 
 	)
 

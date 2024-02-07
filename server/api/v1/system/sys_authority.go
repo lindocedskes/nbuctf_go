@@ -40,3 +40,25 @@ func (a *AuthorityApi) CreateAuthority(c *gin.Context) {
 	}
 	response.OkWithDetailed(systemRes.SysAuthorityResponse{Authority: authBack}, "创建成功", c)
 }
+
+// @Summary   删除角色
+func (a *AuthorityApi) DeleteAuthority(c *gin.Context) {
+	var authority system.SysAuthority
+	var err error
+	if err = c.ShouldBindJSON(&authority); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if err = utils.Verify(authority, utils.AuthorityIdVerify); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	// 删除角色之前需要判断是否有用户正在使用此角色
+	if err = authorityService.DeleteAuthority(&authority); err != nil {
+		global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		response.FailWithMessage("删除失败"+err.Error(), c)
+		return
+	}
+	_ = casbinService.FreshCasbin() //刷新casbin策略
+	response.OkWithMessage("删除成功", c)
+}
