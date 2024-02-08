@@ -95,6 +95,12 @@ func (authorityService *AuthorityService) DeleteAuthority(auth *system.SysAuthor
 	})
 }
 
+// @description: 更新角色信息
+func (authorityService *AuthorityService) UpdateAuthority(auth system.SysAuthority) (authority system.SysAuthority, err error) {
+	err = global.NBUCTF_DB.Where("authority_id = ?", auth.AuthorityId).First(&system.SysAuthority{}).Updates(&auth).Error
+	return auth, err
+}
+
 // @description: 分页获取角色列表，parent_id=0 为顶级角色
 func (authorityService *AuthorityService) GetAuthorityInfoList(info request.PageInfo) (list interface{}, total int64, err error) {
 	limit := info.PageSize

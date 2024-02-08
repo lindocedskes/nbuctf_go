@@ -15,6 +15,7 @@ func (s *AuthorityRouter) InitAuthorityRouter(Router *gin.RouterGroup) {
 	{
 		authorityRouter.POST("createAuthority", authorityApi.CreateAuthority)   // 创建角色
 		authorityRouter.DELETE("deleteAuthority", authorityApi.DeleteAuthority) // 删除角色
+		authorityRouter.PUT("updateAuthority", authorityApi.UpdateAuthority)    // 更新角色
 	}
 	{
 		authorityRouterWithoutRecord.POST("getAuthorityList", authorityApi.GetAuthorityList) // 获取角色列表

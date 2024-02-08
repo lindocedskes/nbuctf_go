@@ -64,6 +64,28 @@ func (a *AuthorityApi) DeleteAuthority(c *gin.Context) {
 	response.OkWithMessage("删除成功", c)
 }
 
+// @Summary   更新角色信息
+func (a *AuthorityApi) UpdateAuthority(c *gin.Context) {
+	var auth system.SysAuthority
+	err := c.ShouldBindJSON(&auth)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(auth, utils.AuthorityVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	authority, err := authorityService.UpdateAuthority(auth)
+	if err != nil {
+		global.GVA_LOG.Error("更新失败!", zap.Error(err))
+		response.FailWithMessage("更新失败"+err.Error(), c)
+		return
+	}
+	response.OkWithDetailed(systemRes.SysAuthorityResponse{Authority: authority}, "更新成功", c)
+}
+
 // @Summary   分页获取角色列表
 func (a *AuthorityApi) GetAuthorityList(c *gin.Context) {
 	var pageInfo request.PageInfo
