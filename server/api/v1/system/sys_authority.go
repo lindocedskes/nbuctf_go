@@ -112,3 +112,25 @@ func (a *AuthorityApi) GetAuthorityList(c *gin.Context) {
 		PageSize: pageInfo.PageSize,
 	}, "获取成功", c)
 }
+
+// @Summary   设置角色资源权限
+func (a *AuthorityApi) SetDataAuthority(c *gin.Context) {
+	var auth system.SysAuthority
+	err := c.ShouldBindJSON(&auth)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(auth, utils.AuthorityIdVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = authorityService.SetDataAuthority(auth)
+	if err != nil {
+		global.GVA_LOG.Error("设置失败!", zap.Error(err))
+		response.FailWithMessage("设置失败"+err.Error(), c)
+		return
+	}
+	response.OkWithMessage("设置成功", c)
+}

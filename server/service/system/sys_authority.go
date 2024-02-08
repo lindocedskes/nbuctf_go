@@ -128,3 +128,12 @@ func (authorityService *AuthorityService) findChildrenAuthority(authority *syste
 	}
 	return err
 }
+
+// @description: 设置角色资源权限
+func (authorityService *AuthorityService) SetDataAuthority(auth system.SysAuthority) error {
+	var s system.SysAuthority
+	global.NBUCTF_DB.Preload("DataAuthorityId").Where("authority_id=?", auth.AuthorityId).First(&s) //查询角色by角色id
+	//替换关联数据
+	err := global.NBUCTF_DB.Model(&s).Association("DataAuthorityId").Replace(&auth.DataAuthorityId)
+	return err
+}
