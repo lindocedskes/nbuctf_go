@@ -3,6 +3,7 @@ package system
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/lindocedskes/global"
+	"github.com/lindocedskes/model/common/request"
 	"github.com/lindocedskes/model/common/response"
 	"github.com/lindocedskes/model/system"
 	systemRes "github.com/lindocedskes/model/system/response"
@@ -61,4 +62,31 @@ func (a *AuthorityApi) DeleteAuthority(c *gin.Context) {
 	}
 	_ = casbinService.FreshCasbin() //刷新casbin策略
 	response.OkWithMessage("删除成功", c)
+}
+
+// @Summary   分页获取角色列表
+func (a *AuthorityApi) GetAuthorityList(c *gin.Context) {
+	var pageInfo request.PageInfo
+	err := c.ShouldBindJSON(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(pageInfo, utils.PageInfoVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	list, total, err := authorityService.GetAuthorityInfoList(pageInfo)
+	if err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败"+err.Error(), c)
+		return
+	}
+	response.OkWithDetailed(response.PageResult{
+		List:     list,
+		Total:    total,
+		Page:     pageInfo.Page,
+		PageSize: pageInfo.PageSize,
+	}, "获取成功", c)
 }
