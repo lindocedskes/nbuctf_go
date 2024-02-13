@@ -5,6 +5,7 @@ import (
 )
 
 // 存储系统的菜单结构以实现动态菜单、菜单的权限管理
+// 构建导航菜单：Name 字段用作菜单项的文本（唯一），Path 字段前端路由的路径，Component 字段指定了点击菜单项后加载的vue页面组件，Sort 菜单列表中的排序。Meta 导航菜单中显示额外的信息
 type SysBaseMenu struct {
 	model.BaseModel
 	MenuLevel     uint                                       `json:"-"`

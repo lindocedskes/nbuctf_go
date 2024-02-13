@@ -89,6 +89,8 @@ func getDefaultCasbinRule() []adapter.CasbinRule {
 		{Ptype: "p", V0: "888", V1: "/authoritybyadmin/getAuthorityList", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/authoritybyadmin/updateAuthority", V2: "PUT"},
 		{Ptype: "p", V0: "888", V1: "/authoritybyadmin/setDataAuthority", V2: "POST"},
+		{Ptype: "p", V0: "888", V1: "/menu/addBaseMenu", V2: "POST"},
+
 		//普通用户的权限
 		{Ptype: "p", V0: "9528", V1: "/user/getUserInfo", V2: "GET"},
 	}

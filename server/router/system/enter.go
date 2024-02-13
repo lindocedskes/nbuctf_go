@@ -8,11 +8,5 @@ type RouterGroup struct {
 	CasbinRouter
 	UserRouter
 	AuthorityRouter
-	//SysRouter
-	//AutoCodeRouter
-	//DictionaryRouter
-	//OperationRecordRouter
-	//DictionaryDetailRouter
-	//AuthorityBtnRouter
-	//SysExportTemplateRouter
+	MenuRouter
 }

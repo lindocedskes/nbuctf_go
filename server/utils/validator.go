@@ -15,6 +15,36 @@ func NotEmpty() string {
 	return "notEmpty"
 }
 
+// @description: 小于入参(<) 如果为string array Slice则为长度比较 如果是 int uint float 则为数值比较
+func Lt(mark string) string {
+	return "lt=" + mark
+}
+
+// @description: 小于等于入参(<=) 如果为string array Slice则为长度比较 如果是 int uint float 则为数值比较
+func Le(mark string) string {
+	return "le=" + mark
+}
+
+// @description: 等于入参(==) 如果为string array Slice则为长度比较 如果是 int uint float 则为数值比较
+func Eq(mark string) string {
+	return "eq=" + mark
+}
+
+// @description: 不等于入参(!=)  如果为string array Slice则为长度比较 如果是 int uint float 则为数值比较
+func Ne(mark string) string {
+	return "ne=" + mark
+}
+
+// @description: 大于等于入参(>=) 如果为string array Slice则为长度比较 如果是 int uint float 则为数值比较
+func Ge(mark string) string {
+	return "ge=" + mark
+}
+
+// @description: 大于入参(>) 如果为string array Slice则为长度比较 如果是 int uint float 则为数值比较
+func Gt(mark string) string {
+	return "gt=" + mark
+}
+
 // 验证器，传入结构体和规则集合，支持规则：非空、正则、比较
 func Verify(st interface{}, roleMap Rules) (err error) {
 	compareMap := map[string]bool{

@@ -25,3 +25,11 @@ func (menuService *MenuService) UserAuthorityDefaultRouter(user *system.SysUser)
 		user.Authority.DefaultRouter = "404"
 	}
 }
+
+// @description: 添加基础路由
+func (menuService *MenuService) AddBaseMenu(menu system.SysBaseMenu) error {
+	if !errors.Is(global.NBUCTF_DB.Where("name = ?", menu.Name).First(&system.SysBaseMenu{}).Error, gorm.ErrRecordNotFound) {
+		return errors.New("存在重复name，请修改name")
+	}
+	return global.NBUCTF_DB.Create(&menu).Error
+}

@@ -61,7 +61,7 @@ func Routers() *gin.Engine {
 		systemRouter.InitCasbinRouter(PrivateGroup)    // casbin_rule 的更新和查询
 		systemRouter.InitUserRouter(PrivateGroup)      // 用户路由
 		systemRouter.InitAuthorityRouter(PrivateGroup) // 注册角色路由
-		//systemRouter.InitMenuRouter(PrivateGroup) // 注册menu路由，数据库存储菜单信息可以：以根据用户的权限、角色或其他条件来定制菜单；为每个菜单项分配一个或多个角色，然后只允许具有这些角色的用户看到或访问这个菜单项
+		systemRouter.InitMenuRouter(PrivateGroup)      // 注册menu路由，数据库存储菜单信息可以：以根据用户的权限、角色或其他条件来定制菜单；为每个菜单项分配一个或多个角色，然后只允许具有这些角色的用户看到或访问这个菜单项
 
 		//	//systemRouter.InitSystemRouter(PrivateGroup)                 // system配置相关路由：查改重载系统
 		//	//systemRouter.InitSysOperationRecordRouter(PrivateGroup)     // 操作记录
