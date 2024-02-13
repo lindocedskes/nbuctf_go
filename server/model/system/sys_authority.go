@@ -13,9 +13,10 @@ type SysAuthority struct {
 	//自己与自己的关系，所以sys_data_authority_id连接表2列（主键和外键）都是角色值，表示 A 角色具有 B 角色的数据权限。DataAuthorityId被gorm视为默认外键
 	DataAuthorityId []*SysAuthority `json:"dataAuthorityId" gorm:"many2many:sys_data_authority_id;"` // 角色ID-数据权限ID 连接表，角色具有哪些数据权限的（通过角色ID拥有其他角色来表示
 	Children        []SysAuthority  `json:"children" gorm:"-"`                                       // 子角色
-	SysBaseMenus    []SysBaseMenu   `json:"menus" gorm:"many2many:sys_authority_menus;"`             // 角色-菜单 通过 sys_authority_menus连接表建立其AuthorityId与sys_base_menu表主键id的关系
-	Users           []SysUser       `json:"-" gorm:"many2many:sys_user_authority;"`                  // 用户-角色 连接表
-	DefaultRouter   string          `json:"defaultRouter" gorm:"comment:默认菜单;default:dashboard"`     // 默认菜单(默认dashboard)
+	//角色对应的菜单树
+	SysBaseMenus  []SysBaseMenu `json:"menus" gorm:"many2many:sys_authority_menus;"`         // 角色-菜单 通过 sys_authority_menus连接表建立其AuthorityId与sys_base_menu表主键id的关系
+	Users         []SysUser     `json:"-" gorm:"many2many:sys_user_authority;"`              // 用户-角色 连接表
+	DefaultRouter string        `json:"defaultRouter" gorm:"comment:默认菜单;default:dashboard"` // 默认菜单(默认dashboard)
 }
 
 func (SysAuthority) TableName() string {

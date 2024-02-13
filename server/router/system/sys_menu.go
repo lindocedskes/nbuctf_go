@@ -13,8 +13,8 @@ func (s *MenuRouter) InitMenuRouter(Router *gin.RouterGroup) (R gin.IRoutes) {
 	//menuRouterWithoutRecord := Router.Group("menu")
 	authorityMenuApi := v1.ApiGroupApp.SystemApiGroup.AuthorityMenuApi
 	{
-		menuRouter.POST("addBaseMenu", authorityMenuApi.CreateBaseMenu) // 新增菜单
-		//menuRouter.POST("addMenuAuthority", authorityMenuApi.AddMenuAuthority) //	增加menu和角色关联关系
+		menuRouter.POST("addBaseMenu", authorityMenuApi.CreateBaseMenu)        // 新增菜单
+		menuRouter.POST("addMenuAuthority", authorityMenuApi.AddMenuAuthority) //	增加menu和角色关联关系 -连接表增加记录
 		//menuRouter.POST("deleteBaseMenu", authorityMenuApi.DeleteBaseMenu)     // 删除菜单
 		//menuRouter.POST("updateBaseMenu", authorityMenuApi.UpdateBaseMenu)     // 更新菜单
 	}

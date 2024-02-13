@@ -20,3 +20,9 @@ func DefaultMenu() []system.SysBaseMenu {
 		},
 	}}
 }
+
+// api 请求，MenuRouter：增加menu和角色关联关系
+type AddMenuAuthorityInfo struct {
+	Menus       []system.SysBaseMenu `json:"menus"`
+	AuthorityId uint                 `json:"authorityId"` // 角色ID
+}

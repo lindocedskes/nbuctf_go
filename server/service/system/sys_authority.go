@@ -137,3 +137,12 @@ func (authorityService *AuthorityService) SetDataAuthority(auth system.SysAuthor
 	err := global.NBUCTF_DB.Model(&s).Association("DataAuthorityId").Replace(&auth.DataAuthorityId)
 	return err
 }
+
+// @description: 菜单与角色绑定
+func (authorityService *AuthorityService) SetMenuAuthority(auth *system.SysAuthority) error {
+	var s system.SysAuthority
+	global.NBUCTF_DB.Preload("SysBaseMenus").First(&s, "authority_id = ?", auth.AuthorityId) //按角色id查询
+	//连接表sys_authority_menus 自动添加一条关联记录，Replace 方法会先删除 s 在 sys_authority_menus 表中的所有关联记录，然后再根据 auth.SysBaseMenus 中的数据创建新的关联记录
+	err := global.NBUCTF_DB.Model(&s).Association("SysBaseMenus").Replace(&auth.SysBaseMenus) //将 s 记录原有的 SysBaseMenus 关联关系替换为 auth.SysBaseMenus。
+	return err
+}

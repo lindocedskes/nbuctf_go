@@ -33,3 +33,12 @@ func (menuService *MenuService) AddBaseMenu(menu system.SysBaseMenu) error {
 	}
 	return global.NBUCTF_DB.Create(&menu).Error
 }
+
+// @description: 为角色增加menu树，前端会根据菜单树生成导航菜单
+func (menuService *MenuService) AddMenuAuthority(menus []system.SysBaseMenu, authorityId uint) (err error) {
+	var auth system.SysAuthority
+	auth.AuthorityId = authorityId
+	auth.SysBaseMenus = menus
+	err = AuthorityServiceApp.SetMenuAuthority(&auth) //连接表sys_authority_menus 添加一条关联记录
+	return err
+}
