@@ -19,4 +19,5 @@ var ( // 为了在 service/system 包中方便地使用这些服务，简写服�
 	casbinService    = service.ServiceGroupApp.SystemServiceGroup.CasbinService
 	authorityService = service.ServiceGroupApp.SystemServiceGroup.AuthorityService
 	menuService      = service.ServiceGroupApp.SystemServiceGroup.MenuService
+	baseMenuService  = service.ServiceGroupApp.SystemServiceGroup.BaseMenuService
 )

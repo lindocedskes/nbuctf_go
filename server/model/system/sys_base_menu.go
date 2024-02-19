@@ -31,6 +31,7 @@ type Meta struct {
 	CloseTab    bool   `json:"closeTab" gorm:"comment:自动关闭tab"`         // 自动关闭tab
 }
 
+// 存储用于在地址栏中传递的参数
 type SysBaseMenuParameter struct {
 	model.BaseModel
 	SysBaseMenuID uint

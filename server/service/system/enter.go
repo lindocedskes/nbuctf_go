@@ -8,4 +8,5 @@ type ServiceGroup struct {
 	OperationRecordService
 	AuthorityService
 	MenuService
+	BaseMenuService
 }
