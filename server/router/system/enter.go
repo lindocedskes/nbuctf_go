@@ -1,5 +1,6 @@
 package system
 
+// 路由入口
 type RouterGroup struct {
 	//todo toadd router
 	BaseRouter
@@ -9,4 +10,5 @@ type RouterGroup struct {
 	UserRouter
 	AuthorityRouter
 	MenuRouter
+	FileUploadAndDownloadRouter
 }

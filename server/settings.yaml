@@ -6,6 +6,7 @@ system:
     db-type: mysql
     use-redis: false
     use-multipoint: false
+    oss-type: local #存储方式：local（本地）
 jwt:
     signing-key: 4a482bfe-51fe-45cf-8274-7d8fba889a94 # 32位随机字符串，签名密钥
     expires-time: 7d

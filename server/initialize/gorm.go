@@ -23,10 +23,11 @@ func RegisterTables(db *gorm.DB) {
 		sysModel.JwtBlacklist{},  // jwt黑名单
 		sysModel.SysHttpRecord{}, // http请求记录表
 
-		sysModel.SysBaseMenu{},          // 菜单表
-		sysModel.SysBaseMenuParameter{}, // 存储菜单携带的参数（不必须）
-		sysModel.SysBaseMenuBtn{},       // 角色菜单按钮关联表
-		sysModel.SysAuthorityBtn{},      // 角色-按钮关联表,表示每个角色对每个菜单的哪些按钮有操作权限，实现更细粒度的权限控制
+		sysModel.SysBaseMenu{},              // 菜单表
+		sysModel.SysBaseMenuParameter{},     // 存储菜单携带的参数（不必须）
+		sysModel.SysBaseMenuBtn{},           // 角色菜单按钮关联表
+		sysModel.SysAuthorityBtn{},          // 角色-按钮关联表,表示每个角色对每个菜单的哪些按钮有操作权限，实现更细粒度的权限控制
+		sysModel.SysFileUploadAndDownload{}, // 文件上传-删除记录表
 
 	)
 

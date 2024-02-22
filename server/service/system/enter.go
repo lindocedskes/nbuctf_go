@@ -1,5 +1,6 @@
 package system
 
+// service 层 入口
 type ServiceGroup struct {
 	InitDBService
 	UserService
@@ -9,4 +10,5 @@ type ServiceGroup struct {
 	AuthorityService
 	MenuService
 	BaseMenuService
+	FileUploadAndDownloadService
 }
