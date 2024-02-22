@@ -162,3 +162,46 @@ func (a *AuthorityMenuApi) GetMenuList(c *gin.Context) {
 		PageSize: pageInfo.PageSize,
 	}, "获取成功", c)
 }
+
+// @Summary   获取指定角色menu
+func (a *AuthorityMenuApi) GetMenuAuthority(c *gin.Context) {
+	var au_id request.GetAuthorityId //请求的指定id
+	err := c.ShouldBindJSON(&au_id)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(au_id, utils.AuthorityIdVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	menus, err := menuService.GetMenuAuthority(&au_id)
+	if err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithDetailed(systemRes.SysMenusResponse{Menus: menus}, "获取失败", c)
+		return
+	}
+	response.OkWithDetailed(gin.H{"menus": menus}, "获取成功", c)
+}
+
+func (a *AuthorityMenuApi) GetBaseMenuById(c *gin.Context) {
+	var idInfo request.GetById
+	err := c.ShouldBindJSON(&idInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(idInfo, utils.IdVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	menu, err := baseMenuService.GetBaseMenuById(idInfo.ID)
+	if err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+		return
+	}
+	response.OkWithDetailed(systemRes.SysBaseMenuResponse{Menu: menu}, "获取成功", c)
+}

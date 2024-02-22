@@ -172,3 +172,38 @@ func (menuService *MenuService) getBaseMenuTreeMapByPage(limit int, offset int) 
 	}
 	return treeMap, err
 }
+
+// @description: 按指定角色ID 查询对应菜单树
+func (menuService *MenuService) GetMenuAuthority(info *request.GetAuthorityId) (menus []system.SysMenu, err error) {
+	var baseMenu []system.SysBaseMenu
+	var SysAuthorityMenus []system.SysAuthorityMenu
+	//角色id对应菜单id
+	err = global.NBUCTF_DB.Where("sys_authority_authority_id = ?", info.AuthorityId).Find(&SysAuthorityMenus).Error
+	if err != nil {
+		return
+	}
+
+	var MenuIds []string
+
+	for i := range SysAuthorityMenus {
+		MenuIds = append(MenuIds, SysAuthorityMenus[i].MenuId)
+	}
+	//按菜单id 查询对应基础菜单
+	err = global.NBUCTF_DB.Where("id in (?) ", MenuIds).Order("sort").Find(&baseMenu).Error
+
+	for i := range baseMenu {
+		menus = append(menus, system.SysMenu{
+			SysBaseMenu: baseMenu[i],
+			AuthorityId: info.AuthorityId,
+			MenuId:      strconv.Itoa(int(baseMenu[i].ID)),
+			Parameters:  baseMenu[i].Parameters,
+		})
+	}
+	return menus, err
+}
+
+// @description: 返回当前选中menu by menuid
+func (baseMenuService *BaseMenuService) GetBaseMenuById(id int) (menu system.SysBaseMenu, err error) {
+	err = global.NBUCTF_DB.Preload("MenuBtn").Preload("Parameters").Where("id = ?", id).First(&menu).Error
+	return
+}
