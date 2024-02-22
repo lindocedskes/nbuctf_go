@@ -7,6 +7,7 @@ import (
 	"github.com/lindocedskes/model/common/response"
 	"github.com/lindocedskes/model/system"
 	systemReq "github.com/lindocedskes/model/system/request"
+	systemRes "github.com/lindocedskes/model/system/response"
 	"github.com/lindocedskes/utils"
 	"go.uber.org/zap"
 )
@@ -108,4 +109,56 @@ func (a *AuthorityMenuApi) UpdateBaseMenu(c *gin.Context) {
 		return
 	}
 	response.OkWithMessage("更新成功", c)
+}
+
+// 获取的是与特定用户权限相关的菜单树
+func (a *AuthorityMenuApi) GetMenu(c *gin.Context) {
+	menus, err := menuService.GetMenuTree(utils.GetUserAuthorityId(c)) //根据从jwt解析出来的用户角色id，获取与特定用户权限相关的菜单树
+	if err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+		return
+	}
+	if menus == nil {
+		menus = []system.SysMenu{}
+	}
+	response.OkWithDetailed(systemRes.SysMenusResponse{Menus: menus}, "获取成功", c)
+}
+
+// 获取的是所有的基础菜单树
+func (a *AuthorityMenuApi) GetBaseMenuTree(c *gin.Context) {
+	menus, err := menuService.GetBaseMenuTree()
+	if err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+		return
+	}
+	response.OkWithDetailed(systemRes.SysBaseMenusResponse{Menus: menus}, "获取成功", c)
+}
+
+// @Summary   分页获取基础menu列表
+func (a *AuthorityMenuApi) GetMenuList(c *gin.Context) {
+	var pageInfo request.PageInfo
+	err := c.ShouldBindJSON(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(pageInfo, utils.PageInfoVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	menuList, total, err := menuService.GetInfoList(pageInfo)
+	if err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+		return
+	}
+	response.OkWithDetailed(response.PageResult{
+		List:     menuList,
+		Total:    total,
+		Page:     pageInfo.Page,
+		PageSize: pageInfo.PageSize,
+	}, "获取成功", c)
 }

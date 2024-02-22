@@ -10,7 +10,7 @@ type MenuRouter struct{}
 
 func (s *MenuRouter) InitMenuRouter(Router *gin.RouterGroup) (R gin.IRoutes) {
 	menuRouter := Router.Group("menu").Use(middleware.OperationRecord())
-	//menuRouterWithoutRecord := Router.Group("menu")
+	menuRouterWithoutRecord := Router.Group("menu")
 	authorityMenuApi := v1.ApiGroupApp.SystemApiGroup.AuthorityMenuApi
 	{
 		menuRouter.POST("addBaseMenu", authorityMenuApi.CreateBaseMenu)        // 新增菜单
@@ -19,6 +19,9 @@ func (s *MenuRouter) InitMenuRouter(Router *gin.RouterGroup) (R gin.IRoutes) {
 		menuRouter.POST("updateBaseMenu", authorityMenuApi.UpdateBaseMenu)     // 更新菜单
 	}
 	{
+		menuRouterWithoutRecord.GET("getMenu", authorityMenuApi.GetMenu)                 // 获取的是与特定用户权限相关的菜单树
+		menuRouterWithoutRecord.GET("getBaseMenuTree", authorityMenuApi.GetBaseMenuTree) // 获取的是所有的基础菜单树
+		menuRouterWithoutRecord.POST("getMenuList", authorityMenuApi.GetMenuList)        // 分页获取基础menu列表
 
 	}
 	return menuRouter
