@@ -102,6 +102,10 @@ func getDefaultCasbinRule() []adapter.CasbinRule {
 		{Ptype: "p", V0: "888", V1: "/file/getFileList", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/file/deleteFile", V2: "DELETE"},
 		{Ptype: "p", V0: "888", V1: "/file/editFileName", V2: "POST"},
+		{Ptype: "p", V0: "888", V1: "/file/breakpointContinue", V2: "POST"},
+		{Ptype: "p", V0: "888", V1: "/file/findFile", V2: "GET"},
+		{Ptype: "p", V0: "888", V1: "/file/breakpointContinueFinish", V2: "GET"},
+
 		//普通用户的权限
 		{Ptype: "p", V0: "9528", V1: "/user/getUserInfo", V2: "GET"},
 		{Ptype: "p", V0: "666", V1: "/base/login", V2: "POST"},
