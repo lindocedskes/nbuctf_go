@@ -56,3 +56,19 @@ func (e *FileUploadAndDownloadService) CheckFileChunksDone(id uint, chunkTotal i
 	}
 	return nil
 }
+
+// @description: 删除文件切片记录
+func (e *FileUploadAndDownloadService) DeleteFileChunk(fileMd5 string, filePath string) error {
+	var chunks []system.SysFileChunk
+	var file system.SysFile
+	err := global.NBUCTF_DB.Where("file_md5 = ? ", fileMd5).First(&file).
+		Updates(map[string]interface{}{
+			"IsFinish":  true, //删除缓存的后IsFinish 置true
+			"file_path": filePath,
+		}).Error
+	if err != nil {
+		return err
+	}
+	err = global.NBUCTF_DB.Where("sys_file_id = ?", file.ID).Delete(&chunks).Unscoped().Error
+	return err
+}

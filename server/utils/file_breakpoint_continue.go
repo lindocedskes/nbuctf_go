@@ -75,3 +75,9 @@ func MakeFile(fileName string, FileMd5 string) (string, error) {
 	}
 	return finishDir + fileName, nil //返回新文件的路径和错误
 }
+
+// @description: 移除切片
+func RemoveChunk(FileMd5 string) error {
+	err := os.RemoveAll(breakpointDir + FileMd5)
+	return err
+}

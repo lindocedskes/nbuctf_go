@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/model/common/response"
+	"github.com/lindocedskes/model/system"
 	systemRes "github.com/lindocedskes/model/system/response"
 	"github.com/lindocedskes/utils"
 	"go.uber.org/zap"
@@ -101,4 +102,26 @@ func (b *FileUploadAndDownloadApi) BreakpointContinueFinish(c *gin.Context) {
 	} else {
 		response.OkWithDetailed(systemRes.FilePathResponse{FilePath: filePath}, "文件创建成功", c)
 	}
+}
+
+// @Summary   删除缓存切片，这时候把逻辑大文件的"IsFinish":  true,
+func (b *FileUploadAndDownloadApi) RemoveChunk(c *gin.Context) {
+	var file system.SysFile
+	err := c.ShouldBindJSON(&file)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.RemoveChunk(file.FileMd5) // 移除本地上的切片
+	if err != nil {
+		global.GVA_LOG.Error("缓存切片删除失败!", zap.Error(err))
+		return
+	}
+	err = fileUploadAndDownloadService.DeleteFileChunk(file.FileMd5, file.FilePath) //软删除缓存切片记录，并把逻辑大文件的"IsFinish":  true,
+	if err != nil {
+		global.GVA_LOG.Error(err.Error(), zap.Error(err))
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	response.OkWithMessage("缓存切片删除成功", c)
 }
