@@ -76,3 +76,9 @@ func (e *FileUploadAndDownloadService) DeleteFile(file system.SysFileUploadAndDo
 	err = global.NBUCTF_DB.Where("id = ?", file.ID).Unscoped().Delete(&file).Error //数据库中删除改记录
 	return err
 }
+
+// 编辑文件名namebyid
+func (e *FileUploadAndDownloadService) EditFileName(file system.SysFileUploadAndDownload) (err error) {
+	var fileFromDb system.SysFileUploadAndDownload
+	return global.NBUCTF_DB.Where("id = ?", file.ID).First(&fileFromDb).Update("name", file.Name).Error
+}

@@ -68,3 +68,20 @@ func (b *FileUploadAndDownloadApi) DeleteFile(c *gin.Context) {
 	}
 	response.OkWithMessage("删除成功", c)
 }
+
+// 编辑文件名namebyid（实际存储文件名为key）
+func (b *FileUploadAndDownloadApi) EditFileName(c *gin.Context) {
+	var file system.SysFileUploadAndDownload
+	err := c.ShouldBindJSON(&file)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = fileUploadAndDownloadService.EditFileName(file)
+	if err != nil {
+		global.GVA_LOG.Error("编辑失败!", zap.Error(err))
+		response.FailWithMessage("编辑失败", c)
+		return
+	}
+	response.OkWithMessage("编辑成功", c)
+}
