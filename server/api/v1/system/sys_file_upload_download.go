@@ -52,3 +52,19 @@ func (b *FileUploadAndDownloadApi) GetFileList(c *gin.Context) {
 		PageSize: pageInfo.PageSize,
 	}, "获取成功", c)
 }
+
+// @Summary   删除文件by id
+func (b *FileUploadAndDownloadApi) DeleteFile(c *gin.Context) {
+	var file system.SysFileUploadAndDownload
+	err := c.ShouldBindJSON(&file)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	if err := fileUploadAndDownloadService.DeleteFile(file); err != nil {
+		global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		response.FailWithMessage("删除失败", c)
+		return
+	}
+	response.OkWithMessage("删除成功", c)
+}

@@ -1,6 +1,7 @@
 package system
 
 import (
+	"errors"
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/model/common/request"
 	"github.com/lindocedskes/model/system"
@@ -52,4 +53,26 @@ func (e *FileUploadAndDownloadService) GetFileRecordInfoList(info request.PageIn
 	}
 	err = db.Limit(limit).Offset(offset).Order("updated_at desc").Find(&fileLists).Error
 	return fileLists, total, err
+}
+
+// @description: 按文件id查找文件记录
+func (e *FileUploadAndDownloadService) FindFile(id uint) (system.SysFileUploadAndDownload, error) {
+	var file system.SysFileUploadAndDownload
+	err := global.NBUCTF_DB.Where("id = ?", id).First(&file).Error
+	return file, err
+}
+
+// @description: 删除文件记录
+func (e *FileUploadAndDownloadService) DeleteFile(file system.SysFileUploadAndDownload) (err error) {
+	var fileFromDb system.SysFileUploadAndDownload
+	fileFromDb, err = e.FindFile(file.ID) //按文件id查找文件记录
+	if err != nil {
+		return
+	}
+	oss := upload.NewOss()                                //oss对象
+	if err = oss.DeleteFile(fileFromDb.Key); err != nil { //按key（实际存储文件标识名）执行删除存储在oss上对应文件（）
+		return errors.New("文件删除失败")
+	}
+	err = global.NBUCTF_DB.Where("id = ?", file.ID).Unscoped().Delete(&file).Error //数据库中删除改记录
+	return err
 }
