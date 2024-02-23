@@ -2,6 +2,7 @@ package system
 
 import (
 	"github.com/lindocedskes/global"
+	"github.com/lindocedskes/model/common/request"
 	"github.com/lindocedskes/model/system"
 	"github.com/lindocedskes/utils/upload"
 	"mime/multipart"
@@ -33,4 +34,22 @@ func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, 
 // @description: 创建文件上传记录
 func (e *FileUploadAndDownloadService) UploadRecord(file system.SysFileUploadAndDownload) error {
 	return global.NBUCTF_DB.Create(&file).Error
+}
+
+// @description: 分页获取文件列表，+支持对文件name模糊查询-通过%keyword%
+func (e *FileUploadAndDownloadService) GetFileRecordInfoList(info request.PageInfo) (list interface{}, total int64, err error) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+	keyword := info.Keyword
+	db := global.NBUCTF_DB.Model(&system.SysFileUploadAndDownload{})
+	var fileLists []system.SysFileUploadAndDownload
+	if len(keyword) > 0 {
+		db = db.Where("name LIKE ?", "%"+keyword+"%") //对文件name 模糊查询
+	}
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+	err = db.Limit(limit).Offset(offset).Order("updated_at desc").Find(&fileLists).Error
+	return fileLists, total, err
 }

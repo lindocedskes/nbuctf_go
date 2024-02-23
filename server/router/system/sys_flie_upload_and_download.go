@@ -11,8 +11,8 @@ func (e *FileUploadAndDownloadRouter) InitFileRouter(Router *gin.RouterGroup) {
 	fileUploadAndDownloadRouter := Router.Group("file")
 	fileUploadAndDownloadApi := v1.ApiGroupApp.SystemApiGroup.FileUploadAndDownloadApi
 	{
-		fileUploadAndDownloadRouter.POST("upload", fileUploadAndDownloadApi.UploadFile) // 上传文件
-		//fileUploadAndDownloadRouter.POST("getFileList", fileUploadAndDownloadApi.GetFileList)                           // 获取上传文件列表
+		fileUploadAndDownloadRouter.POST("upload", fileUploadAndDownloadApi.UploadFile)       // 上传文件
+		fileUploadAndDownloadRouter.POST("getFileList", fileUploadAndDownloadApi.GetFileList) // 分页获取文件列表，+支持对文件name模糊查询-通过%keyword%
 		//fileUploadAndDownloadRouter.POST("deleteFile", fileUploadAndDownloadApi.DeleteFile)                             // 删除指定文件
 		//fileUploadAndDownloadRouter.POST("editFileName", fileUploadAndDownloadApi.EditFileName)                         // 编辑文件名或者备注
 		//fileUploadAndDownloadRouter.POST("breakpointContinue", fileUploadAndDownloadApi.BreakpointContinue)             // 断点续传

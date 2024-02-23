@@ -3,6 +3,7 @@ package system
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/lindocedskes/global"
+	"github.com/lindocedskes/model/common/request"
 	"github.com/lindocedskes/model/common/response"
 	"github.com/lindocedskes/model/system"
 	systemRes "github.com/lindocedskes/model/system/response"
@@ -28,4 +29,26 @@ func (b *FileUploadAndDownloadApi) UploadFile(c *gin.Context) {
 		return
 	}
 	response.OkWithDetailed(systemRes.SysFileResponse{File: file}, "上传成功", c)
+}
+
+// @Summary   分页获取文件列表，+支持对文件name模糊查询-通过%keyword%
+func (b *FileUploadAndDownloadApi) GetFileList(c *gin.Context) {
+	var pageInfo request.PageInfo
+	err := c.ShouldBindJSON(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	list, total, err := fileUploadAndDownloadService.GetFileRecordInfoList(pageInfo) //分页 + keyword 模糊查询：%keyword%
+	if err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+		return
+	}
+	response.OkWithDetailed(response.PageResult{
+		List:     list,
+		Total:    total,
+		Page:     pageInfo.Page,
+		PageSize: pageInfo.PageSize,
+	}, "获取成功", c)
 }
