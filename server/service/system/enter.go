@@ -11,4 +11,5 @@ type ServiceGroup struct {
 	MenuService
 	BaseMenuService
 	FileUploadAndDownloadService
+	AuthorityBtnService
 }

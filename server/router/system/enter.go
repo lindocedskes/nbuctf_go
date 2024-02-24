@@ -11,4 +11,5 @@ type RouterGroup struct {
 	AuthorityRouter
 	MenuRouter
 	FileUploadAndDownloadRouter
+	AuthorityBtnRouter
 }

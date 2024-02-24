@@ -12,6 +12,7 @@ type ApiGroup struct { //api 方法调用入口,control 层
 	AuthorityApi
 	AuthorityMenuApi
 	FileUploadAndDownloadApi
+	AuthorityBtnApi
 }
 
 var ( // 为了在 service/system 包中方便地使用这些服务，简写服务路径
@@ -23,4 +24,5 @@ var ( // 为了在 service/system 包中方便地使用这些服务，简写服�
 	menuService                  = service.ServiceGroupApp.SystemServiceGroup.MenuService
 	baseMenuService              = service.ServiceGroupApp.SystemServiceGroup.BaseMenuService
 	fileUploadAndDownloadService = service.ServiceGroupApp.SystemServiceGroup.FileUploadAndDownloadService
+	authorityBtnService          = service.ServiceGroupApp.SystemServiceGroup.AuthorityBtnService
 )
