@@ -33,7 +33,7 @@ pnpm build
 ```sh
 pnpm lint
 ```
-### Format use [Prettier](https://eslint.org/) 代码格式化a
+### Format use [Prettier](https://eslint.org/) 代码格式化
 
 ```sh
 pnpm format
