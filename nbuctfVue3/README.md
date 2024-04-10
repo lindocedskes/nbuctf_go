@@ -28,8 +28,13 @@ pnpm dev
 pnpm build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Lint with [ESLint](https://eslint.org/) 规范纠错
 
 ```sh
 pnpm lint
+```
+### Format use [Prettier](https://eslint.org/) 代码格式化
+
+```sh
+pnpm format
 ```
