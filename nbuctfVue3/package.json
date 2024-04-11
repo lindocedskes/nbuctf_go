@@ -26,6 +26,7 @@
     "eslint-plugin-vue": "^9.17.0",
     "husky": "^8.0.0",
     "lint-staged": "^15.2.2",
+    "pinia-plugin-persistedstate": "^3.2.1",
     "prettier": "^3.0.3",
     "sass": "^1.74.1",
     "unplugin-auto-import": "^0.17.5",
