@@ -15,6 +15,7 @@ const goList = () => {
 </script>
 
 <template>
+  <test-demo>直接引用components下的组件</test-demo>
   <div>app.vue</div>
   <button @click="$router.push('/home')">跳首页</button>
   <button @click="goList">跳列表页</button>
