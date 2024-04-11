@@ -5,7 +5,7 @@
 // 2. 获取路由参数 route   useRoute
 //    const route = useRoute()
 import { useRoute, useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user.js'
+import { useUserStore } from '@/pinia' //统一出口，通过stores/index.js导出
 
 const router = useRouter()
 const route = useRoute()
