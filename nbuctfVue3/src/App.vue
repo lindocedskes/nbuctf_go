@@ -19,6 +19,8 @@ const userStore = useUserStore() //实例化对象
 </script>
 
 <template>
+  <!-- 直接根据路由加载对应组件 -->
+  <router-view></router-view>
   <test-demo>直接引用components下的组件</test-demo>
   <button @click="$router.push('/home')">跳首页</button>
   <button @click="goList">跳列表页</button>
