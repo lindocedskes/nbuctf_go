@@ -60,8 +60,11 @@ const userStore = useUserStore()
 const router = useRouter()
 const login = async () => {
   await form.value.validate()
-  const res = await userLoginService(formModel.value)
-  userStore.setToken(res.data.token) //存入pinia
+
+  // const res = await userLoginService(formModel.value) //被拒绝，await 会抛出一个错误
+  // userStore.setToken(res.data.token) //存入pinia
+  userStore.setToken('123456') //模拟登录成功，实际暂不发送请求
+
   ElMessage.success('登录成功')
   router.push('/')
 }
