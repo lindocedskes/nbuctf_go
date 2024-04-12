@@ -57,7 +57,7 @@ const handleCommand = async (key) => {
       >
         <el-menu-item index="/article/channel">
           <el-icon><Management /></el-icon>
-          <span>文章分类</span>
+          <span>文章展示</span>
         </el-menu-item>
         <el-menu-item index="/article/manage">
           <el-icon><Promotion /></el-icon>

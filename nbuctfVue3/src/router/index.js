@@ -15,6 +15,10 @@ const router = createRouter({
           component: () => import('@/views/article/ArticleManage.vue')
         },
         {
+          path: '/article/channel',
+          component: () => import('@/views/article/ArticleChannel.vue')
+        },
+        {
           path: '/user/profile',
           component: () => import('@/views/user/UserProfile.vue')
         },
