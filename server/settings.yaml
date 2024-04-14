@@ -48,5 +48,5 @@ captcha:
     key-long: 6
     img-width: 240
     img-height: 80
-    open-captcha: 3 #3次登录失败后需要验证码，0则每次都需要
+    open-captcha: 0 #3次登录失败后需要验证码，0则每次都需要
     open-captcha-timeout: 3600

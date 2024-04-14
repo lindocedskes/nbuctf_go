@@ -1,12 +1,26 @@
-import request from '@/utils/request'
+import service from '@/utils/request'
 
-// 注册接口
-export const userRegisterService = ({ username, password, repassword }) =>
-  request.post('/api/reg', { username, password, repassword })
+// @Summary 获取用户信息
+export const getUserInfo = () => {
+  return service({
+    url: '/user/getUserInfo',
+    method: 'get'
+  })
+}
+// @Summary 设置用户信息
+export const setSelfInfo = (data) => {
+  return service({
+    url: '/user/setSelfInfo',
+    method: 'put',
+    data: data
+  })
+}
 
-// 登录接口
-export const userLoginService = ({ username, password }) =>
-  request.post('/api/login', { username, password })
-
-// 获取用户基本信息
-export const userGetInfoService = () => request.get('/my/userinfo')
+// @Summary 获取验证码
+export const captcha = (data) => {
+  return service({
+    url: '/base/captcha',
+    method: 'post',
+    data: data
+  })
+}
