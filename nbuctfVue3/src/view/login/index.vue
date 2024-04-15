@@ -59,9 +59,11 @@
       <el-form
         :model="loginFormData"
         :rules="rules"
-        ref="form"
+        ref="loginForm"
         size="large"
         autocomplete="off"
+        validate-on-rule-change="false"
+        @keyup.enter="submitForm"
         v-else
       >
         <el-form-item>
@@ -70,6 +72,7 @@
         <el-form-item prop="username">
           <el-input
             v-model="loginFormData.username"
+            :prefix-icon="User"
             size="large"
             placeholder="请输入用户名"
             suffix-icon="user"
@@ -78,6 +81,7 @@
         <el-form-item prop="password">
           <el-input
             v-model="loginFormData.password"
+            :prefix-icon="Lock"
             show-password
             size="large"
             type="password"
@@ -94,7 +98,6 @@
             <div>
               <img
                 v-if="picPath"
-                class="w-full h-full"
                 :src="picPath"
                 alt="请输入验证码"
                 @click="loginVerify()"
@@ -147,14 +150,10 @@ defineOptions({
 const router = useRouter()
 // 验证函数
 const checkUsername = (rule, value, callback) => {
-  if (value.length < 5) {
-    return callback(new Error('请输入正确的用户名'))
-  } else {
-    callback()
-  }
+  callback()
 }
 const checkPassword = (rule, value, callback) => {
-  if (value.length < 6) {
+  if (value.length < 6 && value.length != 0) {
     return callback(new Error('请输入正确的密码'))
   } else {
     callback()
@@ -182,7 +181,7 @@ loginVerify() //当路由导航到这个页面时，立即执行
 const loginForm = ref(null)
 const picPath = ref('')
 const loginFormData = reactive({
-  username: 'admin',
+  username: 'user001',
   password: '123456',
   captcha: '',
   captchaId: '',

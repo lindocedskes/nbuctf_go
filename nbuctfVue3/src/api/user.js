@@ -24,3 +24,12 @@ export const captcha = (data) => {
     data: data
   })
 }
+
+// @Summary 用户登录
+export const login = (data) => {
+  return service({
+    url: '/base/login',
+    method: 'post',
+    data: data
+  })
+}

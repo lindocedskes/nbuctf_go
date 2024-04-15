@@ -2,6 +2,7 @@ package system
 
 import (
 	"context"
+
 	adapter "github.com/casbin/gorm-adapter/v3"
 	"github.com/lindocedskes/service/system"
 	"github.com/pkg/errors"
@@ -93,7 +94,7 @@ func getDefaultCasbinRule() []adapter.CasbinRule {
 		{Ptype: "p", V0: "888", V1: "/menu/addMenuAuthority", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/menu/deleteBaseMenu", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/menu/updateBaseMenu", V2: "POST"},
-		{Ptype: "p", V0: "888", V1: "/menu/getMenu", V2: "GET"},
+		{Ptype: "p", V0: "888", V1: "/menu/getMenu", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/menu/getBaseMenuTree", V2: "GET"},
 		{Ptype: "p", V0: "888", V1: "/menu/getMenuList", V2: "POST"},
 		{Ptype: "p", V0: "888", V1: "/menu/getMenuAuthority", V2: "POST"},
@@ -111,8 +112,10 @@ func getDefaultCasbinRule() []adapter.CasbinRule {
 		{Ptype: "p", V0: "888", V1: "/authorityBtn/canRemoveAuthorityBtn", V2: "POST"},
 
 		//普通用户的权限
-		{Ptype: "p", V0: "9528", V1: "/user/getUserInfo", V2: "GET"},
-		{Ptype: "p", V0: "666", V1: "/base/login", V2: "POST"},
-		{Ptype: "p", V0: "666", V1: "/file/upload", V2: "POST"},
+		{Ptype: "p", V0: "777", V1: "/user/getUserInfo", V2: "GET"},
+		{Ptype: "p", V0: "777", V1: "/base/login", V2: "POST"},
+		{Ptype: "p", V0: "777", V1: "/menu/getMenu", V2: "POST"},
+		{Ptype: "p", V0: "777", V1: "/file/upload", V2: "POST"},
+		{Ptype: "p", V0: "777", V1: "/jwt/jsonInBlacklist", V2: "POST"},
 	}
 }

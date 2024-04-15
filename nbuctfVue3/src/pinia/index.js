@@ -8,4 +8,5 @@ export default pinia
 
 //统一导出
 export * from './modules/user'
+export * from './modules/router'
 // export * from './modules/xxx'
