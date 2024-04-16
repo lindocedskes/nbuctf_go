@@ -86,8 +86,8 @@ export const useRouterStore = defineStore('router', () => {
       }
     ]
     //await 异步函数，在此期间，其他代码可以继续执行
-    const asyncRouterRes = await asyncMenu() // ! 从后台获取动态路由，得到是Promise对象
-    const asyncRouter = asyncRouterRes.data.menus
+    const asyncRouterRes = await asyncMenu() //  从后台发送请求获取动态路由，得到是Promise对象
+    const asyncRouter = asyncRouterRes.data.menus //获得角色对应菜单
 
     //如果 asyncRouter 存在，添加一个新的路由定义，（重载在被访问时才加载组件
     asyncRouter &&
@@ -110,7 +110,7 @@ export const useRouterStore = defineStore('router', () => {
     asyncRouterHandle(baseRouter) //得到baseRouter，动态导入 Vue 组件，并处理异步路由
     KeepAliveFilter(asyncRouter) // 找出需要保持活动状态的路由
     asyncRouters.value = baseRouter //更新，ref创建，任何依赖于 asyncRouters.value 的地方都会被自动更新
-    console.log('最终动态路由：', asyncRouterRes)
+    console.log('最终动态路由：', asyncRouters)
     return true
   }
 
