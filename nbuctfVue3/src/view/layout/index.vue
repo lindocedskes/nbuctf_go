@@ -1,6 +1,11 @@
 <template>
-  <div>layout</div>
-  <router-view></router-view>
+  <div>
+    <el-container>
+      <el-header>Header</el-header>
+      <el-main>Main</el-main>
+      <div class="bg-blue-500 text-white p-4">
+        这是一个使用 Tailwind CSS 的 div 元素
+      </div>
+    </el-container>
+  </div>
 </template>
-<script setup></script>
-<style lang="scss" scoped></style>

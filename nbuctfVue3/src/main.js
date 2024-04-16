@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 import router from './router'
-import '@/assets/main.scss'
+import '@/style/main.scss'
 import pinia from '@/pinia/index'
 
 import '@/permission' //路由守卫，每次请求前预处理、动态路由持久化、权限控制
