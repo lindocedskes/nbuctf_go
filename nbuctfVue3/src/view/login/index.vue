@@ -207,7 +207,6 @@ const submitForm = () => {
     if (v) {
       const flag = await login()
       if (!flag) {
-        ElMessage.success('失败')
         loginVerify()
       }
     } else {

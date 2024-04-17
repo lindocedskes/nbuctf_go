@@ -80,8 +80,7 @@ service.interceptors.response.use(
       }
       return response.data
     } else {
-      // 服务端定义的响应code码为非0时请求失败，弹窗提示错误
-      console.log(response.data.msg)
+      // 服务端定义的响应code码为非0时请求失败，弹窗提示错误，弹错
       ElMessage({
         showClose: true,
         message: response.data.msg || decodeURI(response.headers.msg),

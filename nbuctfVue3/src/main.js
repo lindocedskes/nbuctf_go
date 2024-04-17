@@ -1,3 +1,9 @@
+//按需引入el组件样式，才能正常显示组件
+import 'element-plus/es/components/message/style/css'
+import 'element-plus/es/components/loading/style/css'
+import 'element-plus/es/components/notification/style/css'
+import 'element-plus/es/components/message-box/style/css'
+
 import { createApp } from 'vue'
 
 import App from './App.vue'
