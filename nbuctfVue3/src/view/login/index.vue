@@ -181,7 +181,7 @@ loginVerify() //当路由导航到这个页面时，立即执行
 const loginForm = ref(null)
 const picPath = ref('')
 const loginFormData = reactive({
-  username: 'user001',
+  username: 'admin',
   password: '123456',
   captcha: '',
   captchaId: '',

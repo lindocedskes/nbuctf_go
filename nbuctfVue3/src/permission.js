@@ -12,6 +12,7 @@ const getRouter = async (userStore) => {
   const routerStore = useRouterStore()
   await routerStore.SetAsyncRouter()
   await userStore.GetUserInfo()
+  console.log('用户信息：', userStore.userInfo)
   const asyncRouters = routerStore.asyncRouters
   console.log('动态路由持久化：', asyncRouters)
   asyncRouters.forEach((asyncRouter) => {

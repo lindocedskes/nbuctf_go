@@ -6,6 +6,7 @@ import '@/style/main.scss'
 import pinia from '@/pinia/index'
 
 import '@/permission' //路由守卫，每次请求前预处理、动态路由持久化、权限控制
+import { register } from './core/global'
 
 // @description 导入加载进度条，防止首屏加载时间过长，用户等待
 import Nprogress from 'nprogress'
@@ -15,6 +16,7 @@ Nprogress.start()
 // 无需在这块结束，会在路由中间件中结束此块内容
 
 const app = createApp(App)
+register(app) //注册全局变量 $N8US3C
 app.use(pinia)
 app.use(router)
 

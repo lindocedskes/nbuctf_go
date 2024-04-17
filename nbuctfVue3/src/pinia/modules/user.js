@@ -15,6 +15,7 @@ export const useUserStore = defineStore(
     const userInfo = ref({
       uuid: '',
       nickName: '',
+      userName: '',
       headerImg: '',
       authority: {},
       sideMode: 'dark',
@@ -31,15 +32,17 @@ export const useUserStore = defineStore(
     const setToken = (val) => {
       token.value = val
     }
+    //重置应用的状态并将用户重定向到初始化init页面。
+    // const NeedInit = () => {
+    //   token.value = ''
+    //   window.localStorage.removeItem('token')
+    //   localStorage.clear()
+    //   router.push({ name: 'Init', replace: true })
+    // }
 
-    const NeedInit = () => {
-      token.value = ''
-      window.localStorage.removeItem('token')
-      localStorage.clear()
-      router.push({ name: 'Init', replace: true })
-    }
-
+    //更新 userInfo.value 的值
     const ResetUserInfo = (value = {}) => {
+      // ... 展开运算符（...）来合并对象,value覆盖userInfo.value
       userInfo.value = {
         ...userInfo.value,
         ...value
@@ -159,7 +162,7 @@ export const useUserStore = defineStore(
     return {
       userInfo,
       token,
-      NeedInit,
+      // NeedInit,
       ResetUserInfo,
       GetUserInfo,
       LoginIn,

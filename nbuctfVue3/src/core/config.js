@@ -1,6 +1,7 @@
 //全局配置变量
 const config = {
-  appName: 'nbuctf'
+  appName: 'nbuctf',
+  appLogo: '/src/assets/logo.png'
 }
 
 export default config
