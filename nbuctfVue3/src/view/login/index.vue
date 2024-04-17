@@ -62,7 +62,7 @@
         ref="loginForm"
         size="large"
         autocomplete="off"
-        validate-on-rule-change="false"
+        :validate-on-rule-change="false"
         @keyup.enter="submitForm"
         v-else
       >

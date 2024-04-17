@@ -84,12 +84,16 @@ import avatar from '@/assets/default_avatar.png'
 import { useUserStore } from '@/pinia'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+// import { emitter } from '@/utils/bus.js'
+//useRoute 返回的是当前的路由对象； useRouter 返回的是一个路由实例对象，跳转、获取所有的路由信息等
+// import { useRoute } from 'vue-router'
 
 const userStore = useUserStore()
 const router = useRouter()
 
 onMounted(() => {
   // userStore.getUser() // 每次请求permisssion都会获取
+  // 挂载一些通用的事件
 })
 
 const handleCommand = async (key) => {

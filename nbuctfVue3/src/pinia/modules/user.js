@@ -32,6 +32,7 @@ export const useUserStore = defineStore(
     }
 
     const setToken = (val) => {
+      console.log('调用setToken')
       token.value = val
     }
     //重置应用的状态并将用户重定向到初始化init页面。
@@ -114,6 +115,7 @@ export const useUserStore = defineStore(
     }
     /* 清理数据 */
     const ClearStorage = async () => {
+      console.log('调用ClearStorage')
       token.value = ''
       sessionStorage.clear()
       localStorage.clear()
@@ -157,7 +159,9 @@ export const useUserStore = defineStore(
     watch(
       () => token.value,
       () => {
+        console.log('token before:', window.localStorage.getItem('token'))
         window.localStorage.setItem('token', token.value)
+        console.log('token after:', window.localStorage.getItem('token'))
       }
     )
 

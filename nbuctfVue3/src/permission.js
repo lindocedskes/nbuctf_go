@@ -73,7 +73,7 @@ router.beforeEach(async (to, from) => {
         return {
           name: 'Login',
           query: {
-            redirect: document.location.hash //重定向到当前的 URL #号后哈希值。
+            redirect: window.location.pathname //记录重定的源路由 URL，以便重定向回原来的页面
           }
         }
       }
@@ -83,6 +83,7 @@ router.beforeEach(async (to, from) => {
   } else {
     // 不在白名单中并且已经登录的时候
     if (token) {
+      console.log('有token')
       // 添加flag防止多次获取动态路由和栈溢出
       if (!routerStore.asyncRouterFlag && whiteList.indexOf(from.name) < 0) {
         await getRouter(userStore)
@@ -100,7 +101,7 @@ router.beforeEach(async (to, from) => {
         }
       } else {
         if (to.matched.length) {
-          return true
+          return true //合法路由，放行
         } else {
           return { path: '/layout/404' }
         }
@@ -108,10 +109,11 @@ router.beforeEach(async (to, from) => {
     }
     // 不在白名单中并且未登录的时候
     if (!token) {
+      console.log('没有token')
       return {
         name: 'Login',
         query: {
-          redirect: document.location.hash //重定向到当前的 URL #号后哈希值。
+          redirect: window.location.pathname //记录重定的源路由 URL，以便重定向回原来的页面。
         }
       }
     }

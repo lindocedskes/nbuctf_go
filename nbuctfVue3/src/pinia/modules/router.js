@@ -85,7 +85,7 @@ export const useRouterStore = defineStore('router', () => {
         children: []
       }
     ]
-    //await 异步函数，在此期间，其他代码可以继续执行
+    //await 异步函数
     const asyncRouterRes = await asyncMenu() //  从后台发送请求获取动态路由，得到是Promise对象
     const asyncRouter = asyncRouterRes.data.menus //获得角色对应菜单
 
