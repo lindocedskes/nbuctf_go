@@ -20,7 +20,9 @@ export const useUserStore = defineStore(
       authority: {},
       sideMode: 'dark',
       activeColor: 'var(--el-color-primary)',
-      baseColor: '#fff'
+      baseColor: '#fff',
+      email: '',
+      phone: ''
     })
     const token = ref(
       window.localStorage.getItem('token') || cookie.get('x-token') || ''

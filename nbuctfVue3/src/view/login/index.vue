@@ -114,7 +114,7 @@
         </el-form-item>
         <el-form-item>
           <el-button
-            @click="login"
+            @click="submitForm"
             class="button"
             type="primary"
             auto-insert-space
@@ -207,6 +207,7 @@ const submitForm = () => {
     if (v) {
       const flag = await login()
       if (!flag) {
+        ElMessage.success('失败')
         loginVerify()
       }
     } else {

@@ -53,14 +53,8 @@
                   userStore.userInfo.nickName || userStore.userInfo.userName
                 }}</strong>
               </div>
-              <el-dropdown-item command="profile" :icon="User"
-                >基本资料</el-dropdown-item
-              >
-              <el-dropdown-item command="avatar" :icon="Crop"
-                >更换头像</el-dropdown-item
-              >
-              <el-dropdown-item command="password" :icon="EditPen"
-                >重置密码</el-dropdown-item
+              <el-dropdown-item command="person" :icon="User"
+                >个人信息</el-dropdown-item
               >
               <el-dropdown-item command="logout" :icon="SwitchButton"
                 >退出登录</el-dropdown-item
@@ -81,10 +75,7 @@
 import {
   Management,
   Promotion,
-  UserFilled,
   User,
-  Crop,
-  EditPen,
   SwitchButton,
   CaretBottom
 } from '@element-plus/icons-vue'
@@ -114,7 +105,7 @@ const handleCommand = async (key) => {
     userStore.LoginOut()
   } else {
     // 跳转操作
-    router.push(`/user/${key}`)
+    router.push(`/layout/${key}`)
   }
 }
 </script>

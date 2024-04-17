@@ -9,7 +9,7 @@ import (
 type UserRouter struct{}
 
 func (s *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
-	userRouter := Router.Group("userbyadmin").Use(middleware.OperationRecord()) //管理员权限下
+	userRouter := Router.Group("user").Use(middleware.OperationRecord()) //管理员权限下
 	userRouterWithoutRecord := Router.Group("user")
 	baseApi := v1.ApiGroupApp.SystemApiGroup.BaseApi
 	{
@@ -19,9 +19,9 @@ func (s *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 		userRouter.POST("setUserAuthorities", baseApi.SetUserAuthorities) // 重置用户权限组，并第一个设为主角色
 		userRouter.DELETE("deleteUser", baseApi.DeleteUser)               // 删除用户byid
 		userRouter.PUT("setUserInfo", baseApi.SetUserInfo)                // 设置用户信息byid
-		userRouter.PUT("setSelfInfo", baseApi.SetSelfInfo)                // 设置自身信息
 		userRouter.POST("resetPassword", baseApi.ResetPassword)           //直接重置用户（byid）密码为默认值123456
 		userRouter.POST("getUserList", baseApi.GetUserList)               // 分页获取用户列表
+		userRouterWithoutRecord.PUT("setSelfInfo", baseApi.SetSelfInfo)   // 设置自身信息
 	}
 	{
 		userRouterWithoutRecord.GET("getUserInfo", baseApi.GetUserInfo) // 获取自身信息 byUUid

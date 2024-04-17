@@ -65,6 +65,7 @@ service.interceptors.request.use(
 // http response 拦截器
 service.interceptors.response.use(
   (response) => {
+    console.log('response:', response.data) // for debug
     const userStore = useUserStore()
     if (!response.config.donNotShowLoading) {
       closeLoading()
@@ -80,11 +81,13 @@ service.interceptors.response.use(
       return response.data
     } else {
       // 服务端定义的响应code码为非0时请求失败，弹窗提示错误
+      console.log(response.data.msg)
       ElMessage({
         showClose: true,
         message: response.data.msg || decodeURI(response.headers.msg),
         type: 'error'
       })
+      //如果返回的数据中有reload字段，表示需要重新登录
       if (response.data.data && response.data.data.reload) {
         userStore.token = ''
         localStorage.clear() //清除浏览器的本地存储

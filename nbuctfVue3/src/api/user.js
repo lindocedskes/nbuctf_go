@@ -33,3 +33,21 @@ export const login = (data) => {
     data: data
   })
 }
+
+// @Summary 修改密码
+export const changePassword = (data) => {
+  return service({
+    url: '/user/changePassword',
+    method: 'post',
+    data: data
+  })
+}
+
+// 设置用户信息
+export const setUserInfo = (data) => {
+  return service({
+    url: '/user/setUserInfo',
+    method: 'put',
+    data: data
+  })
+}
