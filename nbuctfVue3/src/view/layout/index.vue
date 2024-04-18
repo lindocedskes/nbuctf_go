@@ -39,6 +39,10 @@
             <el-icon><Promotion /></el-icon>
             <span>用户管理</span>
           </el-menu-item>
+          <el-menu-item index="/layout/file">
+            <el-icon><Promotion /></el-icon>
+            <span>文件管理</span>
+          </el-menu-item>
         </el-menu>
         <el-dropdown placement="bottom-end" @command="handleCommand">
           <!-- 展示给用户，默认看到的 -->

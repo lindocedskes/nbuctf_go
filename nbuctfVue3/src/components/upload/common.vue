@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-upload
-      :action="`${path}/fileUploadAndDownload/upload`"
+      :action="`${path}/file/upload`"
       :before-upload="checkFile"
       :on-error="uploadError"
       :on-success="uploadSuccess"
@@ -14,14 +14,13 @@
 </template>
 
 <script setup>
-
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/pinia/modules/user'
 import { isVideoMime, isImageMime } from '@/utils/image'
 
 defineOptions({
-  name: 'UploadCommon',
+  name: 'UploadCommon'
 })
 
 const emit = defineEmits(['on-success'])
@@ -32,28 +31,32 @@ const fullscreenLoading = ref(false)
 
 const checkFile = (file) => {
   fullscreenLoading.value = true
-  const isLt500K = file.size / 1024 / 1024 < 0.5 // 500K, @todo 应支持在项目中设置
-  const isLt5M = file.size / 1024 / 1024 < 5 // 5MB, @todo 应支持项目中设置
+  const isLt5M = file.size / 1024 / 1024 < 5 // 5MB
+  const isLt50M = file.size / 1024 / 1024 < 50 // 50MB
   const isVideo = isVideoMime(file.type)
   const isImage = isImageMime(file.type)
+  const isZip = file.type === 'application/zip'
+
   let pass = true
-  if (!isVideo && !isImage) {
-    ElMessage.error('上传图片只能是 jpg,png,svg,webp 格式, 上传视频只能是 mp4,webm 格式!')
+  if (!isVideo && !isImage && !isZip) {
+    ElMessage.error(
+      '上传文件只能是zip格式，上传图片只能是 jpg,png,svg,webp 格式, 上传视频只能是 mp4,webm 格式!'
+    )
     fullscreenLoading.value = false
     pass = false
   }
-  if (!isLt5M && isVideo) {
-    ElMessage.error('上传视频大小不能超过 5MB')
+  if (!isLt50M && isVideo) {
+    ElMessage.error('上传视频大小不能超过 50MB')
     fullscreenLoading.value = false
     pass = false
   }
-  if (!isLt500K && isImage) {
-    ElMessage.error('未压缩的上传图片大小不能超过 500KB，请使用压缩上传')
+  if (!isLt5M && isImage) {
+    ElMessage.error('未压缩的上传图片大小不能超过 5M，请使用压缩上传')
     fullscreenLoading.value = false
     pass = false
   }
 
-  console.log('upload file check result: ', pass)
+  // console.log('upload file check result: ', pass)
 
   return pass
 }
@@ -72,6 +75,4 @@ const uploadError = () => {
   })
   fullscreenLoading.value = false
 }
-
 </script>
-

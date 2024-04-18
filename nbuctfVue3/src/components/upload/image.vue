@@ -1,14 +1,13 @@
-
 <template>
   <div>
     <el-upload
-      :action="`${path}/fileUploadAndDownload/upload`"
+      :action="`${path}/file/upload`"
       :show-file-list="false"
       :on-success="handleImageSuccess"
       :before-upload="beforeImageUpload"
       :multiple="false"
     >
-      <el-button type="primary">压缩上传</el-button>
+      <el-button type="primary">图片压缩上传</el-button>
     </el-upload>
   </div>
 </template>
@@ -20,10 +19,11 @@ import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/pinia/modules/user'
 
 defineOptions({
-  name: 'UploadImage',
+  name: 'UploadImage'
 })
 
 const emit = defineEmits(['on-success'])
+//接受父组件传递的参数，使用defineProps
 const props = defineProps({
   imageUrl: {
     type: String,
@@ -66,7 +66,6 @@ const handleImageSuccess = (res) => {
     emit('on-success', data.file.url)
   }
 }
-
 </script>
 
 <style lang="scss" scoped>

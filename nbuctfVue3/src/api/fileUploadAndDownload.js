@@ -3,7 +3,7 @@ import service from '@/utils/request'
 // @Summary 分页文件列表
 export const getFileList = (data) => {
   return service({
-    url: '/fileUploadAndDownload/getFileList',
+    url: '/file/getFileList',
     method: 'post',
     data
   })
@@ -13,7 +13,7 @@ export const getFileList = (data) => {
 // @Summary 删除文件
 export const deleteFile = (data) => {
   return service({
-    url: '/fileUploadAndDownload/deleteFile',
+    url: '/file/deleteFile',
     method: 'post',
     data
   })
@@ -26,7 +26,7 @@ export const deleteFile = (data) => {
  */
 export const editFileName = (data) => {
   return service({
-    url: '/fileUploadAndDownload/editFileName',
+    url: '/file/editFileName',
     method: 'post',
     data
   })
