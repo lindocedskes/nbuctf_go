@@ -1,16 +1,16 @@
 <template>
   <span class="headerAvatar">
-    <!-- 头像 -->
+    <!-- 头像 ，userStore.userInfo.headerImg-->
     <template v-if="picType === 'avatar'">
       <el-avatar v-if="userStore.userInfo.headerImg" :size="30" :src="avatar" />
       <el-avatar v-else :size="30" :src="noAvatar" />
     </template>
-    <!-- 预览图片 -->
+    <!-- 预览图片，props.picSrc-->
     <template v-if="picType === 'img'">
-      <img v-if="userStore.userInfo.headerImg" :src="avatar" class="avatar" />
+      <img v-if="props.picSrc" :src="file" class="avatar" />
       <img v-else :src="noAvatar" class="avatar" />
     </template>
-    <!-- 文件 -->
+    <!-- 文件,props.picSrc -->
     <template v-if="picType === 'file'">
       <el-image
         :src="file"

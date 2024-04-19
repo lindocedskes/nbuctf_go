@@ -31,23 +31,28 @@
             <el-icon><Promotion /></el-icon>
             <span>关于</span>
           </el-menu-item>
-          <el-menu-item index="/layout/announcement_manage">
-            <el-icon><Promotion /></el-icon>
-            <span>公告管理</span>
-          </el-menu-item>
-          <el-menu-item index="/layout/userbyadmin">
-            <el-icon><Promotion /></el-icon>
-            <span>用户管理</span>
-          </el-menu-item>
-          <el-menu-item index="/layout/file">
-            <el-icon><Promotion /></el-icon>
-            <span>文件管理</span>
-          </el-menu-item>
+          <el-sub-menu index="2">
+            <template #title v-if="userStore.userInfo.authorityId === 888"
+              >管理员</template
+            >
+            <el-menu-item index="/layout/announcement_manage">
+              <el-icon><Promotion /></el-icon>
+              <span>公告管理</span>
+            </el-menu-item>
+            <el-menu-item index="/layout/admin/user">
+              <el-icon><Promotion /></el-icon>
+              <span>用户管理</span>
+            </el-menu-item>
+            <el-menu-item index="/layout/file">
+              <el-icon><Promotion /></el-icon>
+              <span>文件管理</span>
+            </el-menu-item>
+          </el-sub-menu>
         </el-menu>
         <el-dropdown placement="bottom-end" @command="handleCommand">
           <!-- 展示给用户，默认看到的 -->
           <span class="el-dropdown__box">
-            <el-avatar :src="userStore.userInfo.headerImg || avatar" />
+            <el-avatar :src="imgSrc" />
             <el-icon><CaretBottom /></el-icon>
           </span>
           <template #dropdown>
@@ -83,17 +88,32 @@ import {
   SwitchButton,
   CaretBottom
 } from '@element-plus/icons-vue'
-import avatar from '@/assets/default_avatar.png'
+import noAvatarPng from '@/assets/default_avatar.png'
 
 import { useUserStore } from '@/pinia'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { computed, ref } from 'vue'
 // import { emitter } from '@/utils/bus.js'
 //useRoute 返回的是当前的路由对象； useRouter 返回的是一个路由实例对象，跳转、获取所有的路由信息等
 // import { useRoute } from 'vue-router'
 
 const userStore = useUserStore()
 const router = useRouter()
+
+const path = ref(import.meta.env.VITE_BASE_API + '/') // 请求地址默认同源，/api 标志为代理地址，转发到后端
+const noAvatar = ref(noAvatarPng)
+
+const imgSrc = computed(() => {
+  if (userStore.userInfo.headerImg !== '') {
+    if (userStore.userInfo.headerImg.slice(0, 4) === 'http') {
+      return userStore.userInfo.headerImg
+    } else {
+      return path.value + userStore.userInfo.headerImg
+    }
+  }
+  return noAvatar.value //noAvatar 是一个 ref对象，.value 才是值
+})
 
 onMounted(() => {
   // userStore.getUser() // 每次请求permisssion都会获取

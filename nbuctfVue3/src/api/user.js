@@ -51,3 +51,52 @@ export const setUserInfo = (data) => {
     data: data
   })
 }
+
+// @Summary 设置用户权限
+export const setUserAuthority = (data) => {
+  return service({
+    url: '/user/setUserAuthority',
+    method: 'post',
+    data: data
+  })
+}
+// @Summary 删除用户
+export const deleteUser = (data) => {
+  return service({
+    url: '/user/deleteUser',
+    method: 'delete',
+    data: data
+  })
+}
+// @Summary 设置用户权限
+export const setUserAuthorities = (data) => {
+  return service({
+    url: '/user/setUserAuthorities',
+    method: 'post',
+    data: data
+  })
+}
+// @Summary 分页获取用户列表
+export const getUserList = (data) => {
+  return service({
+    url: '/user/getUserList',
+    method: 'post',
+    data: data
+  })
+}
+// @Summary 获取用户信息
+export const resetPassword = (data) => {
+  return service({
+    url: '/user/resetPassword',
+    method: 'post',
+    data: data
+  })
+}
+// @Summary 用户注册
+export const register = (data) => {
+  return service({
+    url: '/user/registerbyadmin',
+    method: 'post',
+    data: data
+  })
+}
