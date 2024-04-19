@@ -6,6 +6,7 @@
           v-model:imageCommon="imageCommon"
           @on-success="getTableData"
         />
+        <!-- 子组件 emit('on-success', data.file.url)， 触发父组件@on-success="getTableData" -->
         <upload-image
           v-model:imageUrl="imageUrl"
           :file-size="512"

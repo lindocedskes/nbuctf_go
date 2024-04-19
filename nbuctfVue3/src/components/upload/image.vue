@@ -17,6 +17,7 @@ import ImageCompress from '@/utils/image'
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/pinia/modules/user'
+import { fileUpload } from '@/api/fileUploadAndDownload.js'
 
 defineOptions({
   name: 'UploadImage'
@@ -42,8 +43,9 @@ const props = defineProps({
 const path = ref(import.meta.env.VITE_BASE_API)
 
 const userStore = useUserStore()
+const fullscreenLoading = ref(false)
 
-const beforeImageUpload = (file) => {
+const beforeImageUpload = async (file) => {
   const isJPG = file.type === 'image/jpeg'
   const isPng = file.type === 'image/png'
   if (!isJPG && !isPng) {
@@ -55,9 +57,25 @@ const beforeImageUpload = (file) => {
   if (!isRightSize) {
     // 压缩
     const compress = new ImageCompress(file, props.fileSize, props.maxWH)
-    return compress.compress()
+    // return compress.compress()
+    file = await compress.compress()
   }
-  return isRightSize
+  // 自定义上传，通过@/utils/request，向8889发送请求
+  const formData = new FormData()
+  formData.append('file', file)
+  try {
+    const response = await fileUpload(formData)
+    if (response.code === 0) {
+      uploadSuccess(response)
+    } else {
+      uploadError()
+    }
+  } catch (error) {
+    uploadError()
+  }
+
+  // 阻止组件默认的上传行为
+  return false
 }
 
 const handleImageSuccess = (res) => {
@@ -65,6 +83,25 @@ const handleImageSuccess = (res) => {
   if (data.file) {
     emit('on-success', data.file.url)
   }
+}
+
+const uploadSuccess = (res) => {
+  const { data } = res //解构赋值data=res.data
+  if (data.file) {
+    ElMessage({
+      type: 'success',
+      message: '上传成功'
+    })
+    emit('on-success', data.file.url) //当文件上传成功，uploadSuccess 方法会被调用，然后它会触发 on-success 事件，并传递 data.file.url 作为参数。然后，在父组件中，uploadSuccess 方法会被执行，它的参数就是 data.file.url。
+  }
+}
+
+const uploadError = () => {
+  ElMessage({
+    type: 'error',
+    message: '上传失败'
+  })
+  fullscreenLoading.value = false
 }
 </script>
 

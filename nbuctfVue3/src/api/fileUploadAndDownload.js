@@ -31,3 +31,14 @@ export const editFileName = (data) => {
     data
   })
 }
+
+export const fileUpload = (data) => {
+  return service({
+    url: '/file/upload',
+    method: 'post',
+    data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
