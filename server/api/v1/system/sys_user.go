@@ -16,13 +16,7 @@ import (
 	"time"
 )
 
-// Login
-// @Tags     Base
 // @Summary  用户登录
-// @Produce   application/json
-// @Param    data  body      systemReq.Login                                             true  "用户名, 密码, 验证码"
-// @Success  200   {object}  response.Response{data=systemRes.LoginResponse,msg=string}  "返回包括用户信息,token,过期时间"
-// @Router   /base/login [post]
 func (b *BaseApi) Login(c *gin.Context) {
 	var u_l systemReq.Login       // 声明Login结构体
 	err := c.ShouldBindJSON(&u_l) // 从请求中解析出Login结构体
@@ -166,6 +160,55 @@ func (b *BaseApi) Register(c *gin.Context) {
 		return
 	}
 	response.OkWithDetailed(systemRes.SysUserResponse{User: userReturn}, "注册成功", c)
+}
+
+// @Summary   用户注册账号
+func (b *BaseApi) RegisterUser(c *gin.Context) {
+	var r systemReq.Register
+	err := c.ShouldBindJSON(&r)
+	key := c.ClientIP() // 获取客户端IP
+
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(r, utils.RegisterUserVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	// 判断验证码是否正确
+	openCaptcha := global.NBUCTF_CONFIG.Captcha.OpenCaptcha               // 是否开启防爆（最多）次数
+	openCaptchaTimeOut := global.NBUCTF_CONFIG.Captcha.OpenCaptchaTimeOut // 缓存超时时间
+	v, ok := global.BlackCache.Get(key)                                   // 获取缓存
+	if !ok {
+		global.BlackCache.Set(key, 1, time.Second*time.Duration(openCaptchaTimeOut)) // 设置缓存，记录次数，超时时间
+	}
+
+	var oc bool = openCaptcha == 0 || openCaptcha < interfaceToInt(v) // 判断是否开启验证码
+
+	//store.Verify(u_l.CaptchaId, u_l.Captcha, true)  // 验证码验证
+	if !oc || (r.CaptchaId != "" && r.Captcha != "" && store.Verify(r.CaptchaId, r.Captcha, true)) {
+		var authorities []system.SysAuthority //角色组
+		authorities = append(authorities, system.SysAuthority{
+			AuthorityId: 777,
+		})
+		//固定角色id
+		user := &system.SysUser{Username: r.Username, NickName: r.NickName, Password: r.Password, AuthorityId: 777, Authorities: authorities, Phone: r.Phone, Email: r.Email}
+		userReturn, err := userService.Register(*user)
+		if err != nil {
+			global.GVA_LOG.Error("注册失败!", zap.Error(err))
+			response.FailWithDetailed(systemRes.SysUserResponse{User: userReturn}, "注册失败,"+err.Error()+"请换一个用户名", c)
+			return
+		}
+		response.OkWithDetailed(systemRes.SysUserResponse{User: userReturn}, "注册成功", c)
+		return
+	}
+
+	// 验证码相关，记录请求次数+1，超上限要求验证码
+	global.BlackCache.Increment(key, 1)
+	response.FailWithMessage("验证码错误", c)
 }
 
 // /@Summary   修改用户密码

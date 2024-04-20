@@ -21,6 +21,8 @@ type Register struct {
 	AuthorityIds []uint `json:"authorityIds" swaggertype:"string" example:"[]uint 角色id"` //一个用户可以是多个角色
 	Phone        string `json:"phone" example:"电话号码"`
 	Email        string `json:"email" example:"电子邮箱"`
+	Captcha      string `json:"captcha"`   // 验证码
+	CaptchaId    string `json:"captchaId"` // 验证码ID
 }
 
 // Modify password structure

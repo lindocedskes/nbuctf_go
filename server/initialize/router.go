@@ -49,7 +49,7 @@ func Routers() *gin.Engine {
 	}
 	{
 		systemRouter.InitDbRouter(PublicGroup)   // 初始化数据库数据
-		systemRouter.InitBaseRouter(PublicGroup) // 基础登录功能路由 不做鉴权 todo 普通用户9528注册功能
+		systemRouter.InitBaseRouter(PublicGroup) // 基础登录功能路由 不做鉴权
 	}
 	PrivateGroup := Router.Group(global.NBUCTF_CONFIG.System.RouterPrefix) // 只在PrivateGroup路由组 下使用JWTAuth中间件和CasbinHandler中间件（每次【请求 之前 c.next() 之后】 执行中间件函数）
 	//中间件链，中间件按照它们被添加的顺序依次执行，每个中间件都可以决定是否继续执行后续的中间件和处理函数

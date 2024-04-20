@@ -92,10 +92,19 @@ export const resetPassword = (data) => {
     data: data
   })
 }
-// @Summary 用户注册
+// @Summary 用户注册-管理员
 export const register = (data) => {
   return service({
     url: '/user/registerbyadmin',
+    method: 'post',
+    data: data
+  })
+}
+
+// @Summary 用户注册-user
+export const registerbyuser = (data) => {
+  return service({
+    url: '/base/register',
     method: 'post',
     data: data
   })

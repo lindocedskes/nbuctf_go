@@ -31,10 +31,8 @@
             <el-icon><Promotion /></el-icon>
             <span>关于</span>
           </el-menu-item>
-          <el-sub-menu index="2">
-            <template #title v-if="userStore.userInfo.authorityId === 888"
-              >管理员</template
-            >
+          <el-sub-menu index="2" v-if="userStore.userInfo.authorityId === 888">
+            <template #title>管理员</template>
             <el-menu-item index="/layout/announcement_manage">
               <el-icon><Promotion /></el-icon>
               <span>公告管理</span>
