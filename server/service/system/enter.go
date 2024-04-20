@@ -12,4 +12,5 @@ type ServiceGroup struct {
 	BaseMenuService
 	FileUploadAndDownloadService
 	AuthorityBtnService
+	GameService
 }

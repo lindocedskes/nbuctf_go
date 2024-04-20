@@ -12,4 +12,5 @@ type RouterGroup struct {
 	MenuRouter
 	FileUploadAndDownloadRouter
 	AuthorityBtnRouter
+	GameRouter
 }
