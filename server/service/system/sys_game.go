@@ -13,7 +13,7 @@ type GameService struct{}
 func (gameService *GameService) GetGameList() ([]system.Question, error) {
 	db := global.NBUCTF_DB.Model(&system.Question{})
 	var gameList []system.Question
-	err := db.Find(&gameList, "if_hidden = ?", false).Error
+	err := db.Preload("Files").Find(&gameList, "if_hidden = ?", false).Error
 	return gameList, err
 }
 
@@ -99,12 +99,70 @@ func (gameService *GameService) GetRankList() ([]system.UserScore, error) {
 
 // 获取题目附件下载 by question_id
 func (gameService *GameService) GetFileById(queID uint) ([]system.SysFileUploadAndDownload, error) {
-	//先根据question_files 表中的question_id字段查找对应的文件
-	var fileid []uint
-	global.NBUCTF_DB.Model(&system.QuestionFile{}).Where("question_id = ?", queID).Pluck("file_id", &fileid)
-
+	//	Files []SysFileUploadAndDownload `json:"files" gorm:"many2many:question_files;"`
+	var question system.Question
+	err := global.NBUCTF_DB.Preload("Files").First(&question, queID).Error
 	//再根据file_id查找对应的文件
-	var files []system.SysFileUploadAndDownload
-	err := global.NBUCTF_DB.Model(&system.SysFileUploadAndDownload{}).Where("id in ?", fileid).Find(&files).Error
+	files := question.Files
 	return files, err
+}
+
+// 获取所有题目列表 admin
+func (gameService *GameService) GetGameListByAdmin() ([]system.Question, error) {
+	db := global.NBUCTF_DB.Model(&system.Question{})
+	var gameList []system.Question
+	//获取所有题目列表
+	err := db.Preload("Files").Find(&gameList).Error
+	return gameList, err
+}
+
+// 编辑题目，更新题目信息 by id
+func (gameService *GameService) EditQuestion(question system.Question) error {
+	err := global.NBUCTF_DB.Model(&system.Question{}).Where("id = ?", question.ID).Updates(&question).Error
+	return err
+}
+
+// 创建题目
+func (gameService *GameService) CreateQuestion(question system.Question) (system.Question, error) {
+	err := global.NBUCTF_DB.Create(&question).Error
+	return question, err
+}
+
+// 删除题目 by id，并删除与之关联的file
+func (gameService *GameService) DeleteQuestion(queID uint) error {
+	var question system.Question
+	err := global.NBUCTF_DB.First(&question, queID).Error
+	if err != nil {
+		return err
+	}
+
+	// 删除与 Question 关联的记录
+	global.NBUCTF_DB.Model(&question).Association("Files").Clear()
+
+	// 删除 Question
+	err = global.NBUCTF_DB.Delete(&question).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// 添加题目附件 gorm Association，Append
+func (gameService *GameService) AddFile(queID uint, fileID uint) error {
+	var question system.Question
+	err := global.NBUCTF_DB.First(&question, queID).Error
+	if err != nil {
+		return err
+	}
+
+	var file system.SysFileUploadAndDownload
+	err = global.NBUCTF_DB.First(&file, fileID).Error
+	if err != nil {
+		return err
+	}
+
+	// 添加文件到题目
+	global.NBUCTF_DB.Model(&question).Association("Files").Append(&file)
+	return nil
 }

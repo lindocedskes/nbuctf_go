@@ -29,8 +29,8 @@ func RegisterTables(db *gorm.DB) {
 		sysModel.Question{},        // 题目表
 		sysModel.RightGameRecord{}, // 正确题目记录表 题目id-用户id
 		sysModel.WrongGameRecord{}, // 错误题目记录表 题目id-用户id
-		sysModel.QuestionFile{},    // 题目-文件关联表
-		sysModel.UserScore{},       // 用户-分数表
+		//sysModel.QuestionFile{},    // 题目-文件关联表 -自动生成
+		sysModel.UserScore{}, // 用户-分数表
 	)
 
 	if err != nil {

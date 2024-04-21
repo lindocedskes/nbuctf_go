@@ -5,13 +5,15 @@ import "github.com/lindocedskes/model"
 // 题目 model
 type Question struct {
 	model.BaseModel `gorm:"embedded"` //嵌入字段，视为当前结构体的字段，否则不视为
-	IfHidden        bool              `json:"ifHidden" gorm:"default:false;comment:'是否隐藏'"`
+	IfHidden        bool              `json:"ifHidden" gorm:"default:true;comment:'是否隐藏'"`
 	QueName         string            `json:"queName" gorm:"comment:'题目名称'"`     // 题目名称
 	QueMark         int               `json:"queMark" gorm:"comment:'题目分数'"`     // 题目分数
 	QueFlag         string            `json:"queFlag" gorm:"comment:'flag'"`     // flag
 	QueDescribe     string            `json:"queDescribe" gorm:"comment:'题目描述'"` // 题目描述
 	QueType         string            `json:"queType" gorm:"comment:'题目类型'"`     // 题目类型
 	IfSolved        bool              `json:"ifSolved" gorm:"default:false;comment:'是否解决'"`
+	// 题目附件 多对多关系
+	Files []SysFileUploadAndDownload `json:"files" gorm:"many2many:question_files;"`
 }
 
 func (Question) TableName() string {
@@ -31,11 +33,11 @@ type WrongGameRecord struct {
 	QuestionId      uint              `json:"questionId" gorm:"comment:'题目ID'"`
 }
 
-type QuestionFile struct {
-	model.BaseModel `gorm:"embedded"` //嵌入字段，视为当前结构体的字段，否则不视为
-	QuestionId      uint              `json:"questionId" gorm:"comment:'题目ID'"`
-	FileId          uint              `json:"fileId" gorm:"comment:'文件ID'"`
-}
+// 对应many2many:question_files
+//type QuestionFile struct {
+//	QuestionId uint `json:"questionId" gorm:"comment:'题目ID'"`
+//	FileId     uint `json:"sys_file_upload_and_download_id" gorm:"comment:'文件ID'"`
+//}
 
 type UserScore struct {
 	model.BaseModel `gorm:"embedded"` //嵌入字段，视为当前结构体的字段，否则不视为
