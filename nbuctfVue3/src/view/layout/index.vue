@@ -23,7 +23,7 @@
             <el-icon><Promotion /></el-icon>
             <span>比赛</span>
           </el-menu-item>
-          <el-menu-item index="/article/manage">
+          <el-menu-item index="/layout/rank">
             <el-icon><Promotion /></el-icon>
             <span>排行榜</span>
           </el-menu-item>

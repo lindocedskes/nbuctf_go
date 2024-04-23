@@ -3,9 +3,10 @@ package system
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/lindocedskes/global"
+	"github.com/lindocedskes/model/common/request"
 	"github.com/lindocedskes/model/common/response"
 	"github.com/lindocedskes/model/system"
-	"github.com/lindocedskes/model/system/request"
+	systemReq "github.com/lindocedskes/model/system/request"
 	systemRes "github.com/lindocedskes/model/system/response"
 	"github.com/lindocedskes/utils"
 	"go.uber.org/zap"
@@ -75,13 +76,30 @@ func (s *GameApi) Submitflag(c *gin.Context) {
 
 // 获取排名,降序 分数相同则按照提交时间升序
 func (s *GameApi) RankList(c *gin.Context) {
-	rankList, err := gameService.GetRankList() //获取排名
+	var pageInfo request.PageInfo
+	err := c.ShouldBindJSON(&pageInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(pageInfo, utils.PageInfoVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	rankList, total, err := gameService.GetRankList(pageInfo) //获取排名
 	if err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 		return
 	}
-	response.OkWithDetailed(rankList, "获取成功", c)
+	response.OkWithDetailed(response.PageResult{
+		List:     rankList,
+		Total:    total,
+		Page:     pageInfo.Page,
+		PageSize: pageInfo.PageSize,
+	}, "获取成功", c)
 }
 
 // 获取题目附件下载 by question_id
@@ -177,7 +195,7 @@ func (s *GameApi) DeleteQuestion(c *gin.Context) {
 
 // 添加题目附件 by question_id - file_id
 func (s *GameApi) AddFile(c *gin.Context) {
-	var questionFile request.QuestionFile
+	var questionFile systemReq.QuestionFile
 	err := c.ShouldBindJSON(&questionFile) //绑定题目附件信息
 	if err != nil {
 		global.GVA_LOG.Error("请求参数错误!", zap.Error(err))

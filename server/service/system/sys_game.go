@@ -2,6 +2,7 @@ package system
 
 import (
 	"github.com/lindocedskes/global"
+	"github.com/lindocedskes/model/common/request"
 	"github.com/lindocedskes/model/system"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
@@ -90,11 +91,22 @@ func (gameService *GameService) JudgeFlag(submitFlag string, queID uint, userID 
 }
 
 // 获取排行榜
-func (gameService *GameService) GetRankList() ([]system.UserScore, error) {
+func (gameService *GameService) GetRankList(info request.PageInfo) (list interface{}, total int64, err error) {
+	limit := info.PageSize                    //长度
+	offset := info.PageSize * (info.Page - 1) //起点
+	keyword := info.Keyword
+
 	db := global.NBUCTF_DB.Model(&system.UserScore{})
 	var rankList []system.UserScore
-	err := db.Order("score desc, updated_at asc").Find(&rankList).Error //按分数降序排列，相同分数按更新时间升序
-	return rankList, err
+	if len(keyword) > 0 {
+		db = db.Where("user_name LIKE ?", "%"+keyword+"%") //对文件name 模糊查询
+	}
+	err = db.Count(&total).Error
+	if err != nil {
+		return
+	}
+	err = db.Limit(limit).Offset(offset).Order("score desc, updated_at asc").Find(&rankList).Error //按分数降序排列，相同分数按更新时间升序,并分页
+	return rankList, total, err
 }
 
 // 获取题目附件下载 by question_id

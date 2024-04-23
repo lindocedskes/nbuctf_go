@@ -15,7 +15,7 @@ func (s *GameRouter) InitGameRouter(Router *gin.RouterGroup) (R gin.IRouter) {
 	{
 		gameRouter.GET("list", gameApi.GameList)              // 获取题目列表
 		gameRouter.POST("submitflag", gameApi.Submitflag)     // 提交flag
-		gameRouter.GET("rank", gameApi.RankList)              // 排行榜
+		gameRouter.POST("rank", gameApi.RankList)             // 排行榜，分页
 		gameRouter.POST("filedownload", gameApi.Filedownload) // 题目附件下载 by question_id
 
 	}
