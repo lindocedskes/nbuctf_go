@@ -2,10 +2,12 @@ package initialize
 
 import (
 	"fmt"
+	"os"
+
 	gormadapter "github.com/casbin/gorm-adapter/v3"
+	"github.com/lindocedskes/model/system"
 	sysModel "github.com/lindocedskes/model/system"
 	"gorm.io/gorm"
-	"os"
 )
 
 func Gorm() *gorm.DB {
@@ -21,6 +23,10 @@ func RegisterTables(db *gorm.DB) {
 		sysModel.JwtBlacklist{},  // jwt黑名单
 		sysModel.SysHttpRecord{}, // http请求记录表
 		sysModel.SysBaseMenu{},   // 菜单表
+
+		system.SysBaseMenuParameter{}, // 菜单参数
+		system.SysBaseMenuBtn{},       //	基础菜单按钮
+		system.SysAuthorityBtn{},      // 角色按钮关联表
 
 		sysModel.SysFileUploadAndDownload{}, // 文件上传-删除记录表
 		sysModel.SysFile{},                  //文件切片上传结构存储

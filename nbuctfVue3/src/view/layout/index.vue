@@ -37,6 +37,10 @@
               <el-icon><Promotion /></el-icon>
               <span>公告管理</span>
             </el-menu-item>
+            <el-menu-item index="/layout/admin/game">
+              <el-icon><Promotion /></el-icon>
+              <span>比赛管理</span>
+            </el-menu-item>
             <el-menu-item index="/layout/admin/user">
               <el-icon><Promotion /></el-icon>
               <span>用户管理</span>

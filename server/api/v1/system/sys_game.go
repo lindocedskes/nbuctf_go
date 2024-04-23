@@ -141,6 +141,8 @@ func (s *GameApi) Editquestion(c *gin.Context) {
 func (s *GameApi) CreateQuestion(c *gin.Context) {
 	var question system.Question
 	err := c.ShouldBindJSON(&question) //绑定题目信息
+	question.ID = 0                    //创建题目时，ID为空 uint 为无效值，gorm会自动创建
+	question.IfSolved = false
 	if err != nil {
 		global.GVA_LOG.Error("请求参数错误!", zap.Error(err))
 		response.FailWithMessage("请求参数错误", c)
@@ -189,4 +191,22 @@ func (s *GameApi) AddFile(c *gin.Context) {
 		return
 	}
 	response.OkWithMessage("添加成功", c)
+}
+
+// 删除题目附件 by question_id
+func (s *GameApi) DeleteFiles(c *gin.Context) {
+	var question system.Question
+	err := c.ShouldBindJSON(&question) //绑定题目信息
+	if err != nil {
+		global.GVA_LOG.Error("请求参数错误!", zap.Error(err))
+		response.FailWithMessage("请求参数错误", c)
+		return
+	}
+	err = gameService.DeleteFiles(question.ID) //删除题目附件 byid
+	if err != nil {
+		global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		response.FailWithMessage("删除失败", c)
+		return
+	}
+	response.OkWithMessage("删除成功", c)
 }

@@ -25,6 +25,7 @@ func (s *GameRouter) InitGameRouter(Router *gin.RouterGroup) (R gin.IRouter) {
 		gameRouterWithRecord.POST("createquestion", gameApi.CreateQuestion) // 创建题目
 		gameRouterWithRecord.POST("deletequestion", gameApi.DeleteQuestion) // 删除题目 by question_id，并删除与之关联的file
 		gameRouterWithRecord.POST("addfile", gameApi.AddFile)               // 添加题目附件 by question_id - file_id
+		gameRouterWithRecord.POST("deletefiles", gameApi.DeleteFiles)       // 添加题目附件 by question_id
 	}
 	return gameRouter
 }

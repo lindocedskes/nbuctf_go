@@ -92,9 +92,19 @@ export default class ImageCompress {
 }
 
 const path = import.meta.env.VITE_FILE_API + '/'
-export const getUrl = (url) =>
-  url && url.slice(0, 4) !== 'http' ? path + url : url
-
+import defout from '@/assets/zippic.png'
+export const getUrl = (url) => {
+  if (
+    !url ||
+    (url.slice(-4) !== '.jpg' &&
+      url.slice(-4) !== '.png' &&
+      url.slice(-4) !== '.gif' &&
+      url.slice(-4) !== '.svg')
+  ) {
+    return defout // 如果 url 为空或者不是图片链接，返回默认图片的路径
+  }
+  return url.slice(0, 4) !== 'http' ? path + url : url
+}
 export const isVideoExt = (url) =>
   url.endsWith('.mp4') ||
   url.endsWith('.mov') ||

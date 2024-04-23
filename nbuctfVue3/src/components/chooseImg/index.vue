@@ -1,25 +1,20 @@
 <template>
-  <el-drawer v-model="drawer" title="选择头像" size="650px">
+  <el-drawer v-model="drawer" title="选择文件" size="650px">
     <div class="btn-list">
-      <upload-common
-        v-model:imageCommon="imageCommon"
-        @on-success="getTableData"
-      />
+      <upload-common v-model:imageCommon="imageCommon" @on-success="open" />
       <!-- 子组件 emit('on-success', data.file.url)， 触发父组件@on-success="getTableData" -->
       <upload-image
         v-model:imageUrl="imageUrl"
         :file-size="512"
         :max-w-h="1080"
-        @on-success="getTableData"
+        @on-success="open"
       />
       <el-input
         v-model="search.keyword"
         class="keyword"
         placeholder="请输入文件名"
       />
-      <el-button type="primary" icon="search" @click="getTableData"
-        >查询</el-button
-      >
+      <el-button type="primary" icon="search" @click="open">查询</el-button>
     </div>
     <div class="media">
       <div v-for="(item, key) in picList" :key="key" class="media-box">
@@ -27,7 +22,7 @@
           <el-image
             :key="key"
             :src="getUrl(item.url)"
-            @click="chooseImg(item.url, target, targetKey)"
+            @click="chooseImg(item.url, target, targetKey, item)"
           >
             <template #error>
               <div class="header-img-box-list">
@@ -82,7 +77,7 @@ const handleCurrentChange = (val) => {
   open()
 }
 
-const emit = defineEmits(['enterImg'])
+const emit = defineEmits(['enterImg', 'updateFiles']) // 新增：定义emit事件，用于触发父组件事件（enterImg,
 defineProps({
   target: {
     type: Object,
@@ -97,11 +92,12 @@ defineProps({
 const drawer = ref(false)
 const picList = ref([])
 // 选择图片
-const chooseImg = (url, target, targetKey) => {
+const chooseImg = (url, target, targetKey, item) => {
   if (target && targetKey) {
     target[targetKey] = url
   }
   emit('enterImg', url) // 触发父组件enterImg事件
+  emit('updateFiles', item) // 新增：触发父组件updateFiles事件 传递选中的整个file。 父组件用：@updateFiles="updateFiles" 实现监听
   drawer.value = false
 }
 

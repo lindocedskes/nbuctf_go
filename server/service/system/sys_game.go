@@ -118,7 +118,11 @@ func (gameService *GameService) GetGameListByAdmin() ([]system.Question, error) 
 
 // 编辑题目，更新题目信息 by id
 func (gameService *GameService) EditQuestion(question system.Question) error {
-	err := global.NBUCTF_DB.Model(&system.Question{}).Where("id = ?", question.ID).Updates(&question).Error
+	err := global.NBUCTF_DB.Model(&system.Question{}).Where("id = ?", question.ID).Update("if_hidden", question.IfHidden).Error //Updates 方法会忽略结构体中的零值字段
+	if err != nil {
+		return err
+	}
+	err = global.NBUCTF_DB.Model(&system.Question{}).Where("id = ?", question.ID).Updates(&question).Error
 	return err
 }
 
@@ -140,7 +144,7 @@ func (gameService *GameService) DeleteQuestion(queID uint) error {
 	global.NBUCTF_DB.Model(&question).Association("Files").Clear()
 
 	// 删除 Question
-	err = global.NBUCTF_DB.Delete(&question).Error
+	err = global.NBUCTF_DB.Unscoped().Delete(&question).Error //硬删除
 	if err != nil {
 		return err
 	}
@@ -164,5 +168,19 @@ func (gameService *GameService) AddFile(queID uint, fileID uint) error {
 
 	// 添加文件到题目
 	global.NBUCTF_DB.Model(&question).Association("Files").Append(&file)
+	return nil
+}
+
+// 删除题目附件 gorm Association，Delete
+func (gameService *GameService) DeleteFiles(queID uint) error {
+	var question system.Question
+	err := global.NBUCTF_DB.First(&question, queID).Error
+	if err != nil {
+		return err
+	}
+
+	// 删除与 Question 关联的记录
+	global.NBUCTF_DB.Model(&question).Association("Files").Clear()
+
 	return nil
 }
