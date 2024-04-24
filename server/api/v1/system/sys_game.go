@@ -35,17 +35,9 @@ func (s *GameApi) GameList(c *gin.Context) {
 		}
 	}
 
-	allfiles, err := gameService.GetAllFiles() //获取所有文件
-	if err != nil {
-		global.GVA_LOG.Error("获取失败!", zap.Error(err))
-		response.FailWithMessage("获取失败", c)
-		return
-	}
-
 	response.OkWithDetailed(systemRes.GetGameListResponse{
 		GameList: GameList,
 		GameType: gameType,
-		AllFiles: allfiles,
 	}, "获取成功", c)
 }
 
@@ -64,7 +56,7 @@ func (s *GameApi) Submitflag(c *gin.Context) {
 		response.FailWithMessage("已解决", c)
 		return
 	} else {
-		judge, _ := gameService.JudgeFlag(submit.SubmitFlag, submit.QuestionId, userId) //提交flag，记录，正确则加分
+		judge, _ := gameService.JudgeFlag(submit.SubmitFlag, submit.QuestionId, userId) //提交flag，记录，正确则加分,总解决人数加一
 		if judge {
 			response.OkWithMessage("flag正确", c)
 		} else {

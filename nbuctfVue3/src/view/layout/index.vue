@@ -19,7 +19,7 @@
             <el-icon><Promotion /></el-icon>
             <span>公告</span>
           </el-menu-item>
-          <el-menu-item index="/article/manage">
+          <el-menu-item index="/layout/game">
             <el-icon><Promotion /></el-icon>
             <span>比赛</span>
           </el-menu-item>

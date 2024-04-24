@@ -37,7 +37,7 @@ func (gameService *GameService) GetAllFiles() ([]system.SysFileUploadAndDownload
 	return allFiles, err
 }
 
-// 提交flag，记录，正确则加分
+// 提交flag，记录，正确则加分，总解决人数加一
 func (gameService *GameService) JudgeFlag(submitFlag string, queID uint, userID uint) (bool, error) {
 	var question system.Question
 	global.NBUCTF_DB.Model(&system.Question{}).Where("id = ?", queID).First(&question) //查询题目
@@ -73,6 +73,14 @@ func (gameService *GameService) JudgeFlag(submitFlag string, queID uint, userID 
 		err = global.NBUCTF_DB.Model(&system.UserScore{}).Where("user_id = ?", userID).Updates(system.UserScore{Score: userScore.Score}).Error //更新用户分数，按UserID
 		if err != nil {
 			global.GVA_LOG.Error("分数更新失败!", zap.Error(err))
+			return false, err
+		}
+		
+		//题目解决人数加一
+		question.QueSolvers++
+		err = global.NBUCTF_DB.Model(&system.Question{}).Where("id = ?", queID).Updates(system.Question{QueSolvers: question.QueSolvers}).Error
+		if err != nil {
+			global.GVA_LOG.Error("题目解决人数更新失败!", zap.Error(err))
 			return false, err
 		}
 		return true, nil

@@ -54,7 +54,7 @@
             />
           </template>
         </el-table-column>
-        <el-table-column label="附件" min-width="600">
+        <el-table-column label="附件" min-width="400">
           <template #default="scope">
             <div style="display: flex; flex-wrap: wrap">
               <div
@@ -72,6 +72,12 @@
             </div>
           </template>
         </el-table-column>
+        <el-table-column
+          align="left"
+          label="靶机地址"
+          min-width="180"
+          prop="imageUrl"
+        />
 
         <el-table-column label="操作" min-width="350" fixed="right">
           <template #default="scope">
@@ -150,6 +156,9 @@
           <el-form-item label="解题flag" prop="queFlag">
             <el-input v-model="questionInfo.queFlag" />
           </el-form-item>
+          <el-form-item label="靶机地址" prop="queFlag">
+            <el-input v-model="questionInfo.imageUrl" />
+          </el-form-item>
           <el-form-item label="启用" prop="ifHidden">
             <el-switch
               v-model="questionInfo.ifHidden"
@@ -223,7 +232,7 @@ import {
   editGame,
   addFile,
   deleteFile
-} from '@/api/game'
+} from '@/api/gameadmin'
 
 import { nextTick, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
