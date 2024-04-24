@@ -2,10 +2,11 @@ package system
 
 import (
 	"github.com/lindocedskes/global"
-	"github.com/lindocedskes/model/common/request"
 	"github.com/lindocedskes/model/system"
+	systemReq "github.com/lindocedskes/model/system/request"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
+	"strings"
 )
 
 type GameService struct{}
@@ -58,9 +59,14 @@ func (gameService *GameService) JudgeFlag(submitFlag string, queID uint, userID 
 			if err == gorm.ErrRecordNotFound {
 				// 用户记录不存在，创建新记录并设置初始分数为0
 				userScore = system.UserScore{
-					UserId:   userID,
-					UserName: userName,
-					Score:    0,
+					UserId:       userID,
+					UserName:     userName,
+					Score:        0,
+					ScoreCrypto:  0,
+					ScoreWeb:     0,
+					ScorePwn:     0,
+					ScoreMisc:    0,
+					ScoreReverse: 0,
 				}
 				if err := global.NBUCTF_DB.Create(&userScore).Error; err != nil {
 					return false, err
@@ -69,13 +75,34 @@ func (gameService *GameService) JudgeFlag(submitFlag string, queID uint, userID 
 				return false, err
 			}
 		}
+		//更新总分数
 		userScore.Score += question.QueMark
-		err = global.NBUCTF_DB.Model(&system.UserScore{}).Where("user_id = ?", userID).Updates(system.UserScore{Score: userScore.Score}).Error //更新用户分数，按UserID
+		//更新单项类型分数
+		switch strings.ToLower(question.QueType) {
+		case "crypto":
+			userScore.ScoreCrypto += question.QueMark
+		case "web":
+			userScore.ScoreWeb += question.QueMark
+		case "pwn":
+			userScore.ScorePwn += question.QueMark
+		case "misc":
+			userScore.ScoreMisc += question.QueMark
+		case "reverse":
+			userScore.ScoreReverse += question.QueMark
+		}
+		err = global.NBUCTF_DB.Model(&system.UserScore{}).Where("user_id = ?", userID).Updates(system.UserScore{
+			Score:        userScore.Score,
+			ScoreCrypto:  userScore.ScoreCrypto,
+			ScoreWeb:     userScore.ScoreWeb,
+			ScorePwn:     userScore.ScorePwn,
+			ScoreMisc:    userScore.ScoreMisc,
+			ScoreReverse: userScore.ScoreReverse,
+		}).Error
 		if err != nil {
 			global.GVA_LOG.Error("分数更新失败!", zap.Error(err))
 			return false, err
 		}
-		
+
 		//题目解决人数加一
 		question.QueSolvers++
 		err = global.NBUCTF_DB.Model(&system.Question{}).Where("id = ?", queID).Updates(system.Question{QueSolvers: question.QueSolvers}).Error
@@ -98,22 +125,40 @@ func (gameService *GameService) JudgeFlag(submitFlag string, queID uint, userID 
 	}
 }
 
-// 获取排行榜
-func (gameService *GameService) GetRankList(info request.PageInfo) (list interface{}, total int64, err error) {
+// 获取排行榜 byType
+func (gameService *GameService) GetRankList(info systemReq.RankListByType) (list interface{}, total int64, err error) {
 	limit := info.PageSize                    //长度
 	offset := info.PageSize * (info.Page - 1) //起点
 	keyword := info.Keyword
+	typeName := info.Type //类型
 
 	db := global.NBUCTF_DB.Model(&system.UserScore{})
 	var rankList []system.UserScore
 	if len(keyword) > 0 {
 		db = db.Where("user_name LIKE ?", "%"+keyword+"%") //对文件name 模糊查询
 	}
+
+	// 根据类型过滤
+	switch strings.ToLower(typeName) {
+	case "crypto":
+		db = db.Order("score_crypto desc, updated_at asc")
+	case "web":
+		db = db.Order("score_web desc, updated_at asc")
+	case "pwn":
+		db = db.Order("score_pwn desc, updated_at asc")
+	case "misc":
+		db = db.Order("score_misc desc, updated_at asc")
+	case "reverse":
+		db = db.Order("score_reverse desc, updated_at asc")
+	default:
+		db = db.Order("score desc, updated_at asc")
+	}
+
 	err = db.Count(&total).Error
 	if err != nil {
 		return
 	}
-	err = db.Limit(limit).Offset(offset).Order("score desc, updated_at asc").Find(&rankList).Error //按分数降序排列，相同分数按更新时间升序,并分页
+	err = db.Limit(limit).Offset(offset).Find(&rankList).Error //按分数降序排列，相同分数按更新时间升序,并分页
 	return rankList, total, err
 }
 

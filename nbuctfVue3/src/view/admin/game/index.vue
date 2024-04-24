@@ -296,7 +296,8 @@ const questionInfo = ref({
   queDescribe: '',
   queMark: '',
   queFlag: '',
-  ifHidden: true
+  ifHidden: true,
+  imageUrl: ''
 })
 
 const rules = ref({

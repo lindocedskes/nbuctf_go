@@ -44,7 +44,12 @@ type WrongGameRecord struct {
 type UserScore struct {
 	model.BaseModel `gorm:"embedded"` //嵌入字段，视为当前结构体的字段，否则不视为
 	//主键
-	UserId   uint   `json:"userId" gorm:"comment:'用户ID' primary_key"`
-	UserName string `json:"userName" gorm:"comment:'用户名'"`
-	Score    int    `json:"score" gorm:"comment:'分数' default:0"`
+	UserId       uint   `json:"userId" gorm:"comment:'用户ID' primary_key"`
+	UserName     string `json:"userName" gorm:"comment:'用户名'"`
+	Score        int    `json:"score" gorm:"comment:'分数' default:0"`
+	ScoreCrypto  int    `json:"scoreCrypto" gorm:"comment:'密码学分数' default:0"`
+	ScoreWeb     int    `json:"scoreWeb" gorm:"comment:'web分数' default:0"`
+	ScorePwn     int    `json:"scorePwn" gorm:"comment:'pwn分数' default:0"`
+	ScoreMisc    int    `json:"scoreMisc" gorm:"comment:'misc分数' default:0"`
+	ScoreReverse int    `json:"scoreReverse" gorm:"comment:'reverse分数' default:0"`
 }

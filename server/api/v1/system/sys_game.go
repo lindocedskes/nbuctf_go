@@ -3,7 +3,6 @@ package system
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/lindocedskes/global"
-	"github.com/lindocedskes/model/common/request"
 	"github.com/lindocedskes/model/common/response"
 	"github.com/lindocedskes/model/system"
 	systemReq "github.com/lindocedskes/model/system/request"
@@ -68,7 +67,8 @@ func (s *GameApi) Submitflag(c *gin.Context) {
 
 // 获取排名,降序 分数相同则按照提交时间升序
 func (s *GameApi) RankList(c *gin.Context) {
-	var pageInfo request.PageInfo
+
+	var pageInfo systemReq.RankListByType
 	err := c.ShouldBindJSON(&pageInfo)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
@@ -80,7 +80,7 @@ func (s *GameApi) RankList(c *gin.Context) {
 		return
 	}
 
-	rankList, total, err := gameService.GetRankList(pageInfo) //获取排名
+	rankList, total, err := gameService.GetRankList(pageInfo) //获取排名 byType
 	if err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
