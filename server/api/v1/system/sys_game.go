@@ -94,6 +94,20 @@ func (s *GameApi) RankList(c *gin.Context) {
 	}, "获取成功", c)
 }
 
+// submitScoreChart 提交时间 - 得分 折线图表
+func (s *GameApi) SubmitScoreChart(c *gin.Context) {
+	//按 system.RightGameRecord{} 直接获取
+	var resSubmitScoreChart []systemRes.ResSubmitScoreChart
+	resSubmitScoreChart, err := gameService.SubmitScoreChart() //提交时间 - 得分 折线图表
+	if err != nil {
+		global.GVA_LOG.Error("获取折线图表失败!", zap.Error(err))
+		response.FailWithMessage("获取折线图表失败", c)
+		return
+
+	}
+	response.OkWithDetailed(resSubmitScoreChart, "获取成功", c)
+}
+
 // 获取题目附件下载 by question_id
 func (s *GameApi) Filedownload(c *gin.Context) {
 	var submit system.WrongGameRecord

@@ -3,6 +3,11 @@
     <div
       class="table-box w-4/5 mx-auto relative overflow-x-auto shadow-md sm:rounded-lg"
     >
+      <!-- 折线图 -->
+      <el-row style="padding: 16px 16px 0; margin: 12px auto; max-width: 100%">
+        <line-chart :chartData="transformData(chartData)"></line-chart>
+      </el-row>
+      <!-- 查询 -->
       <div class="btn-list">
         <el-input
           v-model="search.keyword"
@@ -61,9 +66,12 @@
 </template>
 <script setup>
 import { getRankList } from '@/api/rank.js'
+import { submitScoreChart } from '@/api/game.js'
+
 import { ref, watch } from 'vue'
 import { formatDate } from '@/utils/format'
 import { ElMessage } from 'element-plus'
+import LineChart from '@/components/chart/LineChart.vue'
 
 const page = ref(1)
 const total = ref(0)
@@ -113,9 +121,20 @@ const getTableData = async () => {
     pageSize.value = table.data.pageSize
   }
 }
+const chartData = ref([])
+
+// 查询
+const getChartData = async () => {
+  const res = await submitScoreChart()
+  if (res.code === 0) {
+    chartData.value = res.data
+    console.log('chartData:', chartData.value)
+  }
+}
 
 const initPage = async () => {
   getTableData()
+  getChartData()
 }
 initPage()
 
@@ -170,6 +189,27 @@ watch(
     }
   }
 )
+//数据转换为适合图表的格式，键是用户名，值是一个数组，数组中的每个元素都是一个包含提交时间和问题分数的数组
+function transformData(data) {
+  const users = {}
+  data.forEach((item) => {
+    if (!users[item.userName]) {
+      users[item.userName] = []
+    }
+    //获取累积得分
+    const lastScore =
+      users[item.userName].length > 0
+        ? users[item.userName][users[item.userName].length - 1][1]
+        : 0
+    users[item.userName].push([
+      formatDate(item.submitTime),
+      item.queMark + lastScore,
+      item.queName
+    ])
+  })
+  console.log('users累积积分折线数据:', users)
+  return users
+}
 </script>
 
 <style scoped>

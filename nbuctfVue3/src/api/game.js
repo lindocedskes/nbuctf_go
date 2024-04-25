@@ -16,3 +16,10 @@ export const submitFlag = (data) => {
     data
   })
 }
+// 获取得分榜折线图
+export const submitScoreChart = () => {
+  return service({
+    url: '/game/submitScoreChart',
+    method: 'get'
+  })
+}

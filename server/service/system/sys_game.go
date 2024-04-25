@@ -4,6 +4,7 @@ import (
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/model/system"
 	systemReq "github.com/lindocedskes/model/system/request"
+	systemRes "github.com/lindocedskes/model/system/response"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"strings"
@@ -160,6 +161,36 @@ func (gameService *GameService) GetRankList(info systemReq.RankListByType) (list
 	}
 	err = db.Limit(limit).Offset(offset).Find(&rankList).Error //按分数降序排列，相同分数按更新时间升序,并分页
 	return rankList, total, err
+}
+
+// 提交时间 - 得分 折线图表
+// 1. 根据RightGameRecord表 按用户id查询SysUser表得到用户名，按题目id查询到题目名称，按提交时间查询到提交时间
+// 2. 根据Question表 按题目id查询到题目名称，按创建时间，题目分数
+// 3. 按CreatedAt字段进行升序排序f返回
+func (gameService *GameService) SubmitScoreChart() ([]systemRes.ResSubmitScoreChart, error) {
+	var records []system.RightGameRecord
+	var res []systemRes.ResSubmitScoreChart
+
+	db := global.NBUCTF_DB
+	//查询的主表，及其关联表，按CreatedAt字段进行升序排序
+	err := db.Preload("SysUser").Preload("Question").Order("created_at asc").Find(&records).Error
+
+	if err != nil {
+		return nil, err
+	}
+	//保存有用的字段
+	for _, record := range records {
+		res = append(res, systemRes.ResSubmitScoreChart{
+			UserId:     record.UserId,
+			QuestionId: record.QuestionId,
+			UserName:   record.SysUser.Username,
+			QueName:    record.Question.QueName,
+			SubmitTime: record.CreatedAt,
+			QueMark:    record.Question.QueMark,
+		})
+	}
+
+	return res, nil
 }
 
 // 获取题目附件下载 by question_id

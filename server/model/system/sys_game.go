@@ -26,6 +26,8 @@ type RightGameRecord struct {
 	model.BaseModel `gorm:"embedded"` //嵌入字段，视为当前结构体的字段，否则不视为
 	UserId          uint              `json:"userId" gorm:"comment:'用户ID'"`
 	QuestionId      uint              `json:"questionId" gorm:"comment:'题目ID'"`
+	SysUser         SysUser           `gorm:"foreignKey:UserId"`     // 声明UserId为外键
+	Question        Question          `gorm:"foreignKey:QuestionId"` // 声明QuestionId为外键
 }
 
 type WrongGameRecord struct {
