@@ -65,7 +65,8 @@ func Routers() *gin.Engine {
 		systemRouter.InitFileRouter(PrivateGroup)               // 文件上传下载功能路由
 		systemRouter.InitAuthorityBtnRouterRouter(PrivateGroup) //角色-按钮
 
-		systemRouter.InitGameRouter(PrivateGroup) //比赛路由
+		systemRouter.InitGameRouter(PrivateGroup)         //比赛路由
+		systemRouter.InitAnnouncementRouter(PrivateGroup) //公告路由
 	}
 
 	return Router
