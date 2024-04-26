@@ -1,13 +1,14 @@
 package system
 
 import (
+	"strings"
+
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/model/system"
 	systemReq "github.com/lindocedskes/model/system/request"
 	systemRes "github.com/lindocedskes/model/system/response"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
-	"strings"
 )
 
 type GameService struct{}

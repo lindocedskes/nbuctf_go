@@ -13,3 +13,19 @@ type RankListByType struct {
 	Keyword  string `json:"keyword" form:"keyword"`   //关键字
 	Type     string `json:"type" form:"type"`         // 题目类型
 }
+
+// 容器
+type OpenImage struct {
+	ImageAddr string `json:"imageAddr" gorm:"comment:'镜像地址'"`
+	InnerPort int    `json:"innerPort" gorm:"comment:'容器内部端口'"`
+}
+
+// 容器
+type CloseImage struct {
+	ImageAddr string `json:"imageAddr" gorm:"comment:'镜像地址'"`
+}
+
+// 查询容器状态
+type CheckImage struct {
+	ImageAddr string `json:"imageAddr" gorm:"comment:'镜像地址'"`
+}

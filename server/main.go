@@ -1,13 +1,16 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
+	"os"
+
 	"github.com/lindocedskes/core"
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/initialize"
 	"go.uber.org/zap"
-	"os"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func main() {
@@ -33,6 +36,24 @@ func main() {
 				fmt.Println("db close failed")
 			}
 		}(db) // db 变量作为参数传入
+	}
+
+	var err error
+	global.NBUCTF_K8S, err = core.K8s()
+	if err != nil {
+		fmt.Printf("Failed to initialize Kubernetes client: %v\n", err)
+		return
+	}
+	// 测试 Kubernetes 客户端 是否通信成功
+	ctx := context.TODO()
+	namespaces, err := global.NBUCTF_K8S.CoreV1().Namespaces().List(ctx, metav1.ListOptions{})
+	if err != nil {
+		fmt.Printf("Failed to list namespaces: %v\n", err)
+		return
+	}
+
+	for _, namespace := range namespaces.Items {
+		fmt.Printf("Namespace: %s\n", namespace.Name)
 	}
 
 	core.RunServer() //启动核心服务

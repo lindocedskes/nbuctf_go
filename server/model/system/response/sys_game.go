@@ -1,8 +1,9 @@
 package response
 
 import (
-	"github.com/lindocedskes/model/system"
 	"time"
+
+	"github.com/lindocedskes/model/system"
 )
 
 type GetGameListResponse struct {
@@ -22,4 +23,9 @@ type ResSubmitScoreChart struct {
 	QueName    string    `json:"queName" gorm:"comment:'题目名称'"`       // 题目名称
 	QueMark    int       `json:"queMark" gorm:"comment:'题目分数'"`       // 题目分数
 	SubmitTime time.Time `json:"submitTime" gorm:"comment:'提交时间'"`    // 提交时间，升序
+}
+
+type ResContainer struct {
+	ContainerIp string `json:"containerAddr" gorm:"comment:'运行容器ip'"`
+	OutPort     int    `json:"outPort" gorm:"comment:'容器外部部端口'"`
 }

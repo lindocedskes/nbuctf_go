@@ -67,6 +67,8 @@ func Routers() *gin.Engine {
 
 		systemRouter.InitGameRouter(PrivateGroup)         //比赛路由
 		systemRouter.InitAnnouncementRouter(PrivateGroup) //公告路由
+		systemRouter.InitK8sRouter(PrivateGroup)          //比赛路由
+
 	}
 
 	return Router
