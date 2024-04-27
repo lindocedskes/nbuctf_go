@@ -2,10 +2,23 @@
   <div>
     <div class="table-box">
       <div class="btn-list">
-        <el-button type="primary" icon="plus" @click="addUser"
-          >新增用户</el-button
+        <a
+          class="group relative inline-block focus:outline-none focus:ring"
+          href="#"
         >
+          <span
+            class="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-yellow-300 transition-transform group-hover:translate-x-0 group-hover:translate-y-0"
+          ></span>
+
+          <span
+            @click="addUser"
+            class="relative inline-block border-2 border-current px-4 py-1 text-sm font-bold uppercase tracking-widest text-black group-active:text-opacity-75"
+          >
+            新增用户
+          </span>
+        </a>
       </div>
+
       <el-table :data="tableData" row-key="id">
         <el-table-column align="left" label="头像" min-width="75">
           <template #default="scope">
@@ -107,7 +120,13 @@
                 >
               </div>
               <template #reference>
-                <el-button type="primary" link icon="delete">删除</el-button>
+                <el-button
+                  type="primary"
+                  link
+                  icon="delete"
+                  class="text-red-500"
+                  >删除</el-button
+                >
               </template>
             </el-popover>
             <el-button
@@ -115,6 +134,7 @@
               link
               icon="edit"
               @click="openEdit(scope.row)"
+              class="text-amber-300"
               >编辑</el-button
             >
             <el-button
@@ -122,6 +142,7 @@
               link
               icon="magic-stick"
               @click="resetPasswordFunc(scope.row)"
+              class="text-amber-300"
               >重置密码</el-button
             >
           </template>

@@ -1,5 +1,8 @@
 <template>
-  <div id="challenge-card">
+  <div
+    id="challenge-card"
+    class="hover:animate-background rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl transition hover:bg-[length:400%_400%] hover:shadow-sm hover:[animation-duration:_4s]"
+  >
     <el-card
       :body-style="{ padding: '0px' }"
       class="challenge-card"
@@ -32,7 +35,7 @@
     :title="challenge.queName"
     :show-close="false"
   >
-    <div style="height: 60vh; overflow: auto; padding: 0 12px">
+    <div style="height: 64vh; overflow: auto; padding: 0 12px">
       <el-form
         ref="challengeForm"
         :rules="rules"
@@ -147,7 +150,9 @@
 
         <el-form-item label="解题flag:" prop="queFlag">
           <el-input v-model="challengeInfo.queFlag" />
-          <el-button type="primary" @click="enterSubmitFlag" class="py-1 my-2"
+          <el-button
+            @click="enterSubmitFlag"
+            class="mt-2 text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
             >提 交</el-button
           >
         </el-form-item>
@@ -156,7 +161,12 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="closeSubmitQuestionDialog">关闭</el-button>
+        <button
+          @click="closeSubmitQuestionDialog"
+          class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-1.5 text-center me-2 mb-2"
+        >
+          关闭
+        </button>
       </div>
     </template>
   </el-dialog>
@@ -309,8 +319,10 @@ const openWebPage = () => {
 .challenge-card {
   min-height: 200px;
   max-width: 180px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 2cap;
+  margin-bottom: 2px;
+  margin-left: 1%;
+  margin-right: 1px;
 }
 
 .challenge-card:hover {
