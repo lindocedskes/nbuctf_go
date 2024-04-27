@@ -44,6 +44,7 @@ func main() {
 		fmt.Printf("Failed to initialize Kubernetes client: %v\n", err)
 		return
 	}
+	fmt.Printf("k3s client 运行成功\n")
 	// 测试 Kubernetes 客户端 是否通信成功
 	ctx := context.TODO()
 	namespaces, err := global.NBUCTF_K8S.CoreV1().Namespaces().List(ctx, metav1.ListOptions{})

@@ -14,6 +14,7 @@ type Question struct {
 	IfSolved        bool              `json:"ifSolved" gorm:"default:false;comment:'是否解决'"`
 	QueSolvers      int               `json:"queSolvers" gorm:"default:0;comment:'解题者'"` // 已解题人数
 	ImageUrl        string            `json:"imageUrl" gorm:"comment:'docker镜像地址'"`      // docker镜像地址
+	InnerPort       string            `json:"innerPort" gorm:"comment:'docker内部访问端口'"`   // docker内部访问端口
 	// 题目附件 多对多关系
 	Files []SysFileUploadAndDownload `json:"files" gorm:"many2many:question_files;"`
 }
