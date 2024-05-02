@@ -37,7 +37,7 @@
         </el-menu-item>
         <el-sub-menu index="2" v-if="userStore.userInfo.authorityId === 888">
           <template #title>管理员</template>
-          <el-menu-item index="/layout/admin/game">
+          <el-menu-item index="/layout/admin/gameadmin">
             <el-icon><Promotion /></el-icon>
             <span>比赛管理</span>
           </el-menu-item>
@@ -45,7 +45,7 @@
             <el-icon><Promotion /></el-icon>
             <span>用户管理</span>
           </el-menu-item>
-          <el-menu-item index="/layout/file">
+          <el-menu-item index="/layout/admin/file">
             <el-icon><Promotion /></el-icon>
             <span>文件管理</span>
           </el-menu-item>

@@ -36,6 +36,7 @@ const closeLoading = () => {
 // 请求拦截
 service.interceptors.request.use(
   (config) => {
+    console.log('request:', config) // for debug
     if (!config.donNotShowLoading) {
       showLoading()
     }

@@ -23,7 +23,7 @@ func main() {
 	global.GVA_LOG = core.Zap()        // 初始化zap日志库
 	zap.ReplaceGlobals(global.GVA_LOG) // 替换zap库为全局变量
 
-	global.NBUCTF_DB = initialize.Gorm() //连接数据库
+	global.NBUCTF_DB = initialize.Gorm() //连接数据库，不存在会自动创建数据库
 	fmt.Println("服务端口:", global.NBUCTF_CONFIG.System.Port)
 
 	if global.NBUCTF_DB != nil { //NBUCTF_DB 存配置文件DB数据
