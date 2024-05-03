@@ -24,3 +24,6 @@
 # log
 .log
 /server/log/
+
+# k8s
+/server/k8sconfig.yaml
