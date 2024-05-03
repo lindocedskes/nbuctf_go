@@ -167,6 +167,7 @@ func (s *GameApi) CreateQuestion(c *gin.Context) {
 	err := c.ShouldBindJSON(&question) //绑定题目信息
 	question.ID = 0                    //创建题目时，ID为空 uint 为无效值，gorm会自动创建
 	question.IfSolved = false
+	question.QueSolvers = 0 //创建题目时，解决人数为0
 	if err != nil {
 		global.GVA_LOG.Error("请求参数错误!", zap.Error(err))
 		response.FailWithMessage("请求参数错误", c)
