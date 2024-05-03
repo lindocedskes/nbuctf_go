@@ -21,10 +21,12 @@ import 'nprogress/nprogress.css'
 Nprogress.configure({ showSpinner: false, ease: 'ease', speed: 500 })
 Nprogress.start()
 // 无需在这块结束，会在路由中间件中结束此块内容
+import DataVVue3 from '@kjgl77/datav-vue3'
 
 const app = createApp(App)
 register(app) //注册全局变量 $N8US3C
 app.use(pinia)
 app.use(router)
+app.use(DataVVue3)
 
 app.mount('#app')

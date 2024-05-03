@@ -14,4 +14,5 @@ type RouterGroup struct {
 	AuthorityBtnRouter
 	GameRouter
 	AnnouncementRouter
+	K8sRouter
 }

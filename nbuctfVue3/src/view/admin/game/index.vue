@@ -1,11 +1,122 @@
 <template>
   <div>
     <div class="table-box">
-      <div class="btn-list">
-        <el-button type="primary" icon="plus" @click="addQuestion"
-          >新增赛题</el-button
+      <div class="l-list">
+        <label
+          for="helper-text"
+          class="block text-sm font-medium text-gray-900 w-1/8"
+          >容器镜像:</label
         >
+        <input
+          v-model="ImageInfo.containerImage"
+          type="email"
+          id="helper-text"
+          aria-describedby="helper-text-explanation"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/4 p-2.5"
+          placeholder="请输入测试容器镜像地址"
+        />
+        <label
+          for="helper-text"
+          class="block mb-2 text-sm font-medium text-gray-900 w-1/8 ml-4"
+          >服务端口:</label
+        >
+        <input
+          v-model="ImageInfo.innerPort"
+          type="email"
+          id="helper-text"
+          aria-describedby="helper-text-explanation"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-1/6 p-2.5"
+          placeholder="测试容器内部运行端口（一般都为80"
+        />
+
+        <div class="w-1/3 ml-4">
+          <div v-if="testcontainInfo.containerAddr">
+            <label
+              class="text-gray-900 bg-gradient-to-r from-lime-200 via-lime-400 to-lime-500 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-lime-300 dark:focus:ring-lime-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            >
+              {{
+                testcontainInfo.containerAddr + ':' + testcontainInfo.outPort
+              }}
+            </label>
+            <button
+              @click="openWebPage"
+              type="button"
+              class="ml-2 text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+            >
+              Open
+              <el-icon class="#dc2626"><Share /></el-icon>
+            </button>
+          </div>
+
+          <label
+            v-else
+            class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          >
+            测试容器未开启
+          </label>
+        </div>
       </div>
+      <div class="btn-list">
+        <a
+          class="group inline-block rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75"
+          href="#"
+        >
+          <span
+            @click="openTestContainer"
+            class="block rounded-full bg-white px-4 py-1 text-sm font-medium group-hover:bg-transparent"
+          >
+            开启测试容器
+          </span>
+        </a>
+        <a
+          class="group inline-block rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75"
+          href="#"
+        >
+          <span
+            @click="closeTestContainer"
+            class="block rounded-full bg-white px-4 py-1 text-sm font-medium group-hover:bg-transparent"
+          >
+            删除测试容器
+          </span>
+        </a>
+        <a
+          class="group inline-block rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75"
+          href="#"
+        >
+          <span
+            @click="checkTestContainer"
+            class="block rounded-full bg-white px-4 py-1 text-sm font-medium group-hover:bg-transparent"
+          >
+            查询测试容器状态
+          </span>
+        </a>
+
+        <button
+          type="button"
+          @click="closeAllContainer"
+          class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-4 py-1.5 text-center"
+        >
+          关闭所有比赛容器
+        </button>
+      </div>
+      <div class="btn-list">
+        <a
+          class="group relative inline-block focus:outline-none focus:ring"
+          href="#"
+        >
+          <span
+            class="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-yellow-300 transition-transform group-hover:translate-x-0 group-hover:translate-y-0"
+          ></span>
+
+          <span
+            @click="addQuestion"
+            class="relative inline-block border-2 border-current px-4 py-1 text-sm font-bold uppercase tracking-widest text-black group-active:text-opacity-75"
+          >
+            新增赛题
+          </span>
+        </a>
+      </div>
+
       <el-table :data="tableData" row-key="id">
         <el-table-column align="left" label="题目类型" min-width="100">
           <template #default="scope">
@@ -78,6 +189,12 @@
           min-width="180"
           prop="imageUrl"
         />
+        <el-table-column
+          align="left"
+          label="靶机内部运行端口"
+          min-width="180"
+          prop="innerPort"
+        />
 
         <el-table-column label="操作" min-width="350" fixed="right">
           <template #default="scope">
@@ -99,7 +216,13 @@
                 >
               </div>
               <template #reference>
-                <el-button type="primary" link icon="delete">删除</el-button>
+                <el-button
+                  type="primary"
+                  link
+                  icon="delete"
+                  class="text-emerald-400"
+                  >删除</el-button
+                >
               </template>
             </el-popover>
             <el-button
@@ -107,6 +230,7 @@
               link
               icon="edit"
               @click="openEdit(scope.row)"
+              class="text-emerald-400"
               >编辑</el-button
             >
             <el-button
@@ -114,6 +238,7 @@
               link
               icon="Link"
               @click="openFiles(scope.row)"
+              class="text-emerald-400"
               >添加附件</el-button
             >
             <el-button
@@ -121,6 +246,7 @@
               link
               icon="Link"
               @click="deleteFiles(scope.row)"
+              class="text-emerald-400"
               >清空附件</el-button
             >
           </template>
@@ -131,15 +257,15 @@
       v-model="addQuestionDialog"
       title="赛题"
       :show-close="false"
-      :close-on-press-escape="false"
       :close-on-click-modal="false"
+      class="w-3/5"
     >
-      <div style="height: 60vh; overflow: auto; padding: 0 12px">
+      <div style="height: 60vh; overflow: auto; padding: 0 1px">
         <el-form
           ref="questionForm"
           :rules="rules"
           :model="questionInfo"
-          label-width="80px"
+          label-width="100px"
         >
           <el-form-item label="题目类型" prop="queType">
             <el-input v-model="questionInfo.queType" />
@@ -148,7 +274,12 @@
             <el-input v-model="questionInfo.queName" />
           </el-form-item>
           <el-form-item label="题目描述" prop="queDescribe">
-            <el-input v-model="questionInfo.queDescribe" />
+            <MdEditor
+              v-model="questionInfo.queDescribe"
+              class="h-80 text-left"
+            />
+
+            <!-- <el-input v-model="questionInfo.queDescribe" /> -->
           </el-form-item>
           <el-form-item label="题目分值" prop="queMark">
             <el-input v-model.number="questionInfo.queMark" />
@@ -158,6 +289,9 @@
           </el-form-item>
           <el-form-item label="靶机地址" prop="queFlag">
             <el-input v-model="questionInfo.imageUrl" />
+          </el-form-item>
+          <el-form-item label="靶机内部端口" prop="queFlag">
+            <el-input v-model="questionInfo.innerPort" />
           </el-form-item>
           <el-form-item label="启用" prop="ifHidden">
             <el-switch
@@ -233,9 +367,17 @@ import {
   addFile,
   deleteFile
 } from '@/api/gameadmin'
+import {
+  openContainerApi,
+  checkContainerApi,
+  closeContainerApi,
+  closeAllContainerApi
+} from '@/api/k8s'
 
 import { nextTick, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
+import { MdEditor } from 'md-editor-v3'
+import 'md-editor-v3/lib/style.css'
 
 defineOptions({
   name: 'GameAdmin'
@@ -297,7 +439,8 @@ const questionInfo = ref({
   queMark: '',
   queFlag: '',
   ifHidden: true,
-  imageUrl: ''
+  imageUrl: '',
+  innerPort: '' //默认80端口
 })
 
 const rules = ref({
@@ -423,6 +566,85 @@ const openHeaderChange = () => {
 const updateFiles = (newFiles) => {
   fileInfo.value.files[0] = newFiles
 }
+
+const ImageInfo = ref({ containerImage: '', innerPort: 80 })
+const testcontainInfo = ref({ containerAddr: '', outPort: '' })
+
+const openTestContainer = async () => {
+  //判断是containerImage否为空
+  if (!ImageInfo.value.containerImage) {
+    ElMessage.error('请输入测试容器镜像地址')
+    return
+  }
+  if (!ImageInfo.value.innerPort) {
+    ElMessage.error('请输入测试容器内部运行端口')
+    return
+  }
+  const req = {
+    imageAddr: ImageInfo.value.containerImage,
+    innerPort: ImageInfo.value.innerPort
+  }
+  console.log(req)
+  const res = await openContainerApi(req)
+  if (res.code === 0) {
+    testcontainInfo.value = res.data
+    ElMessage.success(res.msg)
+  } else {
+    // ElMessage.error(res.msg)
+  }
+}
+const checkTestContainer = async () => {
+  const req = { imageAddr: ImageInfo.value.containerImage }
+  const res = await checkContainerApi(req)
+  if (res.code === 0) {
+    testcontainInfo.value = res.data
+    ElMessage.success(res.msg)
+  } else {
+    // ElMessage.error(res.msg)
+  }
+}
+const closeTestContainer = async () => {
+  const req = { imageAddr: ImageInfo.value.containerImage }
+  const res = await closeContainerApi(req)
+  if (res.code === 0) {
+    testcontainInfo.value = res.data // 清空测试容器信息
+    ElMessage.success(res.msg)
+  } else {
+    // ElMessage.error(res.msg)
+  }
+}
+// 关闭所有容器
+const closeAllContainer = async () => {
+  ElMessageBox.confirm('此操作将删除比赛所有容器, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(async () => {
+      const res = await closeAllContainerApi()
+      if (res.code === 0) {
+        testcontainInfo.value = res.data // 清空测试容器信息
+        ElMessage.success(res.msg)
+      } else {
+        // ElMessage.error(res.msg)
+      }
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: '已取消删除'
+      })
+    })
+}
+
+const openWebPage = () => {
+  window.open(
+    'http://' +
+      testcontainInfo.value.containerAddr +
+      ':' +
+      testcontainInfo.value.outPort
+  )
+}
 </script>
 
 <style lang="scss">
@@ -434,6 +656,9 @@ const updateFiles = (newFiles) => {
 }
 .btn-list {
   @apply mb-3 flex gap-3 items-center;
+}
+.l-list {
+  @apply mb-3 flex gap-1 items-center;
 }
 .pagination {
   @apply flex justify-end;
@@ -448,5 +673,8 @@ const updateFiles = (newFiles) => {
     background: var(--el-color-primary);
     color: #ffffff !important;
   }
+}
+.el-table .cell {
+  background-color: inherit;
 }
 </style>

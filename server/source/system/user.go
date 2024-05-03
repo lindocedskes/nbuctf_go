@@ -2,6 +2,8 @@ package system
 
 import (
 	"context"
+	"fmt"
+
 	"github.com/gofrs/uuid/v5"
 	sysModel "github.com/lindocedskes/model/system"
 	"github.com/lindocedskes/service/system"
@@ -57,10 +59,13 @@ func (i *initUser) InitializeData(ctx context.Context) (context.Context, error) 
 	if !ok {
 		return next, errors.Wrap(system.ErrMissingDependentContext, "创建 [用户-权限] 关联失败, 未找到权限表初始化数据")
 	}
-	if err := db.Model(&user[0]).Association("Authorities").Replace(authorityEntities); err != nil {
+	// [0:1] 是888
+	if err := db.Model(&user[0]).Association("Authorities").Replace(authorityEntities[0:1]); err != nil {
 		return next, err
 	}
-	if err := db.Model(&user[1]).Association("Authorities").Replace(authorityEntities[:1]); err != nil {
+	fmt.Println("authorityEntities:", authorityEntities)
+	//[1:2] 是777
+	if err := db.Model(&user[1]).Association("Authorities").Replace(authorityEntities[1:2]); err != nil {
 		return next, err
 	}
 	return next, nil
@@ -73,7 +78,7 @@ func (i *initUser) DataInserted(ctx context.Context) bool {
 		return false
 	}
 	var record sysModel.SysUser
-	if errors.Is(db.Where("username = ?", "a303176530").
+	if errors.Is(db.Where("username = ?", "admin").
 		Preload("Authorities").First(&record).Error, gorm.ErrRecordNotFound) { // 判断是否存在数据
 		return false
 	}
@@ -97,11 +102,11 @@ func getDefaultUser() []sysModel.SysUser {
 		},
 		{
 			UUID:        uuid.Must(uuid.NewV4()),
-			Username:    "user",
+			Username:    "user001",
 			Password:    root_pwd,
-			NickName:    "用户1",
+			NickName:    "用户001",
 			HeaderImg:   "",
-			AuthorityId: 9528,
+			AuthorityId: 777,
 			Phone:       "",
 			Email:       "",
 		},

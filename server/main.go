@@ -1,13 +1,16 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
+	"os"
+
 	"github.com/lindocedskes/core"
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/initialize"
 	"go.uber.org/zap"
-	"os"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func main() {
@@ -20,7 +23,7 @@ func main() {
 	global.GVA_LOG = core.Zap()        // 初始化zap日志库
 	zap.ReplaceGlobals(global.GVA_LOG) // 替换zap库为全局变量
 
-	global.NBUCTF_DB = initialize.Gorm() //连接数据库
+	global.NBUCTF_DB = initialize.Gorm() //连接数据库，不存在会自动创建数据库
 	fmt.Println("服务端口:", global.NBUCTF_CONFIG.System.Port)
 
 	if global.NBUCTF_DB != nil { //NBUCTF_DB 存配置文件DB数据
@@ -33,6 +36,25 @@ func main() {
 				fmt.Println("db close failed")
 			}
 		}(db) // db 变量作为参数传入
+	}
+
+	var err error
+	global.NBUCTF_K8S, err = core.K8s()
+	if err != nil {
+		fmt.Printf("Failed to initialize Kubernetes client: %v\n", err)
+		return
+	}
+	fmt.Printf("k3s client 运行成功\n")
+	// 测试 Kubernetes 客户端 是否通信成功
+	ctx := context.TODO()
+	namespaces, err := global.NBUCTF_K8S.CoreV1().Namespaces().List(ctx, metav1.ListOptions{})
+	if err != nil {
+		fmt.Printf("Failed to list namespaces: %v\n", err)
+		return
+	}
+
+	for _, namespace := range namespaces.Items {
+		fmt.Printf("Namespace: %s\n", namespace.Name)
 	}
 
 	core.RunServer() //启动核心服务

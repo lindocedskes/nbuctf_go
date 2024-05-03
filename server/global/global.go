@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
+	"k8s.io/client-go/kubernetes"
 )
 
 var (
@@ -25,4 +26,6 @@ var (
 	GVA_Concurrency_Control = &singleflight.Group{} // 并发控制
 
 	BlackCache local_cache.Cache
+
+	NBUCTF_K8S *kubernetes.Clientset
 )

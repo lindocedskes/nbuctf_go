@@ -13,13 +13,16 @@
     "lint-staged": "lint-staged"
   },
   "dependencies": {
+    "@dataview/datav-vue3": "0.0.0-test.1672506674342",
     "@element-plus/icons-vue": "^2.3.1",
+    "@kjgl77/datav-vue3": "^1.7.2",
     "axios": "^1.6.8",
     "echarts": "^5.5.0",
     "element-plus": "^2.6.3",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "markdown-it": "^14.1.0",
+    "md-editor-v3": "^4.13.5",
     "mitt": "^3.0.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",

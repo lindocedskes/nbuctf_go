@@ -7,9 +7,9 @@ import { emitter } from '@/utils/bus.js'
 const baseURL = ''
 
 const service = axios.create({
-  // TODO 1. 基础地址，超时时间
+  // TODO 1. 基础地址，超时时间30s，
   baseURL: `${import.meta.env.VITE_BASE_PATH}:${import.meta.env.VITE_SERVER_PORT}`,
-  timeout: 10000
+  timeout: 30000
 })
 
 let acitveAxios = 0
@@ -36,6 +36,7 @@ const closeLoading = () => {
 // 请求拦截
 service.interceptors.request.use(
   (config) => {
+    console.log('request:', config) // for debug
     if (!config.donNotShowLoading) {
       showLoading()
     }
@@ -103,7 +104,7 @@ service.interceptors.response.use(
     if (!error.response) {
       ElMessageBox.confirm(
         `
-        <p>检测到请求错误</p>
+        <p>检测到请求错误，如果是开启容器，请等待片刻后查询容器状态</p>
         <p>${error}</p>
         `,
         '请求报错',

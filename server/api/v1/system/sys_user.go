@@ -1,6 +1,7 @@
 package system
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/lindocedskes/global"
 	"github.com/lindocedskes/model"
@@ -282,6 +283,7 @@ func (b *BaseApi) SetUserAuthority(c *gin.Context) {
 func (b *BaseApi) SetUserAuthorities(c *gin.Context) {
 	var sua systemReq.SetUserAuthorities
 	err := c.ShouldBindJSON(&sua)
+	fmt.Println("sua:", sua)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return

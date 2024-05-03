@@ -14,4 +14,5 @@ type ServiceGroup struct {
 	AuthorityBtnService
 	GameService
 	AnnouncementService
+	K8sService
 }
