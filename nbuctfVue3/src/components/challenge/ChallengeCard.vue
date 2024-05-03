@@ -48,11 +48,14 @@
           </label>
         </el-form-item>
 
-        <el-form-item label="题目描述: （markdown）" prop="queDescribe">
-          <div
-            v-html="md.render(challengeInfo.queDescribe)"
-            class="border border-gray-300 p-4 my-2 bg-white rounded shadow"
-          />
+        <el-form-item
+          label="题目描述: （markdown）"
+          prop="queDescribe"
+          class="text-left"
+        >
+          <!-- <div class="border border-gray-300 p-4 my-2 rounded shadow"> -->
+          <MdPreview :modelValue="challengeInfo.queDescribe" />
+          <!-- </div> -->
         </el-form-item>
         <el-form-item label="题目分值:" prop="queMark">
           <label class="block text-gray-700 font-bold mb-2">
@@ -173,17 +176,17 @@
 </template>
 
 <script setup>
-import { ElMessage, ElMessageBox, ElNotification } from 'element-plus'
+import { ElMessage } from 'element-plus'
 import { submitFlag } from '@/api/game.js'
 import { computed, ref } from 'vue'
-import MarkdownIt from 'markdown-it'
 import {
   openContainerApi,
   checkContainerApi,
   closeContainerApi
 } from '@/api/k8s'
 
-const md = new MarkdownIt()
+import { MdPreview } from 'md-editor-v3'
+import 'md-editor-v3/lib/preview.css'
 
 const props = defineProps({
   data: Object, //接受父组件传递的数据

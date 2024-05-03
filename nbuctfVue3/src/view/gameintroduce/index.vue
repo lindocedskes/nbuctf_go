@@ -49,7 +49,18 @@
               <div class="clearfix text-left">
                 <!-- <span>{{ ann.title }}</span> -->
               </div>
-              <h4 class="text-left text-cyan-300">{{ ann.content }}</h4>
+
+              <!-- <h4
+                class="text-left text-cyan-300"
+                v-html="md.render(ann.content)"
+              ></h4> -->
+
+              <MdPreview
+                :editorId="id"
+                :modelValue="ann.content"
+                class="bg-transparent"
+              />
+              <!-- <MdCatalog :editorId="id" :scrollElement="scrollElement" /> -->
               <p
                 style="float: right; font-size: 12px; color: #8f8f8f"
                 class="text-cyan-500"
@@ -90,10 +101,13 @@
       center
       title="创建介绍"
       v-model="showDialog"
-      width="30%"
+      width="50%"
       :show-close="false"
     >
       <el-form label-position="left" label-width="50px">
+        <div>
+          建议使用字体颜色：&lt;font color= #80ffff size=4&gt;text&lt;/font&gt;
+        </div>
         <el-form-item label="标题:">
           <el-input
             v-model="title"
@@ -101,7 +115,8 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="内容:">
-          <el-input type="textarea" v-model="body"></el-input>
+          <MdEditor v-model="body" />
+          <!-- <el-input type="textarea" v-model="body"></el-input> -->
         </el-form-item>
       </el-form>
       <template #footer>
@@ -115,18 +130,16 @@
       center
       title="更新介绍"
       v-model="showDialogUpdate"
-      width="30%"
+      width="50%"
       :show-close="false"
     >
       <el-form label-position="left" label-width="50px">
-        <el-form-item label="标题:">
-          <el-input
-            v-model="title"
-            placeholder="必须输入'比赛介绍'作为标题,否则为公告"
-          ></el-input>
+        <el-form-item label="提示:">
+          建议使用字体颜色：&lt;font color= #80ffff size=4&gt;text&lt;/font&gt;
         </el-form-item>
         <el-form-item label="内容:">
-          <el-input type="textarea" v-model="body"></el-input>
+          <MdEditor v-model="body" />
+          <!-- <el-input type="textarea" v-model="body"></el-input> -->
         </el-form-item>
       </el-form>
       <template #footer>
@@ -151,6 +164,15 @@ import {
 } from '@/api/announcement.js'
 import { formatDate } from '@/utils/format'
 import { useUserStore } from '@/pinia'
+import { MdEditor } from 'md-editor-v3'
+import 'md-editor-v3/lib/style.css'
+
+import { MdPreview } from 'md-editor-v3'
+import 'md-editor-v3/lib/preview.css'
+
+// import MarkdownIt from 'markdown-it'
+// const md = new MarkdownIt()
+const id = 'preview-only'
 
 defineOptions({
   name: 'announcement'
@@ -281,6 +303,9 @@ const openDialog = (ann) => {
 }
 .el-divider__text {
   background-color: transparent !important;
+}
+.text_color {
+  color: #80ffff !important;
 }
 </style>
 <style>

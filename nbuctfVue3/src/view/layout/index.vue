@@ -107,7 +107,6 @@
 
 <script setup>
 import {
-  Management,
   Promotion,
   User,
   SwitchButton,

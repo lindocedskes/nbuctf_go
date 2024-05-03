@@ -257,10 +257,10 @@
       v-model="addQuestionDialog"
       title="赛题"
       :show-close="false"
-      :close-on-press-escape="false"
       :close-on-click-modal="false"
+      class="w-3/5"
     >
-      <div style="height: 60vh; overflow: auto; padding: 0 12px">
+      <div style="height: 60vh; overflow: auto; padding: 0 1px">
         <el-form
           ref="questionForm"
           :rules="rules"
@@ -274,7 +274,12 @@
             <el-input v-model="questionInfo.queName" />
           </el-form-item>
           <el-form-item label="题目描述" prop="queDescribe">
-            <el-input v-model="questionInfo.queDescribe" />
+            <MdEditor
+              v-model="questionInfo.queDescribe"
+              class="h-80 text-left"
+            />
+
+            <!-- <el-input v-model="questionInfo.queDescribe" /> -->
           </el-form-item>
           <el-form-item label="题目分值" prop="queMark">
             <el-input v-model.number="questionInfo.queMark" />
@@ -371,6 +376,8 @@ import {
 
 import { nextTick, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
+import { MdEditor } from 'md-editor-v3'
+import 'md-editor-v3/lib/style.css'
 
 defineOptions({
   name: 'GameAdmin'
