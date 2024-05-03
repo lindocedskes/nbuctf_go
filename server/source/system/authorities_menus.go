@@ -2,6 +2,7 @@ package system
 
 import (
 	"context"
+
 	sysModel "github.com/lindocedskes/model/system"
 	"github.com/lindocedskes/service/system"
 	"github.com/pkg/errors"
@@ -49,13 +50,13 @@ func (i *initMenuAuthority) InitializeData(ctx context.Context) (next context.Co
 	}
 
 	// 777
-	menu777 := menus[0:10]
+	menu777 := menus[0:11]
 	if err = db.Model(&authorities[1]).Association("SysBaseMenus").Replace(menu777); err != nil {
 		return next, err
 	}
 
 	// 7771
-	if err = db.Model(&authorities[2]).Association("SysBaseMenus").Replace(menus[0:10]); err != nil {
+	if err = db.Model(&authorities[2]).Association("SysBaseMenus").Replace(menus[0:11]); err != nil {
 		return next, err
 	}
 	return next, nil

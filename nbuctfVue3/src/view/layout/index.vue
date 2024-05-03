@@ -1,87 +1,97 @@
 <template>
   <nav class="bg-black border-gray-200 h-16 backgroundNav">
     <div
-      class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-0 overflow-auto"
+      class="max-w-screen-xl flex items-center justify-between mx-4 p-0 overflow-auto"
     >
-      <a class="flex items-center space-x-2 rtl:space-x-reverse ml-0">
-        <img src="@/assets/app_logo.png" class="h-12" alt="Flowbite Logo" />
-        <dv-decoration-11 style="width: 200px; height: 60px">
-          <span
-            class="self-center text-2xl font-semibold whitespace-nowrap text-green-300 font-semibold"
-            >N8US3C</span
-          >
-        </dv-decoration-11>
-      </a>
-      <el-menu
-        mode="horizontal"
-        active-text-color="#ffd04b"
-        background-color="#000"
-        :default-active="$route.path"
-        text-color="#fff"
-        router
-        class="w-2/3 flex justify-end"
-      >
-        <el-menu-item index="/layout/announcement">
-          <el-icon><Promotion /></el-icon>
-          <span>公告</span>
-        </el-menu-item>
-        <el-menu-item index="/layout/game">
-          <el-icon><Promotion /></el-icon>
-          <span>比赛</span>
-        </el-menu-item>
-        <el-menu-item index="/layout/rank">
-          <el-icon><Promotion /></el-icon>
-          <span>排行榜</span>
-        </el-menu-item>
-        <el-menu-item index="/layout/about">
-          <el-icon><Promotion /></el-icon>
-          <span>关于</span>
-        </el-menu-item>
-        <el-sub-menu index="2" v-if="userStore.userInfo.authorityId === 888">
-          <template #title>管理员</template>
-          <el-menu-item index="/layout/admin/gameadmin">
+      <div class="flex-grow-0">
+        <a class="flex items-center space-x-2 rtl:space-x-reverse ml-0">
+          <dv-decoration-11 style="width: 200px; height: 60px">
+            <span
+              class="self-center text-2xl font-semibold whitespace-nowrap text-green-300 font-semibold"
+              >NBUCTF</span
+            >
+          </dv-decoration-11>
+          <!-- <img src="@/assets/app_logo.png" class="h-12" alt="Flowbite Logo" /> -->
+        </a>
+      </div>
+      <div class="flex-grow">
+        <el-menu
+          mode="horizontal"
+          active-text-color="#ffd04b"
+          background-color="#000"
+          :default-active="$route.path"
+          text-color="#fff"
+          router
+          class="w-full flex justify-end"
+        >
+          <el-menu-item index="/layout/gameintroduce">
             <el-icon><Promotion /></el-icon>
-            <span>比赛管理</span>
+            <span>比赛介绍</span>
           </el-menu-item>
-          <el-menu-item index="/layout/admin/user">
+          <el-menu-item index="/layout/announcement">
             <el-icon><Promotion /></el-icon>
-            <span>用户管理</span>
+            <span>公告</span>
           </el-menu-item>
-          <el-menu-item index="/layout/admin/file">
+          <el-menu-item index="/layout/game">
             <el-icon><Promotion /></el-icon>
-            <span>文件管理</span>
+            <span>赛题</span>
           </el-menu-item>
-        </el-sub-menu>
-      </el-menu>
+          <el-menu-item index="/layout/rank">
+            <el-icon><Promotion /></el-icon>
+            <span>排行榜</span>
+          </el-menu-item>
+          <el-menu-item index="/layout/about">
+            <el-icon><Promotion /></el-icon>
+            <span>关于</span>
+          </el-menu-item>
+          <el-sub-menu index="2" v-if="userStore.userInfo.authorityId === 888">
+            <template #title>管理员</template>
+            <el-menu-item index="/layout/admin/gameadmin">
+              <el-icon><Promotion /></el-icon>
+              <span>比赛管理</span>
+            </el-menu-item>
+            <el-menu-item index="/layout/admin/user">
+              <el-icon><Promotion /></el-icon>
+              <span>用户管理</span>
+            </el-menu-item>
+            <el-menu-item index="/layout/file">
+              <el-icon><Promotion /></el-icon>
+              <span>文件管理</span>
+            </el-menu-item>
+          </el-sub-menu>
+        </el-menu>
+      </div>
 
-      <el-dropdown placement="bottom-end" @command="handleCommand">
-        <!-- 展示给用户，默认看到的 -->
-        <span class="el-dropdown__box mr-4">
-          <el-avatar
-            :src="imgSrc"
-            class="text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300"
-          />
-          <el-icon><CaretBottom /></el-icon>
-        </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <div class="px-4 py-3">
-              <span class="block text-sm text-gray-900">{{
-                userStore.userInfo.nickName || userStore.userInfo.userName
-              }}</span>
-              <span class="block text-sm text-gray-500 truncate">{{
-                userStore.userInfo.email
-              }}</span>
-            </div>
-            <el-dropdown-item command="person" :icon="User"
-              >个人信息</el-dropdown-item
-            >
-            <el-dropdown-item command="logout" :icon="SwitchButton"
-              >退出登录</el-dropdown-item
-            >
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
+      <div class="flex-grow-0">
+        <el-dropdown placement="bottom-end" @command="handleCommand">
+          <!-- 展示给用户，默认看到的 -->
+          <span class="el-dropdown__box mr-4">
+            <el-avatar
+              :src="imgSrc"
+              class="text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300"
+            />
+            <el-icon><CaretBottom /></el-icon>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <div class="px-4 py-3">
+                <span class="block text-sm text-gray-900">{{
+                  userStore.userInfo.nickName || userStore.userInfo.userName
+                }}</span>
+                <span class="block text-sm text-gray-500 truncate">{{
+                  userStore.userInfo.email
+                }}</span>
+              </div>
+              <el-dropdown-item command="person" :icon="User"
+                >个人信息</el-dropdown-item
+              >
+              <el-dropdown-item command="logout" :icon="SwitchButton"
+                >退出登录</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
     </div>
   </nav>
   <el-container class="layout-container">
@@ -104,7 +114,6 @@ import {
   CaretBottom
 } from '@element-plus/icons-vue'
 import noAvatarPng from '@/assets/default_avatar.png'
-import backgroundNav from '@/assets/intro_bg.png'
 
 import { useUserStore } from '@/pinia'
 import { onMounted } from 'vue'

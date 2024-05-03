@@ -2,6 +2,7 @@ package system
 
 import (
 	"context"
+
 	. "github.com/lindocedskes/model/system"
 	"github.com/lindocedskes/service/system"
 	"github.com/pkg/errors"
@@ -60,12 +61,13 @@ func (i *initMenu) InitializeData(ctx context.Context) (next context.Context, er
 		{MenuLevel: 0, Hidden: true, ParentId: "0", Path: "person", Name: "person", Component: "view/person/person.vue", Sort: 4, Meta: Meta{Title: "个人信息", Icon: "message"}},
 		{MenuLevel: 0, Hidden: false, ParentId: "0", Path: "rank", Name: "rank", Component: "view/rank/index.vue", Sort: 5, Meta: Meta{Title: "排行榜", Icon: "notebook"}},
 		{MenuLevel: 0, Hidden: false, ParentId: "0", Path: "announcement", Name: "announcement", Component: "view/announcement/index.vue", Sort: 5, Meta: Meta{Title: "公告栏", Icon: "notebook"}},
+		{MenuLevel: 0, Hidden: false, ParentId: "0", Path: "gameintroduce", Name: "gameintroduce", Component: "view/gameintroduce/index.vue", Sort: 5, Meta: Meta{Title: "比赛介绍", Icon: "notebook"}},
 
 		//管理员菜单：
 		{MenuLevel: 0, Hidden: false, ParentId: "0", Path: "admin", Name: "admin", Component: "view/admin/index.vue", Sort: 3, Meta: Meta{Title: "管理员", Icon: "user"}},
-		{MenuLevel: 0, Hidden: false, ParentId: "11", Path: "gameadmin", Name: "gameadmin", Component: "view/admin/game/index.vue", Sort: 2, Meta: Meta{Title: "比赛管理", Icon: "tickets"}},
-		{MenuLevel: 0, Hidden: false, ParentId: "11", Path: "user", Name: "user", Component: "view/admin/user/user.vue", Sort: 4, Meta: Meta{Title: "用户管理", Icon: "coordinate"}},
-		{MenuLevel: 0, Hidden: false, ParentId: "11", Path: "file", Name: "file", Component: "view/file/index.vue", Sort: 5, Meta: Meta{Title: "文件管理", Icon: "upload"}},
+		{MenuLevel: 0, Hidden: false, ParentId: "12", Path: "gameadmin", Name: "gameadmin", Component: "view/admin/game/index.vue", Sort: 2, Meta: Meta{Title: "比赛管理", Icon: "tickets"}},
+		{MenuLevel: 0, Hidden: false, ParentId: "12", Path: "user", Name: "user", Component: "view/admin/user/user.vue", Sort: 4, Meta: Meta{Title: "用户管理", Icon: "coordinate"}},
+		{MenuLevel: 0, Hidden: false, ParentId: "0", Path: "file", Name: "file", Component: "view/file/index.vue", Sort: 5, Meta: Meta{Title: "文件管理", Icon: "upload"}},
 	}
 	if err = db.Create(&entities).Error; err != nil {
 		return ctx, errors.Wrap(err, SysBaseMenu{}.TableName()+"表数据初始化失败!")
