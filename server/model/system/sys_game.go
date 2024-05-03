@@ -6,11 +6,11 @@ import "github.com/lindocedskes/model"
 type Question struct {
 	model.BaseModel `gorm:"embedded"` //嵌入字段，视为当前结构体的字段，否则不视为
 	IfHidden        bool              `json:"ifHidden" gorm:"default:true;comment:'是否隐藏'"`
-	QueName         string            `json:"queName" gorm:"comment:'题目名称'"`     // 题目名称
-	QueMark         int               `json:"queMark" gorm:"comment:'题目分数'"`     // 题目分数
-	QueFlag         string            `json:"queFlag" gorm:"comment:'flag'"`     // flag
-	QueDescribe     string            `json:"queDescribe" gorm:"comment:'题目描述'"` // 题目描述
-	QueType         string            `json:"queType" gorm:"comment:'题目类型'"`     // 题目类型
+	QueName         string            `json:"queName" gorm:"comment:'题目名称'"`               // 题目名称
+	QueMark         int               `json:"queMark" gorm:"comment:'题目分数'"`               // 题目分数
+	QueFlag         string            `json:"queFlag" gorm:"comment:'flag'"`               // flag
+	QueDescribe     string            `json:"queDescribe" gorm:"type:text;comment:'题目描述'"` // 题目描述
+	QueType         string            `json:"queType" gorm:"comment:'题目类型'"`               // 题目类型
 	IfSolved        bool              `json:"ifSolved" gorm:"default:false;comment:'是否解决'"`
 	QueSolvers      int               `json:"queSolvers" gorm:"default:0;comment:'解题者'"` // 已解题人数
 	ImageUrl        string            `json:"imageUrl" gorm:"comment:'docker镜像地址'"`      // docker镜像地址
