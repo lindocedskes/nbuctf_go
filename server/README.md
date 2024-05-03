@@ -10,6 +10,8 @@ docker run -p 6379:6379 --name Redis_ctf -d redis:7.2.3
 go env -w GOPROXY=goproxy.cn,direct
 ```
 
+项目运行需要添加k8s配置文件，并命名为k8sconfig.yaml，存储位置为/server/k8sconfig.yaml
+
 后端文件目录结构
 
 | 文件夹       | 说明                  | 描述                                                |
