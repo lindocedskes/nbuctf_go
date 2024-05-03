@@ -11,28 +11,28 @@
         </div>
         <h1 style="text-align: center" class="text-2xl text-cyan-300">
           比赛介绍
+          <el-popover
+            v-if="userStore.userInfo.authorityId === 888"
+            placement="top-start"
+            width="50"
+            trigger="hover"
+          >
+            <div>
+              <span style="margin-left: 5px">可创建比赛介绍</span>
+            </div>
+            <template #reference>
+              <el-button
+                size="small"
+                icon="plus"
+                circle
+                autofocus
+                @click="showDialog = true"
+                class="text-gray-900 bg-gradient-to-r from-pink-400 to-cyan-200 hover:bg-gradient-to-l hover:from-pink-400 hover:to-cyan-200 focus:ring-4 focus:outline-none focus:ring-cyan-200 font-medium rounded-lg text-sm px-5"
+              ></el-button>
+            </template>
+          </el-popover>
         </h1>
-        <!-- <el-divider content-position="right"> -->
-        <el-popover
-          v-if="userStore.userInfo.authorityId === 888"
-          placement="top-start"
-          width="50"
-          trigger="hover"
-        >
-          <div>
-            <span style="margin-left: 5px">可创建比赛介绍</span>
-          </div>
-          <template #reference>
-            <el-button
-              size="small"
-              icon="plus"
-              circle
-              autofocus
-              @click="showDialog = true"
-              class="text-gray-900 bg-gradient-to-r from-pink-400 to-cyan-200 hover:bg-gradient-to-l hover:from-pink-400 hover:to-cyan-200 focus:ring-4 focus:outline-none focus:ring-cyan-200 font-medium rounded-lg text-sm px-5"
-            ></el-button>
-          </template>
-        </el-popover>
+
         <!-- </el-divider> -->
         <el-timeline v-if="reload">
           <el-timeline-item
@@ -43,7 +43,7 @@
             class="text-left"
           >
             <el-card
-              class="text-gray-900 bg-transparent focus:ring-4 focus:outline-none focus:ring-lime-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 border-0"
+              class="text-gray-900 bg-transparent focus:ring-4 focus:outline-none focus:ring-lime-200 font-medium rounded-lg text-sm px-5 py-0 me-0 mb-2 border-0"
             >
               <!-- <template #header> </template> -->
               <div class="clearfix text-left">
@@ -87,7 +87,7 @@
               <el-button
                 v-if="userStore.userInfo.authorityId === 888"
                 @click="openDialog(ann)"
-                style="float: right; padding: 3px 0"
+                style="float: right; padding: 3px 3px"
                 link
               >
                 <el-icon style="color: pink"><EditPen /></el-icon>
@@ -101,7 +101,7 @@
       center
       title="创建介绍"
       v-model="showDialog"
-      width="50%"
+      width="60%"
       :show-close="false"
     >
       <el-form label-position="left" label-width="50px">
@@ -115,7 +115,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="内容:">
-          <MdEditor v-model="body" />
+          <MdEditor v-model="body" class="h-80" />
           <!-- <el-input type="textarea" v-model="body"></el-input> -->
         </el-form-item>
       </el-form>
@@ -130,7 +130,7 @@
       center
       title="更新介绍"
       v-model="showDialogUpdate"
-      width="50%"
+      width="60%"
       :show-close="false"
     >
       <el-form label-position="left" label-width="50px">
@@ -138,7 +138,7 @@
           建议使用字体颜色：&lt;font color= #80ffff size=4&gt;text&lt;/font&gt;
         </el-form-item>
         <el-form-item label="内容:">
-          <MdEditor v-model="body" />
+          <MdEditor v-model="body" class="h-80" />
           <!-- <el-input type="textarea" v-model="body"></el-input> -->
         </el-form-item>
       </el-form>

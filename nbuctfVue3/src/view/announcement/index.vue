@@ -54,7 +54,7 @@
                   >
                     <template #reference>
                       <el-button style="float: right; padding: 3px 0" link>
-                        <el-icon style="color: #f56c6c"><Close /></el-icon>
+                        <el-icon style="color: #99154b"><Close /></el-icon>
                       </el-button>
                     </template>
                   </el-popconfirm>
