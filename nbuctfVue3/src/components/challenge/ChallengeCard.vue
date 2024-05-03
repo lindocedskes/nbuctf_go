@@ -1,6 +1,6 @@
 <template>
   <div
-    id="challenge-card"
+    id="challenge-card-bg"
     class="hover:animate-background rounded-xl bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 p-0.5 shadow-xl transition hover:bg-[length:400%_400%] hover:shadow-sm hover:[animation-duration:_4s]"
   >
     <el-card
@@ -319,10 +319,14 @@ const openWebPage = () => {
 .challenge-card {
   min-height: 200px;
   max-width: 180px;
-  margin-top: 2cap;
+  margin-top: 8px;
   margin-bottom: 2px;
-  margin-left: 1%;
-  margin-right: 1px;
+  margin-left: 2px;
+  margin-right: 4px;
+}
+#challenge-card-bg {
+  min-height: 200px;
+  max-width: 180px;
 }
 
 .challenge-card:hover {

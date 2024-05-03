@@ -1,19 +1,21 @@
 <template>
-  <nav class="bg-black border-gray-200 h-16">
+  <nav class="bg-black border-gray-200 h-16 backgroundNav">
     <div
       class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-0 overflow-auto"
     >
-      <a class="flex items-center space-x-3 rtl:space-x-reverse ml-4">
+      <a class="flex items-center space-x-2 rtl:space-x-reverse ml-0">
         <img src="@/assets/app_logo.png" class="h-12" alt="Flowbite Logo" />
-        <span
-          class="self-center text-2xl font-semibold whitespace-nowrap text-white"
-          >N8US3C</span
-        >
+        <dv-decoration-11 style="width: 200px; height: 60px">
+          <span
+            class="self-center text-2xl font-semibold whitespace-nowrap text-green-300 font-semibold"
+            >N8US3C</span
+          >
+        </dv-decoration-11>
       </a>
       <el-menu
         mode="horizontal"
         active-text-color="#ffd04b"
-        background-color="#232323"
+        background-color="#000"
         :default-active="$route.path"
         text-color="#fff"
         router
@@ -83,9 +85,12 @@
     </div>
   </nav>
   <el-container class="layout-container">
-    <el-main>
-      <router-view></router-view>
-    </el-main>
+    <dv-border-box-1 style="height: 100%; width: 100%">
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+    </dv-border-box-1>
+
     <el-footer></el-footer>
   </el-container>
 </template>
@@ -99,6 +104,7 @@ import {
   CaretBottom
 } from '@element-plus/icons-vue'
 import noAvatarPng from '@/assets/default_avatar.png'
+import backgroundNav from '@/assets/intro_bg.png'
 
 import { useUserStore } from '@/pinia'
 import { onMounted } from 'vue'
@@ -150,6 +156,10 @@ const handleCommand = async (key) => {
 <style lang="scss" scoped>
 .layout-container {
   height: 100vh;
+  background-image: url('/src/assets/login_bg.png');
+  background-size: cover;
+  background-position: center;
+  overflow-y: auto; /* 当内容超过容器的高度时，使用滚动 */
 
   .el-menu {
     flex: 1;
@@ -184,5 +194,41 @@ const handleCommand = async (key) => {
     font-size: 14px;
     color: #666;
   }
+}
+.backgroundNav {
+  background-image: url('/src/assets/intro_bg.png');
+  background-size: 120% 100%;
+  background-position: center;
+}
+.el-menu {
+  background-color: transparent;
+  border-bottom: 0;
+}
+.el-menu .el-menu-item {
+  background-color: transparent !important;
+  color: #80ffff !important;
+}
+.el-menu .el-menu-item.is-active {
+  color: #e36ce9 !important;
+  border-color: #e36ce9 !important;
+}
+.el-menu .el-menu-item {
+  background-color: transparent !important;
+  color: #80ffff !important;
+}
+</style>
+<style lang="scss">
+// 有二级菜单的标题及子菜单菜单字体颜色
+.el-menu .el-sub-menu__title {
+  color: #80ffff !important;
+  border-bottom: 0;
+}
+
+.el-menu .el-submenu .el-menu {
+  background-color: transparent !important;
+}
+// 有二级菜单的标题时鼠标悬停的颜色
+.el-sub-menu__title.el-tooltip__trigger.el-tooltip__trigger:hover {
+  color: red;
 }
 </style>

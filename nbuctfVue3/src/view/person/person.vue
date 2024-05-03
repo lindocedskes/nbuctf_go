@@ -59,14 +59,16 @@
         </div>
       </div>
       <div class="col-span-9">
-        <div class="bg-white h-full px-4 py-8 rounded-lg shadow-lg box-border">
+        <div
+          class="bg-white h-full px-4 py-8 rounded-lg shadow-lg box-border text-left"
+        >
           <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="账号绑定" name="second">
               <ul>
                 <li class="borderd">
                   <p class="pb-2.5 text-xl text-gray-600">联系手机</p>
                   <p class="pb-2.5 text-lg text-gray-400">
-                    已绑定手机:{{ userStore.userInfo.phone }}
+                    绑定手机:{{ userStore.userInfo.phone }}
                     <a
                       href="javascript:void(0)"
                       class="float-right text-blue-400"
@@ -78,7 +80,7 @@
                 <li class="borderd pt-2.5">
                   <p class="pb-2.5 text-xl text-gray-600">联系邮箱</p>
                   <p class="pb-2.5 text-lg text-gray-400">
-                    已绑定邮箱：{{ userStore.userInfo.email }}
+                    绑定邮箱：{{ userStore.userInfo.email }}
                     <a
                       href="javascript:void(0)"
                       class="float-right text-blue-400"
