@@ -10,7 +10,7 @@ jwt:
     buffer-time: 1d
     issuer: nbuctf
 local:
-    path: uploads/file
+    path: api/uploads/file
     store-path: uploads/file
 mysql:
     prefix: ""

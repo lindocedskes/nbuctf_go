@@ -1,6 +1,8 @@
 package initialize
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/lindocedskes/docs"
 	"github.com/lindocedskes/global"
@@ -8,7 +10,6 @@ import (
 	"github.com/lindocedskes/router"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"net/http"
 )
 
 func Routers() *gin.Engine {
@@ -25,12 +26,14 @@ func Routers() *gin.Engine {
 	systemRouter := router.RouterGroupApp.System //系统路由
 	//exampleRouter := router.RouterGroupApp.Example //测试路由
 
-	//静态文件设置
+	//静态文件设置- 前端打包后生成dist文件夹复制到后端
 	Router.Static("/favicon.ico", "./dist/favicon.ico")                                              // 设置静态文件目录的路由。两个参数：路由路径和文件系统路径
 	Router.Static("/assets", "./dist/assets")                                                        // dist里面的静态资源
 	Router.StaticFile("/", "./dist/index.html")                                                      // 前端网页入口页面，设置单个静态文件的路由。两个参数：路由路径和文件系统路径，带文件后缀
 	Router.StaticFS(global.NBUCTF_CONFIG.Local.Path, http.Dir(global.NBUCTF_CONFIG.Local.StorePath)) //设置一个静态文件系统的（路由路径，文件系统路径）
-
+	Router.NoRoute(func(c *gin.Context) {
+		c.File("./dist/index.html") //前端路由处理，所有前端路由重定向到index.html，不然打包的静态文件下，路由无法由vue解析
+	})
 	//swagger ui 自动生成接口文档
 	docs.SwaggerInfo.BasePath = global.NBUCTF_CONFIG.System.RouterPrefix                                               // 设置路由前缀
 	Router.GET(global.NBUCTF_CONFIG.System.RouterPrefix+"/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) // 注册swagger路由
