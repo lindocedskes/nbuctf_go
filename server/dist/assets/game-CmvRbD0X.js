@@ -1,1 +1,0 @@
-import{s as t}from"./index-BZvC1LFB.js";const s=()=>t({url:"/game/list",method:"get"}),a=e=>t({url:"/game/submitflag",method:"post",data:e}),m=()=>t({url:"/game/submitScoreChart",method:"get"});export{m as a,s as g,a as s};

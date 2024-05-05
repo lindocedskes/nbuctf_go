@@ -26,6 +26,7 @@ func GormMysql() *gorm.DB {
 	}
 	CreateDatabaseIfNotExist() //启用自动创建数据库
 	if db, err := gorm.Open(mysql.New(mysqlConfig), internal.Gorm.Config()); err != nil {
+		fmt.Println("Failed to connect to MySQL:", err)
 		return nil
 	} else {
 		sqlDB, _ := db.DB()

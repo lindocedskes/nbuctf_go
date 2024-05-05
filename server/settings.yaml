@@ -10,7 +10,7 @@ jwt:
     buffer-time: 1d
     issuer: nbuctf
 local:
-    path: api/uploads/file
+    path: uploads/file
     store-path: uploads/file
 mysql:
     prefix: ""
@@ -19,7 +19,8 @@ mysql:
     db-name: nbuctf
     username: root
     password: nbuctf#2023#dev
-    path: 127.0.0.1
+    # 配置docker-compose 时使用 mysql 服务名来连接，本地测试用 127.0.0.1，docker用mysql
+    path:  mysql
     engine: ""
     log-mode: error
     max-idle-conns: 10

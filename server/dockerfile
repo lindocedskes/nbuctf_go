@@ -1,0 +1,47 @@
+#第一阶段 构建阶段
+FROM golang:alpine as builder
+
+# 设置工作目录
+WORKDIR /app
+
+# 将 go.mod 和 go.sum 文件复制到工作目录
+COPY go.mod go.sum ./
+
+# 下载所有依赖
+RUN go mod download
+
+# 将源代码复制到工作目录
+COPY . .
+
+# 构建应用
+RUN go env -w GO111MODULE=on \
+    && go env -w GOPROXY=https://goproxy.cn,direct \
+    && go env -w CGO_ENABLED=0 \
+    && go env \
+    && go mod tidy \
+    && go build -o main .
+
+# 第二阶段 最终阶段 ，不包含 builder 阶段的任何文件，要明确复制build执行文件和所需配置文件
+# 使用 alpine 作为运行环境
+FROM alpine:latest
+
+# 安装 MySQL 和 Redis 的命令行客户端
+RUN apk add --no-cache mysql-client redis
+# 创建 uploads 和 log 目录，并设置权限
+RUN mkdir -p ./uploads/file ./log
+RUN chmod -R 777 ./uploads/file ./log
+# 从 builder 阶段复制 buil生成可执行文件，以及所需配置文件
+COPY --from=builder /app/main .
+COPY --from=builder /app/settings.yaml .
+COPY --from=builder /app/k8sconfig.yaml .
+COPY --from=builder /app/wait_service_create.sh .
+COPY --from=builder /app/dist ./dist
+
+# 使脚本可执行
+RUN chmod +x ./wait_service_create.sh
+
+# 暴露端口
+EXPOSE 8889
+
+# 运行应用
+CMD ["./main"]
