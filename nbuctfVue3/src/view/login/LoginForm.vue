@@ -236,8 +236,8 @@ loginVerify() //当路由导航到这个页面时，立即执行
 const loginForm = ref(null) //与组件表单绑定，提供了一些方法，如 validate、resetFields
 const picPath = ref('')
 const loginFormData = reactive({
-  username: 'admin',
-  password: '123456',
+  username: '',
+  password: '',
   captcha: '',
   captchaId: '',
   openCaptcha: false

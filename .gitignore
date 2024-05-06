@@ -27,3 +27,6 @@
 
 # k8s
 /server/k8sconfig.yaml
+
+# uploads 文件
+/server/uploads/file/
