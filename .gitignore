@@ -31,3 +31,7 @@
 
 # uploads 文件
 /server/uploads/file/
+
+# dist 打包文件
+/nbuctfVue3/dist/
+/server/dist/
