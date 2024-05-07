@@ -247,7 +247,8 @@ const enterSubmitFlag = async () => {
 }
 
 const downloadFile = (file) => {
-  const url = `/api/${file.url}`
+  const url = import.meta.env.VITE_FILE_API + '/' + file.url
+  // const url = `/api/${file.url}`
   const a = document.createElement('a')
   a.href = url
   a.download = file.name
