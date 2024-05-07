@@ -36,7 +36,9 @@ const closeLoading = () => {
 // 请求拦截
 service.interceptors.request.use(
   (config) => {
-    console.log('request:', config) // for debug
+    if (import.meta.env === 'development') {
+      console.log('request:', config) // for debug
+    }
     if (!config.donNotShowLoading) {
       showLoading()
     }
@@ -66,7 +68,9 @@ service.interceptors.request.use(
 // http response 拦截器
 service.interceptors.response.use(
   (response) => {
-    console.log('response:', response.data) // for debug
+    if (import.meta.env === 'development') {
+      console.log('response:', response.data) // for debug
+    }
     const userStore = useUserStore()
     if (!response.config.donNotShowLoading) {
       closeLoading()
@@ -104,7 +108,7 @@ service.interceptors.response.use(
     if (!error.response) {
       ElMessageBox.confirm(
         `
-        <p>检测到请求错误，如果是开启容器，请等待片刻后查询容器状态</p>
+        <p>检测到请求错误，若是开启靶机，过段时间查询状态，否则一般为后端服务异常</p>
         <p>${error}</p>
         `,
         '请求报错',

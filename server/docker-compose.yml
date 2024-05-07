@@ -3,6 +3,7 @@ services:
   app:
     container_name: nbuctf_web
     build: .
+    image: nbuctf  # 指定构建的镜像名称为 nbuctf
     ports:
       - "8889:8889"
     volumes:

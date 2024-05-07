@@ -1,0 +1,21 @@
+# 拉取镜像启动
+version: '3'
+services:
+  app:
+    image: lin088/nbuctf:v1.0  # 使用拉取的镜像
+    ports:
+      - "8889:8889"
+    depends_on:
+      - redis
+      - mysql
+    volumes: # 挂载配置文件
+      - ./k8sconfig.yaml:/app/k8sconfig.yaml
+      - ./settings.yaml:/app/settings.yaml
+      - ./wait_service_create.sh:/app/wait_service_create.sh
+    command: ["./wait_service_create.sh", "mysql", "redis", "./main"]
+  redis:
+    image: redis:6.0.6
+  mysql:
+    image: mysql:8.0.21
+    environment:
+      - MYSQL_ROOT_PASSWORD=nbuctf#2023#dev

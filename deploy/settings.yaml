@@ -1,0 +1,52 @@
+captcha:
+    key-long: 6
+    img-width: 240
+    img-height: 80
+    open-captcha: 0
+    open-captcha-timeout: 3600
+jwt:
+    signing-key: 2f601207-5101-4a15-ba2f-92b376640ef4
+    expires-time: 7d
+    buffer-time: 1d
+    issuer: nbuctf
+local:
+    path: uploads/file
+    store-path: uploads/file
+mysql:
+    prefix: ""
+    port: "3306"
+    config: charset=utf8mb4&parseTime=True&loc=Local
+    db-name: nbuctf
+    username: root
+    password: nbuctf#2023#dev
+    # 配置docker-compose 时使用 mysql 服务名来连接，本地测试用 127.0.0.1，docker用mysql
+    path:  mysql
+    engine: ""
+    log-mode: error
+    max-idle-conns: 10
+    max-open-conns: 100
+    singular: false
+    log-zap: false
+redis:
+    db: 0
+    addr: 127.0.0.1:6379
+    password: ""
+system:
+    env: develop
+    host: 127.0.0.1
+    port: 8889
+    router-prefix: ""
+    db-type: mysql
+    use-redis: false
+    use-multipoint: false
+    oss-type: local
+zap:
+    level: info
+    prefix: '[nbuctf]'
+    format: console
+    director: log
+    encode-level: LowercaseColorLevelEncoder
+    stacktrace-key: stacktrace
+    max-age: 0
+    show-line: true
+    log-in-console: true

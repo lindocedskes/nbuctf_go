@@ -12,9 +12,11 @@ const getRouter = async (userStore) => {
   const routerStore = useRouterStore()
   await routerStore.SetAsyncRouter()
   await userStore.GetUserInfo()
-  console.log('用户信息：', userStore.userInfo)
   const asyncRouters = routerStore.asyncRouters
-  console.log('动态路由持久化：', asyncRouters)
+  if (import.meta.env === 'development') {
+    console.log('用户信息：', userStore.userInfo)
+    console.log('动态路由持久化：', routerStore.asyncRouters)
+  }
   asyncRouters.forEach((asyncRouter) => {
     router.addRoute(asyncRouter) //路由配置对象，根据path和component属性动态加载对应组件
   })

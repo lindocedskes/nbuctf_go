@@ -27,6 +27,7 @@
 
 # k8s
 /server/k8sconfig.yaml
+/deploy/k8sconfig.yaml
 
 # uploads 文件
 /server/uploads/file/
