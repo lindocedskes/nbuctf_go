@@ -36,7 +36,7 @@ docker-compose up
 ```
 
 说明：
-docker-compose.yaml 中拉取的镜像版本    image: lin088/nbuctf:v1.0  （为本地运行测试版，线上部署需要修改配置，重新build）
+docker-compose.yaml 中拉取的镜像版本    image: lin088/nbuctf:v1.2-local  （为本地运行测试版，线上部署需要修改配置，重新build）
 settings.yaml 为系统的各种配置，包含了数据库的默认密码，管理员默认登录账号密码为admin 123456
 
 ### 2.2 server项目启动：

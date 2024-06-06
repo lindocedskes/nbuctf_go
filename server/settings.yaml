@@ -50,3 +50,6 @@ zap:
     max-age: 0
     show-line: true
     log-in-console: true
+k8s:
+    k3s-master: 112.124.42.169
+    k3s-slave: 8.149.129.232

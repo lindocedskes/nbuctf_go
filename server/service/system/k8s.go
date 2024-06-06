@@ -184,10 +184,12 @@ func getNodeIP(nodeName string) (string, error) {
 	var nodeIP string
 	if nodeName == "k3s-slave" {
 		//Kubernetes API 不提供获取公有 IP 地址的方法，这里硬编码公有云 IP 地址
-		nodeIP = "8.149.129.232" // 硬编码公有云 IP 地址
+		// nodeIP = "8.149.129.232" // 硬编码公有云 IP 地址
+		nodeIP = global.NBUCTF_CONFIG.K3s.K3sSlave // 改为从配置文件中获取
 	} else if nodeName == "k3s-master" {
 		//Kubernetes API 不提供获取公有 IP 地址的方法，这里硬编码公有云 IP 地址
-		nodeIP = "112.124.42.169" // 硬编码公有云 IP 地址
+		// nodeIP = "112.124.42.169" // 硬编码公有云 IP 地址
+		nodeIP = global.NBUCTF_CONFIG.K3s.K3sMaster // 改为从配置文件中获取
 	} else {
 		for _, addr := range node.Status.Addresses {
 			if addr.Type == v1.NodeInternalIP {

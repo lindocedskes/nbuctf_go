@@ -2,7 +2,7 @@
 version: '3'
 services:
   app:
-    image: lin088/nbuctf:v1.0  # 使用拉取的镜像
+    image: lin088/nbuctf:v1.2-local  # 使用拉取的镜像
     ports:
       - "8889:8889"
     depends_on:

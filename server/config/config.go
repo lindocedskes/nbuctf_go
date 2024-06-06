@@ -19,6 +19,9 @@ type Server struct {
 
 	// 跨域配置
 	//Cors CORS `mapstructure:"cors" json:"cors" yaml:"cors"`
+
+	//k3s
+	K3s K3s `mapstructure:"k3s" json:"k3s" yaml:"k3s"`
 }
 
 // 结构体形式保存
