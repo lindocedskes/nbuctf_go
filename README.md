@@ -20,13 +20,11 @@ NBUCTF_go 是一个基于 go 的开源 CTF 平台。
 
 ## 2. 使用说明
 
+### 2.1 **快速部署**：
+
 **[!建议]**使用docker-compose镜像**快速部署**：
 
-**注意**：
-
-1. docker-compose.yaml 拉取的镜像版本    image: lin088/nbuctf:v1.0  
-
-2. 靶机需要k3s环境,在server目录下，放入k3s配置文件并重命名为k8sconfig.yaml
+**前提**：[搭建靶机需要的**k3s环境**](./k3s搭建指南),在server目录下放入k3s配置文件并重命名为k8sconfig.yaml
 
 ```bash
 # 克隆项目
@@ -37,14 +35,16 @@ cd deploy
 docker-compose up
 ```
 
-### 
+说明：
+docker-compose.yaml 中拉取的镜像版本    image: lin088/nbuctf:v1.0  （为本地运行测试版，线上部署需要修改配置，重新build）
+settings.yaml 为系统的各种配置，包含了数据库的默认密码，管理员默认登录账号密码为admin 123456
 
-### 2.1 server项目：
+### 2.2 server项目启动：
 
 后端启动前提：
 
 server/settings.yaml 中配置mysql和redis
-靶机需要k3环境,在server目录下，放入k3s配置文件并命名为k8sconfig.yaml
+[搭建靶机需要的**k3s环境**](./k3s搭建指南),在server目录下放入k3s配置文件并重命名为k8sconfig.yaml
 
 ```bash
 # 克隆项目
@@ -62,7 +62,7 @@ go build -o server main.go
 ./server
 ```
 
-### 2.2 前端项目nbuctfVue3
+### 2.3 前端项目nbuctfVue3启动
 
 ```bash
 # 进入nbuctfVue3文件夹
